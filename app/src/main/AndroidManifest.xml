@@ -9,6 +9,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DecisionMaker">
+        <activity android:name=".Compare"/>
+        <activity android:name=".SmartphoneCriteria" />
+        <activity android:name=".ActivitiesList" />
+        <activity android:name=".PeopleList" />
+        <activity android:name=".TravellingList" />
+        <activity android:name=".ShoppingList" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
