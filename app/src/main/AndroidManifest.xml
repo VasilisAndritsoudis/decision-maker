@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.decisionmaker">
+    package="com.example.decisionmaker" >
 
     <application
         android:allowBackup="true"
@@ -8,14 +8,16 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.DecisionMaker">
-        <activity android:name=".Perma"></activity>
+        android:theme="@style/Theme.DecisionMaker" >
+        <activity android:name=".CriteriaScore" >
+        </activity>
+        <activity android:name=".Perma" />
         <activity android:name=".DecisionView" />
         <activity android:name=".Submenu" />
         <activity android:name=".DecisionMenu" />
         <activity android:name=".History" />
         <activity android:name=".Settings" />
-        <activity android:name=".StartingActivity">
+        <activity android:name=".StartingActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
