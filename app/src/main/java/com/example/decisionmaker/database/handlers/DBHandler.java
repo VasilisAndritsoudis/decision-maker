@@ -1,8 +1,16 @@
 package com.example.decisionmaker.database.handlers;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.example.decisionmaker.database.models.Category;
+import com.example.decisionmaker.database.models.Criteria;
+import com.example.decisionmaker.database.models.SubCategory;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 
 public class DBHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
@@ -22,38 +30,33 @@ public class DBHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String CREATE_DECISION_TABLE = "CREATE TABLE "+ TABLE_DECISION + "(" +
-                TABLE_DECISION + "ID INT NOT NULL," +
+                TABLE_DECISION + "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 TABLE_DECISION + "Name VARCHAR(30) NOT NULL," +
                 TABLE_DECISION + "Date DATETIME NOT NULL," +
                 TABLE_SUBCATEGORY + "ID INT NOT NULL," +
-                "PRIMARY KEY (" + TABLE_DECISION + "ID)," +
                 "FOREIGN KEY (" + TABLE_SUBCATEGORY + "ID) REFERENCES " + TABLE_SUBCATEGORY + "(" + TABLE_SUBCATEGORY + "ID)" +
                 ");";
 
         String CREATE_SUBCATEGORY_TABLE = "CREATE TABLE " + TABLE_SUBCATEGORY + "(" +
-                TABLE_SUBCATEGORY + "ID INT NOT NULL," +
+                TABLE_SUBCATEGORY + "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 TABLE_SUBCATEGORY + "Name VARCHAR(30) NOT NULL," +
                 TABLE_CATEGORY + "ID INT NOT NULL," +
-                "PRIMARY KEY (" + TABLE_SUBCATEGORY + "ID)," +
                 "FOREIGN KEY (" + TABLE_CATEGORY + "ID) REFERENCES " + TABLE_CATEGORY + "(" + TABLE_CATEGORY + "ID)" +
                 ");";
 
         String CREATE_CATEGORY_TABLE = "CREATE TABLE " + TABLE_CATEGORY + "(" +
-                TABLE_CATEGORY + "ID INT NOT NULL," +
-                TABLE_CATEGORY + "Name VARCHAR(30) NOT NULL," +
-                "PRIMARY KEY (" + TABLE_CATEGORY + "ID)" +
+                TABLE_CATEGORY + "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                TABLE_CATEGORY + "Name VARCHAR(30) NOT NULL" +
                 ");";
 
         String CREATE_CRITERIA_TABLE = "CREATE TABLE " + TABLE_CRITERIA + "(" +
-                TABLE_CRITERIA + "ID INT NOT NULL," +
-                TABLE_CRITERIA + "Name VARCHAR(30) NOT NULL," +
-                "PRIMARY KEY (" + TABLE_CRITERIA + "ID)" +
+                TABLE_CRITERIA + "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                TABLE_CRITERIA + "Name VARCHAR(30) NOT NULL" +
                 ");";
 
         String CREATE_PRODUCT_TABLE = "CREATE TABLE " + TABLE_PRODUCT + "(" +
-                TABLE_PRODUCT + "ID INT NOT NULL," +
-                TABLE_PRODUCT + "Name VARCHAR(30) NOT NULL," +
-                "PRIMARY KEY (" + TABLE_PRODUCT + "ID)" +
+                TABLE_PRODUCT + "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                TABLE_PRODUCT + "Name VARCHAR(30) NOT NULL" +
                 ");";
 
         String CREATE_DECISION_CRITERIA_TABLE = "CREATE TABLE " + TABLE_DECISION + "_" + TABLE_CRITERIA + "(" +
@@ -86,6 +89,29 @@ public class DBHandler extends SQLiteOpenHelper {
                 "DarkMode BOOLEAN NOT NULL" +
                 ");";
 
+        ArrayList<String> INSERT_VALUES = new ArrayList<>();
+
+        INSERT_VALUES.add("INSERT INTO " + TABLE_CATEGORY + " (" + TABLE_CATEGORY + "Name)" +
+                "VALUES ('Shopping');");
+        INSERT_VALUES.add("INSERT INTO " + TABLE_SUBCATEGORY + " (" + TABLE_SUBCATEGORY + "Name, " + TABLE_CATEGORY + "ID)" +
+                "VALUES ('Phones', 1);");
+        INSERT_VALUES.add("INSERT INTO " + TABLE_SUBCATEGORY + " (" + TABLE_SUBCATEGORY + "Name, " + TABLE_CATEGORY + "ID)" +
+                "VALUES ('Cars', 1);");
+        INSERT_VALUES.add("INSERT INTO " + TABLE_CRITERIA + " (" + TABLE_CRITERIA + "Name)" +
+                "VALUES ('Price');");
+        INSERT_VALUES.add("INSERT INTO " + TABLE_CRITERIA + " (" + TABLE_CRITERIA + "Name)" +
+                "VALUES ('Horsepower');");
+        INSERT_VALUES.add("INSERT INTO " + TABLE_CRITERIA + " (" + TABLE_CRITERIA + "Name)" +
+                "VALUES ('RAM');");
+        INSERT_VALUES.add("INSERT INTO " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA + " (" + TABLE_SUBCATEGORY + "ID, " + TABLE_CRITERIA + "ID)" +
+                "VALUES (1, 1);");
+        INSERT_VALUES.add("INSERT INTO " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA + " (" + TABLE_SUBCATEGORY + "ID, " + TABLE_CRITERIA + "ID)" +
+                "VALUES (1, 3);");
+        INSERT_VALUES.add("INSERT INTO " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA + " (" + TABLE_SUBCATEGORY + "ID, " + TABLE_CRITERIA + "ID)" +
+                "VALUES (2, 1);");
+        INSERT_VALUES.add("INSERT INTO " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA + " (" + TABLE_SUBCATEGORY + "ID, " + TABLE_CRITERIA + "ID)" +
+                "VALUES (2, 2);");
+
         db.execSQL(CREATE_DECISION_TABLE);
         db.execSQL(CREATE_SUBCATEGORY_TABLE);
         db.execSQL(CREATE_CATEGORY_TABLE);
@@ -94,6 +120,9 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_DECISION_CRITERIA_TABLE);
         db.execSQL(SUBCATEGORY_CRITERIA_TABLE);
         db.execSQL(DECISION_PRODUCT_TABLE);
+        for (String INSERT_VALUE : INSERT_VALUES) {
+            db.execSQL(INSERT_VALUE);
+        }
     }
 
     @Override
@@ -103,4 +132,144 @@ public class DBHandler extends SQLiteOpenHelper {
 
     // My methods
     // . . .
+
+    public ArrayList<Category> getCategories() {
+        String query = "SELECT *" +
+                " FROM " + TABLE_CATEGORY;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        ArrayList<Category> response = null;
+
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            response = new ArrayList<>();
+
+            do {
+                Category cat = new Category();
+
+                cat.setId(cursor.getInt(0));
+                cat.setName(cursor.getString(1));
+
+                response.add(cat);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        db.close();
+        return response;
+    }
+
+    public ArrayList<SubCategory> getSubCategoriesOfCategory(String categoryName) {
+        String query = "SELECT " + TABLE_CATEGORY + "ID " +
+                " FROM " + TABLE_CATEGORY +
+                " WHERE " + TABLE_CATEGORY + "Name = '" + categoryName + "'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        int categoryId;
+
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            categoryId = cursor.getInt(0);
+        } else {
+            return null;
+        }
+
+        query = "SELECT *" +
+                " FROM " + TABLE_SUBCATEGORY +
+                " WHERE " + TABLE_CATEGORY + "ID = " + categoryId;
+
+        cursor = db.rawQuery(query, null);
+
+        ArrayList<SubCategory> response = null;
+
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            response = new ArrayList<>();
+
+            do {
+                SubCategory subCat = new SubCategory();
+
+                subCat.setId(cursor.getInt(0));
+                subCat.setName(cursor.getString(1));
+                subCat.setCategory(categoryName);
+
+                response.add(subCat);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        db.close();
+        return response;
+    }
+
+    public ArrayList<Criteria> getSubCategoryCriteria(String subCategoryName) {
+        String query = "SELECT DISTINCT " + TABLE_CRITERIA + "ID, " + TABLE_CRITERIA + "Name" +
+                " FROM " + TABLE_CRITERIA + " JOIN " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA + " USING (" + TABLE_CRITERIA + "ID)" +
+                " JOIN " + TABLE_SUBCATEGORY + " USING (" + TABLE_SUBCATEGORY + "ID)" +
+                " WHERE " + TABLE_SUBCATEGORY + "Name = '" + subCategoryName + "'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        ArrayList<Criteria> response = null;
+
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            response = new ArrayList<>();
+
+            do {
+                Criteria criteria = new Criteria();
+
+                criteria.setId(cursor.getInt(0));
+                criteria.setName(cursor.getString(1));
+
+                response.add(criteria);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        db.close();
+        return response;
+    }
+
+    public ArrayList<Criteria> getCategoryCriteria(String categoryName) {
+        String query = "SELECT DISTINCT " + TABLE_CRITERIA + "ID, " + TABLE_CRITERIA + "Name" +
+                " FROM " + TABLE_CRITERIA + " JOIN " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA + " USING (" + TABLE_CRITERIA + "ID)" +
+                " JOIN " + TABLE_SUBCATEGORY + " USING (" + TABLE_SUBCATEGORY + "ID)" +
+                " JOIN " + TABLE_CATEGORY + " USING (" + TABLE_CATEGORY + "ID)" +
+                " WHERE " + TABLE_CATEGORY + "Name = '" + categoryName + "'" +
+                " GROUP BY " + TABLE_CRITERIA + "Name" +
+                " HAVING COUNT(*) > 1";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        ArrayList<Criteria> response = null;
+
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            response = new ArrayList<>();
+
+            do {
+                Criteria criteria = new Criteria();
+
+                criteria.setId(cursor.getInt(0));
+                criteria.setName(cursor.getString(1));
+
+                response.add(criteria);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        db.close();
+        return response;
+    }
 }
