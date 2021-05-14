@@ -24,4 +24,9 @@ public class StartingActivity extends AppCompatActivity {
         Intent intent = new Intent(this, History.class);
         startActivity(intent);
     }
+
+    public void goToDecisionMenu(View view) {
+        Intent intent = new Intent(this, DecisionMenu.class);
+        startActivity(intent);
+    }
 }

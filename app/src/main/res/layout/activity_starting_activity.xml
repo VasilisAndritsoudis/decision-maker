@@ -24,20 +24,23 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="56dp"
+        android:onClick="goToSettings"
         android:text="@string/settings"
+        android:textAllCaps="false"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/startInfoButton"
         app:layout_constraintEnd_toEndOf="@+id/startHistoryButton"
         app:layout_constraintStart_toStartOf="@+id/startHistoryButton"
-        app:layout_constraintTop_toBottomOf="@+id/startHistoryButton"
-        android:onClick="goToSettings"/>
+        app:layout_constraintTop_toBottomOf="@+id/startHistoryButton" />
 
     <Button
         android:id="@+id/startNewDecisionButton"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="96dp"
+        android:onClick="goToDecisionMenu"
         android:text="@string/new_decision"
+        android:textAllCaps="false"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/startHistoryButton"
         app:layout_constraintEnd_toEndOf="@+id/startHistoryButton"
@@ -51,14 +54,15 @@
         android:layout_height="0dp"
         android:layout_marginTop="32dp"
         android:layout_marginBottom="32dp"
+        android:onClick="goToHistory"
         android:text="@string/decision_history"
+        android:textAllCaps="false"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/startSettingsButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/startNewDecisionButton"
-        app:layout_constraintVertical_bias="0.499"
-        android:onClick="goToHistory"/>
+        app:layout_constraintVertical_bias="0.499" />
 
     <ImageButton
         android:id="@+id/startInfoButton"

@@ -1,9 +1,9 @@
 package com.example.decisionmaker;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -25,6 +25,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.history_recycler_layout, parent, false);
+
         return new ViewHolder(v);
 
     }
@@ -51,6 +52,14 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             nameAndDate = itemView.findViewById(R.id.historyDecisionText);
             delete = itemView.findViewById(R.id.historyDeleteButton);
             edit = itemView.findViewById(R.id.historyEditButton);
+
+            itemView.setOnClickListener(v -> {
+                Intent i = new Intent(itemView.getContext(), DecisionView.class);
+                String string = nameAndDate.getText().toString();
+                i.putExtra("textView" , string);
+                itemView.getContext().startActivity(i);
+            });
+
         }
     }
 }
