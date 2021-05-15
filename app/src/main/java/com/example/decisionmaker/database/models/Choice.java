@@ -1,12 +1,13 @@
 package com.example.decisionmaker.database.models;
 
-public class Product {
+public class Choice {
     private int id;
     private String name;
+    private int value;
 
-    public Product() {}
+    public Choice() {}
 
-    public Product(String name) {
+    public Choice(String name) {
         this.name = name;
     }
 
@@ -25,4 +26,8 @@ public class Product {
     public void setName(String name) {
         this.name = name;
     }
+
+    public int getValue() { return value; }
+
+    public void setValue(int value) { this.value = value; }
 }

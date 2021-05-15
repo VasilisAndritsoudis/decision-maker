@@ -1,16 +1,23 @@
 package com.example.decisionmaker.database.models;
 
-import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Date;
 
 public class Decision {
     private int id;
     private String subCategory;
     private String name;
     private Date date;
+    private ArrayList<Criteria> criteria;
+    private ArrayList<Choice> choices;
 
-    public Decision() {}
+    public Decision() {
+        this.criteria = new ArrayList<>();
+        this.choices = new ArrayList<>();
+    }
 
     public Decision(String name, String subCategory) {
+        this();
         this.name = name;
         this.subCategory = subCategory;
     }
@@ -45,5 +52,21 @@ public class Decision {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public ArrayList<Criteria> getCriteria() {
+        return criteria;
+    }
+
+    public void setCriteria(ArrayList<Criteria> criteria) {
+        this.criteria = criteria;
+    }
+
+    public ArrayList<Choice> getChoices() {
+        return choices;
+    }
+
+    public void setChoices(ArrayList<Choice> choices) {
+        this.choices = choices;
     }
 }

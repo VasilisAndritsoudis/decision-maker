@@ -4,13 +4,17 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.icu.text.SimpleDateFormat;
 
 import com.example.decisionmaker.database.models.Category;
 import com.example.decisionmaker.database.models.Criteria;
+import com.example.decisionmaker.database.models.Decision;
+import com.example.decisionmaker.database.models.Choice;
 import com.example.decisionmaker.database.models.SubCategory;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
 
 public class DBHandler extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
@@ -175,6 +179,7 @@ public class DBHandler extends SQLiteOpenHelper {
         if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             categoryId = cursor.getInt(0);
+            cursor.close();
         } else {
             return null;
         }
@@ -271,5 +276,84 @@ public class DBHandler extends SQLiteOpenHelper {
 
         db.close();
         return response;
+    }
+
+    public boolean saveDecision(Decision decision) {
+        if (!insertProducts(decision.getChoices()))
+            return false;
+
+        if (!insertCriteria(decision.getCriteria()))
+            return false;
+
+        // Associate Decision-Products-Criteria
+
+        return insertDecision(decision);
+    }
+
+    private boolean insertProducts(ArrayList<Choice> choices) {
+        if (choices.size() == 0)
+            return false;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        for (Choice item : choices) {
+            String insertion = "INSERT INTO " + TABLE_PRODUCT + " (" + TABLE_PRODUCT + "Name)" +
+                    " VALUES (" + item.getName() + ")";
+
+            db.execSQL(insertion);
+        }
+
+        return true;
+    }
+
+    private boolean insertCriteria(ArrayList<Criteria> criteria) {
+        if (criteria.size() == 0)
+            return false;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        for (Criteria item : criteria) {
+            String insertion = "INSERT INTO " + TABLE_CRITERIA + " (" + TABLE_CRITERIA + "Name)" +
+                    " VALUES (" + item.getName() + ")";
+
+            db.execSQL(insertion);
+        }
+
+        return true;
+    }
+
+    private boolean insertDecision(Decision decision) {
+        String query = "SELECT " + TABLE_SUBCATEGORY + "ID" +
+                " FROM " + TABLE_SUBCATEGORY +
+                " WHERE " + TABLE_SUBCATEGORY + "Name = '" + decision.getSubCategory() + "'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        int subCategoryId;
+
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            subCategoryId = cursor.getInt(0);
+            cursor.close();
+        } else {
+            return false;
+        }
+
+        String insertion;
+
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
+            return false;
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String date = dateFormat.format(new Date());
+
+        insertion = "INSERT INTO " + TABLE_DECISION + " (" + TABLE_DECISION + "Name, " + TABLE_DECISION + "Date, " + TABLE_SUBCATEGORY + "ID)" +
+                " VALUES (" + decision.getName() + ", " + date + ", " + subCategoryId + ")";
+
+        db.execSQL(insertion);
+
+        return true;
     }
 }

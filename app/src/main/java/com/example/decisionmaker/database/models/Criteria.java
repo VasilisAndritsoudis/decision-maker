@@ -3,6 +3,7 @@ package com.example.decisionmaker.database.models;
 public class Criteria {
     private int id;
     private String name;
+    private int weight;
 
     public Criteria() {}
 
@@ -25,4 +26,8 @@ public class Criteria {
     public void setName(String name) {
         this.name = name;
     }
+
+    public int getWeight() { return weight; }
+
+    public void setWeight(int weight) { this.weight = weight; }
 }
