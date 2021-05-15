@@ -1,5 +1,6 @@
 package com.android.decisionmaker.algorithms;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -89,3 +90,4 @@ public class WAS {
         System.out.println(out);
     }
 }
+
