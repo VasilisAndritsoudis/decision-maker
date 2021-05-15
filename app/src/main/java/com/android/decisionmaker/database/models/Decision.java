@@ -9,11 +9,9 @@ public class Decision {
     private String name;
     private Date date;
     private ArrayList<Criteria> criteria;
-    private ArrayList<Choice> choices;
 
     public Decision() {
         this.criteria = new ArrayList<>();
-        this.choices = new ArrayList<>();
     }
 
     public Decision(String name, String subCategory) {
@@ -60,13 +58,5 @@ public class Decision {
 
     public void setCriteria(ArrayList<Criteria> criteria) {
         this.criteria = criteria;
-    }
-
-    public ArrayList<Choice> getChoices() {
-        return choices;
-    }
-
-    public void setChoices(ArrayList<Choice> choices) {
-        this.choices = choices;
     }
 }
