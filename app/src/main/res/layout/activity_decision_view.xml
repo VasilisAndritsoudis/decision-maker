@@ -27,7 +27,7 @@
 <!--        app:layout_constraintTop_toBottomOf="@+id/ViewTitle"-->
 <!--        app:srcCompat="@android:drawable/btn_star_big_on" />-->
 
-    <com.anychart.anychart.AnyChartView
+    <com.anychart.AnyChartView
         android:id="@+id/any_chart_view"
         android:layout_width="232dp"
         android:layout_height="177dp"
