@@ -360,6 +360,18 @@ public class DBHandler extends SQLiteOpenHelper {
         return true;
     }
 
+    public Decision getDecision(String decisionName) {
+        Decision decision = new Decision();
+
+        // Query Choices
+
+        // Query Criteria
+
+        // Query Decision
+
+        return decision;
+    }
+
     private boolean insertChoices(ArrayList<Choice> choices) {
         if (choices.size() == 0)
             return false;
