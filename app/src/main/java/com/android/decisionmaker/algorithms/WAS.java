@@ -1,4 +1,4 @@
-package com.example.decisionmaker.algorithms;
+package com.android.decisionmaker.algorithms;
 
 import java.util.ArrayList;
 import java.util.Arrays;

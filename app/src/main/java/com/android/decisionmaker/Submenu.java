@@ -1,4 +1,4 @@
-package com.example.decisionmaker;
+package com.android.decisionmaker;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;

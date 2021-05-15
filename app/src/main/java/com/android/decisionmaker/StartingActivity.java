@@ -1,4 +1,4 @@
-package com.example.decisionmaker;
+package com.android.decisionmaker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,12 +6,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
-import com.example.decisionmaker.database.handlers.DBHandler;
-import com.example.decisionmaker.database.models.Category;
-import com.example.decisionmaker.database.models.Criteria;
-import com.example.decisionmaker.database.models.SubCategory;
+import com.android.decisionmaker.database.handlers.DBHandler;
+import com.android.decisionmaker.database.models.Category;
+import com.android.decisionmaker.database.models.Criteria;
+import com.android.decisionmaker.database.models.SubCategory;
 
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.decisionmaker.database.handlers;
+package com.android.decisionmaker.database.handlers;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -6,11 +6,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.icu.text.SimpleDateFormat;
 
-import com.example.decisionmaker.database.models.Category;
-import com.example.decisionmaker.database.models.Criteria;
-import com.example.decisionmaker.database.models.Decision;
-import com.example.decisionmaker.database.models.Choice;
-import com.example.decisionmaker.database.models.SubCategory;
+import com.android.decisionmaker.database.models.Category;
+import com.android.decisionmaker.database.models.Criteria;
+import com.android.decisionmaker.database.models.Decision;
+import com.android.decisionmaker.database.models.Choice;
+import com.android.decisionmaker.database.models.SubCategory;
 
 import java.util.ArrayList;
 import java.util.Date;

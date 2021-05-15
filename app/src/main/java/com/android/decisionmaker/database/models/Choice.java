@@ -1,4 +1,4 @@
-package com.example.decisionmaker.database.models;
+package com.android.decisionmaker.database.models;
 
 public class Choice {
     private int id;
