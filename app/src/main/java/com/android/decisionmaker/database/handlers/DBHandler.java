@@ -281,11 +281,11 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public boolean saveDecision(Decision decision) {
-        if (!insertProducts(decision.getChoices()))
-            return false;
-
-        if (!insertCriteria(decision.getCriteria()))
-            return false;
+//        if (!insertProducts(decision.getChoices()))
+//            return false;
+//
+//        if (!insertCriteria(decision.getCriteria()))
+//            return false;
 
         // Associate Decision-Products-Criteria
 
