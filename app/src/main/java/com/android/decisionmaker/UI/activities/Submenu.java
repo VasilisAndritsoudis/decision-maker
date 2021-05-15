@@ -1,10 +1,13 @@
-package com.android.decisionmaker;
+package com.android.decisionmaker.UI.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+
+import com.android.decisionmaker.R;
+import com.android.decisionmaker.UI.adapters.MenuAdapter;
 
 import java.util.ArrayList;
 

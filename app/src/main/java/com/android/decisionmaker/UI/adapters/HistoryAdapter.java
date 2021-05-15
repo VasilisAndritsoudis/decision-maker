@@ -1,4 +1,4 @@
-package com.android.decisionmaker;
+package com.android.decisionmaker.UI.adapters;
 
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -9,6 +9,9 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.android.decisionmaker.UI.activities.DecisionView;
+import com.android.decisionmaker.R;
 
 import java.util.ArrayList;
 

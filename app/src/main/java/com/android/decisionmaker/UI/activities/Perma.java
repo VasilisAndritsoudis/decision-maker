@@ -1,10 +1,15 @@
-package com.android.decisionmaker;
+package com.android.decisionmaker.UI.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+
+import com.android.decisionmaker.R;
+import com.android.decisionmaker.UI.adapters.PermaAdapter;
 
 import java.util.ArrayList;
 
@@ -38,5 +43,10 @@ public class Perma extends AppCompatActivity {
         PermaAdapter adapter = new PermaAdapter(categories);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    public void goToCriteriaScore (View view) {
+        Intent intent = new Intent(this, CriteriaScore.class);
+        startActivity(intent);
     }
 }
