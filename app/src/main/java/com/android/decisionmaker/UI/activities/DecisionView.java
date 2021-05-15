@@ -1,10 +1,11 @@
-package com.android.decisionmaker;
-
-import androidx.appcompat.app.AppCompatActivity;
+package com.android.decisionmaker.UI.activities;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.decisionmaker.R;
 import com.android.decisionmaker.database.models.Decision;
 import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
@@ -13,7 +14,6 @@ import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.charts.Pie;
 import com.anychart.enums.Align;
 import com.anychart.enums.LegendLayout;
-
 
 import java.util.ArrayList;
 import java.util.List;

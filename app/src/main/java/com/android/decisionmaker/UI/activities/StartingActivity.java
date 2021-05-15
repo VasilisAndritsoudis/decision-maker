@@ -1,4 +1,4 @@
-package com.android.decisionmaker;
+package com.android.decisionmaker.UI.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import com.android.decisionmaker.R;
 import com.android.decisionmaker.database.handlers.DBHandler;
 import com.android.decisionmaker.database.models.Category;
 import com.android.decisionmaker.database.models.Choice;

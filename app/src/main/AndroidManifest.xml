@@ -9,15 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DecisionMaker" >
-        <activity android:name="com.android.decisionmaker.CriteriaScore" >
+        <activity android:name="com.android.decisionmaker.UI.activities.CriteriaScore" >
         </activity>
-        <activity android:name="com.android.decisionmaker.Perma" />
-        <activity android:name="com.android.decisionmaker.DecisionView" />
-        <activity android:name="com.android.decisionmaker.Submenu" />
-        <activity android:name="com.android.decisionmaker.DecisionMenu" />
-        <activity android:name="com.android.decisionmaker.History" />
-        <activity android:name="com.android.decisionmaker.Settings" />
-        <activity android:name="com.android.decisionmaker.StartingActivity" >
+        <activity android:name="com.android.decisionmaker.UI.activities.Perma" />
+        <activity android:name="com.android.decisionmaker.UI.activities.DecisionView" />
+        <activity android:name="com.android.decisionmaker.UI.activities.Submenu" />
+        <activity android:name="com.android.decisionmaker.UI.activities.DecisionMenu" />
+        <activity android:name="com.android.decisionmaker.UI.activities.History" />
+        <activity android:name="com.android.decisionmaker.UI.activities.Settings" />
+        <activity android:name="com.android.decisionmaker.UI.activities.StartingActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
