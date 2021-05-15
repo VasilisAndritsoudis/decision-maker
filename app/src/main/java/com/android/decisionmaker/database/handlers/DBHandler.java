@@ -24,7 +24,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String TABLE_SUBCATEGORY = "SubCategory";
     private static final String TABLE_CATEGORY = "Category";
     private static final String TABLE_CRITERIA = "Criteria";
-    private static final String TABLE_PRODUCT = "Product";
+    private static final String TABLE_CHOICE = "Choice";
     private static final String TABLE_SETTINGS = "Settings";
 
     public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version){
@@ -58,9 +58,9 @@ public class DBHandler extends SQLiteOpenHelper {
                 TABLE_CRITERIA + "Name VARCHAR(30) NOT NULL" +
                 ");";
 
-        String CREATE_PRODUCT_TABLE = "CREATE TABLE " + TABLE_PRODUCT + "(" +
-                TABLE_PRODUCT + "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                TABLE_PRODUCT + "Name VARCHAR(30) NOT NULL" +
+        String CREATE_CHOICE_TABLE = "CREATE TABLE " + TABLE_CHOICE + "(" +
+                TABLE_CHOICE + "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
+                TABLE_CHOICE + "Name VARCHAR(30) NOT NULL" +
                 ");";
 
         String CREATE_DECISION_CRITERIA_TABLE = "CREATE TABLE " + TABLE_DECISION + "_" + TABLE_CRITERIA + "(" +
@@ -80,14 +80,14 @@ public class DBHandler extends SQLiteOpenHelper {
                 "FOREIGN KEY (" + TABLE_CRITERIA + "ID) REFERENCES " + TABLE_CRITERIA + "(" + TABLE_CRITERIA + "ID)" +
                 ");";
 
-        String DECISION_PRODUCT_TABLE = "CREATE TABLE " + TABLE_DECISION + "_" + TABLE_PRODUCT + "(" +
+        String DECISION_CHOICE_TABLE = "CREATE TABLE " + TABLE_DECISION + "_" + TABLE_CHOICE + "(" +
                 TABLE_DECISION + "ID INTEGER NOT NULL," +
-                TABLE_PRODUCT + "ID INTEGER NOT NULL," +
+                TABLE_CHOICE + "ID INTEGER NOT NULL," +
                 TABLE_CRITERIA + "ID INTEGER NOT NULL," +
-                TABLE_PRODUCT + "Value INTEGER NOT NULL," +
-                "PRIMARY KEY (" + TABLE_DECISION + "ID, " + TABLE_PRODUCT + "ID, " + TABLE_CRITERIA + "ID)," +
+                TABLE_CHOICE + "Value INTEGER NOT NULL," +
+                "PRIMARY KEY (" + TABLE_DECISION + "ID, " + TABLE_CHOICE + "ID, " + TABLE_CRITERIA + "ID)," +
                 "FOREIGN KEY (" + TABLE_DECISION + "ID) REFERENCES " + TABLE_DECISION + "(" + TABLE_DECISION + "ID)," +
-                "FOREIGN KEY (" + TABLE_PRODUCT + "ID) REFERENCES " + TABLE_PRODUCT + "(" + TABLE_PRODUCT + "ID)," +
+                "FOREIGN KEY (" + TABLE_CHOICE + "ID) REFERENCES " + TABLE_CHOICE + "(" + TABLE_CHOICE + "ID)," +
                 "FOREIGN KEY (" + TABLE_CRITERIA + "ID) REFERENCES " + TABLE_CRITERIA + "("+ TABLE_CRITERIA + "ID)" +
                 ");";
 
@@ -122,10 +122,10 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_SUBCATEGORY_TABLE);
         db.execSQL(CREATE_CATEGORY_TABLE);
         db.execSQL(CREATE_CRITERIA_TABLE);
-        db.execSQL(CREATE_PRODUCT_TABLE);
+        db.execSQL(CREATE_CHOICE_TABLE);
         db.execSQL(CREATE_DECISION_CRITERIA_TABLE);
         db.execSQL(SUBCATEGORY_CRITERIA_TABLE);
-        db.execSQL(DECISION_PRODUCT_TABLE);
+        db.execSQL(DECISION_CHOICE_TABLE);
         for (String INSERT_VALUE : INSERT_VALUES) {
             db.execSQL(INSERT_VALUE);
         }
@@ -281,26 +281,117 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public boolean saveDecision(Decision decision) {
-//        if (!insertProducts(decision.getChoices()))
-//            return false;
-//
-//        if (!insertCriteria(decision.getCriteria()))
-//            return false;
+        if (!insertChoices(decision.getCriteria().get(0).getChoices()))
+            return false;
 
-        // Associate Decision-Products-Criteria
+        if (!insertCriteria(decision.getCriteria()))
+            return false;
 
-        return insertDecision(decision);
+        if (!insertDecision(decision))
+            return false;
+
+        String query = "SELECT " + TABLE_DECISION + "ID" +
+                " FROM " + TABLE_DECISION +
+                " WHERE " + TABLE_DECISION + "Name = '" + decision.getName() + "'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        int decisionId;
+
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            decisionId = cursor.getInt(0);
+            cursor.close();
+        } else {
+            return false;
+        }
+
+        for (Criteria criteria : decision.getCriteria()) {
+            query = "SELECT " + TABLE_CRITERIA + "ID" +
+                    " FROM " + TABLE_CRITERIA +
+                    " WHERE " + TABLE_CRITERIA + "Name = '" + criteria.getName() + "'";
+
+            cursor = db.rawQuery(query, null);
+
+            int criteriaId;
+
+            if (cursor.getCount() != 0) {
+                cursor.moveToFirst();
+                criteriaId = cursor.getInt(0);
+                cursor.close();
+            } else {
+                return false;
+            }
+
+            String insertion = "INSERT INTO " + TABLE_DECISION + "_" + TABLE_CRITERIA +
+                    " (" + TABLE_DECISION + "ID, " + TABLE_CRITERIA + "ID, " + TABLE_CRITERIA + "Weight)" +
+                    " VALUES (" + decisionId + ", " + criteriaId + ", " + criteria.getWeight() + ")";
+
+            db.execSQL(insertion);
+
+            for (Choice choice : criteria.getChoices()) {
+                query = "SELECT " + TABLE_CHOICE + "ID" +
+                        " FROM " + TABLE_CHOICE +
+                        " WHERE " + TABLE_CHOICE + "Name = '" + choice.getName() + "'";
+
+                cursor = db.rawQuery(query, null);
+
+                int choiceId;
+
+                if (cursor.getCount() != 0) {
+                    cursor.moveToFirst();
+                    choiceId = cursor.getInt(0);
+                    cursor.close();
+                } else {
+                    return false;
+                }
+
+                insertion = "INSERT INTO " + TABLE_DECISION + "_" + TABLE_CHOICE +
+                        " (" + TABLE_DECISION + "ID, " + TABLE_CHOICE + "ID, " + TABLE_CRITERIA + "ID, " + TABLE_CHOICE + "Value)" +
+                        " VALUES (" + decisionId + ", " + choiceId + ", " + criteriaId + ", " + choice.getValue() + ")";
+
+                db.execSQL(insertion);
+            }
+        }
+
+        db.close();
+
+        return true;
     }
 
-    private boolean insertProducts(ArrayList<Choice> choices) {
+    public Decision getDecision(String decisionName) {
+        Decision decision = new Decision();
+
+        // Query Choices
+
+        // Query Criteria
+
+        // Query Decision
+
+        return decision;
+    }
+
+    private boolean insertChoices(ArrayList<Choice> choices) {
         if (choices.size() == 0)
             return false;
 
         SQLiteDatabase db = this.getWritableDatabase();
 
         for (Choice item : choices) {
-            String insertion = "INSERT INTO " + TABLE_PRODUCT + " (" + TABLE_PRODUCT + "Name)" +
-                    " VALUES (" + item.getName() + ")";
+            String query = "SELECT " + TABLE_CHOICE + "ID" +
+                    " FROM " + TABLE_CHOICE +
+                    " WHERE " + TABLE_CHOICE + "Name = '" + item.getName() + "'";
+
+            Cursor cursor = db.rawQuery(query, null);
+
+            if (cursor.getCount() != 0) {
+                cursor.close();
+                continue;
+            }
+
+            String insertion = "INSERT INTO " + TABLE_CHOICE + " (" + TABLE_CHOICE + "Name)" +
+                    " VALUES ('" + item.getName() + "')";
 
             db.execSQL(insertion);
         }
@@ -315,8 +406,19 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
 
         for (Criteria item : criteria) {
+            String query = "SELECT " + TABLE_CRITERIA + "ID" +
+                    " FROM " + TABLE_CRITERIA +
+                    " WHERE " + TABLE_CRITERIA + "Name = '" + item.getName() + "'";
+
+            Cursor cursor = db.rawQuery(query, null);
+
+            if (cursor.getCount() != 0) {
+                cursor.close();
+                continue;
+            }
+
             String insertion = "INSERT INTO " + TABLE_CRITERIA + " (" + TABLE_CRITERIA + "Name)" +
-                    " VALUES (" + item.getName() + ")";
+                    " VALUES ('" + item.getName() + "')";
 
             db.execSQL(insertion);
         }
@@ -352,7 +454,7 @@ public class DBHandler extends SQLiteOpenHelper {
         String date = dateFormat.format(new Date());
 
         insertion = "INSERT INTO " + TABLE_DECISION + " (" + TABLE_DECISION + "Name, " + TABLE_DECISION + "Date, " + TABLE_SUBCATEGORY + "ID)" +
-                " VALUES (" + decision.getName() + ", " + date + ", " + subCategoryId + ")";
+                " VALUES ('" + decision.getName() + "', '" + date + "', " + subCategoryId + ")";
 
         db.execSQL(insertion);
 

@@ -57,6 +57,7 @@ public class Decision {
     }
 
     public void setCriteria(ArrayList<Criteria> criteria) {
-        this.criteria = criteria;
+        this.criteria = new ArrayList<>();
+        this.criteria.addAll(criteria);
     }
 }
