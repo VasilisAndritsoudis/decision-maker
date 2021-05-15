@@ -1,13 +1,19 @@
 package com.android.decisionmaker.database.models;
 
+import java.util.ArrayList;
+
 public class Criteria {
     private int id;
     private String name;
     private int weight;
+    private ArrayList<Choice> choices;
 
-    public Criteria() {}
+    public Criteria() {
+        this.choices = new ArrayList<>();
+    }
 
     public Criteria(String name) {
+        this();
         this.name = name;
     }
 
@@ -27,7 +33,19 @@ public class Criteria {
         this.name = name;
     }
 
-    public int getWeight() { return weight; }
+    public int getWeight() {
+        return weight;
+    }
 
-    public void setWeight(int weight) { this.weight = weight; }
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+
+    public ArrayList<Choice> getChoices() {
+        return choices;
+    }
+
+    public void setChoices(ArrayList<Choice> choices) {
+        this.choices = choices;
+    }
 }

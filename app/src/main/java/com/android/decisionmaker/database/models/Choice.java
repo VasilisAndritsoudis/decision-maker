@@ -5,7 +5,8 @@ public class Choice {
     private String name;
     private int value;
 
-    public Choice() {}
+    public Choice() {
+    }
 
     public Choice(String name) {
         this.name = name;
@@ -27,7 +28,11 @@ public class Choice {
         this.name = name;
     }
 
-    public int getValue() { return value; }
+    public int getValue() {
+        return value;
+    }
 
-    public void setValue(int value) { this.value = value; }
+    public void setValue(int value) {
+        this.value = value;
+    }
 }
