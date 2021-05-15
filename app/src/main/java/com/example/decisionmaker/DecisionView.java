@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.example.decisionmaker.database.models.Decision;
+
 public class DecisionView extends AppCompatActivity {
 
     TextView name;
@@ -22,5 +24,9 @@ public class DecisionView extends AppCompatActivity {
             nameAndDate = extras.getString("textView");
             name.setText(nameAndDate);
         }
+
+        Decision decision = new Decision();  // -----------------------------------------------------------------
+
+
     }
 }
