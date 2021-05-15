@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.decisionmaker.UI.activities.Perma;
 import com.android.decisionmaker.R;
+import com.android.decisionmaker.UI.activities.Prepare;
 import com.android.decisionmaker.UI.activities.Submenu;
 
 import java.util.ArrayList;
@@ -85,10 +86,17 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>{
                     itemView.getContext().startActivity(i);
 
                 } else {
-                    Intent i = new Intent(itemView.getContext(), Submenu.class);
-                    String string = button.getText().toString();
-                    i.putExtra("buttonPressed", string);
-                    itemView.getContext().startActivity(i);
+                    if (decisions.contains(button.getText().toString())) {
+                        Intent i = new Intent(itemView.getContext(), Prepare.class);
+                        String string = button.getText().toString();
+                        i.putExtra("buttonPressed", string);
+                        itemView.getContext().startActivity(i);
+                    } else {
+                        Intent i = new Intent(itemView.getContext(), Submenu.class);
+                        String string = button.getText().toString();
+                        i.putExtra("buttonPressed", string);
+                        itemView.getContext().startActivity(i);
+                    }
                 }
             });
 
