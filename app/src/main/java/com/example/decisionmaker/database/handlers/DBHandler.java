@@ -37,14 +37,14 @@ public class DBHandler extends SQLiteOpenHelper {
                 TABLE_DECISION + "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 TABLE_DECISION + "Name VARCHAR(30) NOT NULL," +
                 TABLE_DECISION + "Date DATETIME NOT NULL," +
-                TABLE_SUBCATEGORY + "ID INT NOT NULL," +
+                TABLE_SUBCATEGORY + "ID INTEGER NOT NULL," +
                 "FOREIGN KEY (" + TABLE_SUBCATEGORY + "ID) REFERENCES " + TABLE_SUBCATEGORY + "(" + TABLE_SUBCATEGORY + "ID)" +
                 ");";
 
         String CREATE_SUBCATEGORY_TABLE = "CREATE TABLE " + TABLE_SUBCATEGORY + "(" +
                 TABLE_SUBCATEGORY + "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
                 TABLE_SUBCATEGORY + "Name VARCHAR(30) NOT NULL," +
-                TABLE_CATEGORY + "ID INT NOT NULL," +
+                TABLE_CATEGORY + "ID INTEGER NOT NULL," +
                 "FOREIGN KEY (" + TABLE_CATEGORY + "ID) REFERENCES " + TABLE_CATEGORY + "(" + TABLE_CATEGORY + "ID)" +
                 ");";
 
@@ -64,29 +64,31 @@ public class DBHandler extends SQLiteOpenHelper {
                 ");";
 
         String CREATE_DECISION_CRITERIA_TABLE = "CREATE TABLE " + TABLE_DECISION + "_" + TABLE_CRITERIA + "(" +
-                TABLE_DECISION + "ID INT NOT NULL," +
-                TABLE_CRITERIA + "ID INT NOT NULL," +
-                TABLE_CRITERIA + "Weight INT NOT NULL," +
+                TABLE_DECISION + "ID INTEGER NOT NULL," +
+                TABLE_CRITERIA + "ID INTEGER NOT NULL," +
+                TABLE_CRITERIA + "Weight INTEGER NOT NULL," +
                 "PRIMARY KEY (" + TABLE_DECISION + "ID, " + TABLE_CRITERIA + "ID)," +
                 "FOREIGN KEY (" + TABLE_DECISION + "ID) REFERENCES " + TABLE_DECISION + "(" + TABLE_DECISION + "ID)," +
                 "FOREIGN KEY (" + TABLE_CRITERIA + "ID) REFERENCES " + TABLE_CRITERIA + "(" + TABLE_CRITERIA + "ID)" +
                 ");";
 
         String SUBCATEGORY_CRITERIA_TABLE = "CREATE TABLE " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA + "(" +
-                TABLE_SUBCATEGORY + "ID INT NOT NULL," +
-                TABLE_CRITERIA + "ID INT NOT NULL," +
+                TABLE_SUBCATEGORY + "ID INTEGER NOT NULL," +
+                TABLE_CRITERIA + "ID INTEGER NOT NULL," +
                 "PRIMARY KEY (" + TABLE_SUBCATEGORY + "ID, " + TABLE_CRITERIA + "ID)," +
                 "FOREIGN KEY (" + TABLE_SUBCATEGORY + "ID) REFERENCES " + TABLE_SUBCATEGORY + "(" + TABLE_SUBCATEGORY + "ID)," +
                 "FOREIGN KEY (" + TABLE_CRITERIA + "ID) REFERENCES " + TABLE_CRITERIA + "(" + TABLE_CRITERIA + "ID)" +
                 ");";
 
         String DECISION_PRODUCT_TABLE = "CREATE TABLE " + TABLE_DECISION + "_" + TABLE_PRODUCT + "(" +
-                TABLE_DECISION + "ID INT NOT NULL," +
-                TABLE_PRODUCT + "ID INT NOT NULL," +
-                TABLE_PRODUCT + "Value INT NOT NULL," +
-                "PRIMARY KEY (" + TABLE_DECISION + "ID, " + TABLE_PRODUCT + "ID)," +
+                TABLE_DECISION + "ID INTEGER NOT NULL," +
+                TABLE_PRODUCT + "ID INTEGER NOT NULL," +
+                TABLE_CRITERIA + "ID INTEGER NOT NULL," +
+                TABLE_PRODUCT + "Value INTEGER NOT NULL," +
+                "PRIMARY KEY (" + TABLE_DECISION + "ID, " + TABLE_PRODUCT + "ID, " + TABLE_CRITERIA + "ID)," +
                 "FOREIGN KEY (" + TABLE_DECISION + "ID) REFERENCES " + TABLE_DECISION + "(" + TABLE_DECISION + "ID)," +
-                "FOREIGN KEY (" + TABLE_PRODUCT + "ID) REFERENCES " + TABLE_PRODUCT + "(" + TABLE_PRODUCT + "ID)" +
+                "FOREIGN KEY (" + TABLE_PRODUCT + "ID) REFERENCES " + TABLE_PRODUCT + "(" + TABLE_PRODUCT + "ID)," +
+                "FOREIGN KEY (" + TABLE_CRITERIA + "ID) REFERENCES " + TABLE_CRITERIA + "("+ TABLE_CRITERIA + "ID)" +
                 ");";
 
         String SETTINGS_TABLE = "CREATE TABLE " + TABLE_SETTINGS + "(" +
