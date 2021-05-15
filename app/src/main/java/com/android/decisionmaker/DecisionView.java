@@ -1,11 +1,11 @@
-package com.example.decisionmaker;
+package com.android.decisionmaker;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.example.decisionmaker.database.models.Decision;
+import com.android.decisionmaker.database.models.Decision;
 
 public class DecisionView extends AppCompatActivity {
 

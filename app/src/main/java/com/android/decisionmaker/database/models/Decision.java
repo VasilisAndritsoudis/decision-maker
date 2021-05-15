@@ -1,4 +1,4 @@
-package com.example.decisionmaker.database.models;
+package com.android.decisionmaker.database.models;
 
 import java.util.ArrayList;
 import java.util.Date;
