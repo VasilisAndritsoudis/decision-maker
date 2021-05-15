@@ -46,6 +46,7 @@ public class Criteria {
     }
 
     public void setChoices(ArrayList<Choice> choices) {
-        this.choices = choices;
+        this.choices = new ArrayList<>();
+        this.choices.addAll(choices);
     }
 }
