@@ -82,7 +82,7 @@ public class WAS {
         );
 
         ArrayList<Integer> weights = new ArrayList<>(
-                Arrays.asList(25, 80, 30)
+                Arrays.asList(25, 80, 38)
         );
 
         ArrayList<Integer> out = logic(choices, weights);
