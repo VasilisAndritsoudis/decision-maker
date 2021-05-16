@@ -1,6 +1,8 @@
 package com.android.decisionmaker.UI.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.View;
 import android.widget.EditText;
 
@@ -12,6 +14,7 @@ import com.android.decisionmaker.R;
 import com.android.decisionmaker.UI.adapters.PrepareAdapterAdded;
 import com.android.decisionmaker.UI.adapters.PrepareAdapterCheckBoxes;
 import com.android.decisionmaker.database.handlers.DBHandler;
+import com.android.decisionmaker.database.models.Choice;
 import com.android.decisionmaker.database.models.Criteria;
 import com.android.decisionmaker.database.models.Decision;
 
@@ -41,7 +44,6 @@ public class Prepare extends AppCompatActivity {
             checkBoxCriteria = dbHandler.getSubCategoryCriteria(decision.getSubCategory());
         }
 
-
         recyclerAddedCriteria = findViewById(R.id.prepareRecyclerCriteria);
         criteriaAdapter = new PrepareAdapterAdded(null);
         recyclerAddedCriteria.setAdapter(criteriaAdapter);
@@ -65,15 +67,17 @@ public class Prepare extends AppCompatActivity {
     }
 
     public void goToCriteriaScoring(View view) {
-
-        // TODO add decision name text box
-
-
-    //    for (Criteria item : criteria) {
-  //          item.setChoices(choices);
-//        }
-
+        Bundle extras = getIntent().getExtras();
+        if(extras==null)
+            return;
+        ArrayList<Choice> choices;
+        choices = (ArrayList<Choice>) extras.get("Choices");
+        for(Criteria criterion:criteria)
+            criterion.setChoices(choices);
         decision.setCriteria(criteria);
+        Intent intent = new Intent(this, CriteriaScore.class);
+        intent.putExtra("Times",decision.getCriteria().size());
+        intent.putExtra("Decision", (Parcelable) decision);
     }
 
     // On every Choice/Criteria addition, add the Choice/Criteria (object) to its respective array list

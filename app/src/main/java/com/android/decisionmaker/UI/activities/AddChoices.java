@@ -14,6 +14,7 @@ import com.android.decisionmaker.UI.adapters.PrepareAdapterAdded;
 import com.android.decisionmaker.database.models.Choice;
 import com.android.decisionmaker.database.models.Decision;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -58,7 +59,7 @@ public class AddChoices extends AppCompatActivity {
         decision.setName(name.getText().toString());
         decision.setDate(new Date());
         decision.setSubCategory(subCategoryName);
-        intent.putExtra("Decision", (CharSequence) decision);
+        intent.putExtra("Decision", (Serializable) decision);
         intent.putExtra("Choices",choices);
         startActivity(intent);
     }

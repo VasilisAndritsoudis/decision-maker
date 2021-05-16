@@ -10,9 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.decisionmaker.R;
 import com.android.decisionmaker.UI.adapters.CriteriaAdapter;
-import com.android.decisionmaker.database.models.Choice;
-import com.android.decisionmaker.database.models.Criteria;
-import com.android.decisionmaker.database.models.Decision;
 
 import java.util.ArrayList;
 
@@ -28,27 +25,8 @@ public class CriteriaScore extends AppCompatActivity {
         setContentView(R.layout.activity_criteria_score);
 
         products = new ArrayList<>();
-        products.add("Product1");
-        products.add("Product2");
-        products.add("Product3");
-        products.add("Product4");
-        products.add("Product5");
-        products.add("Product6");
-        products.add("Product7");
-        products.add("Product8");
-        products.add("Product9");
-        products.add("Product10");
-        products.add("Product1");
-        products.add("Product2");
-        products.add("Product3");
-        products.add("Product4");
-        products.add("Product5");
-        products.add("Next");
 
         criteria = new ArrayList<>();
-        criteria.add("Price");
-        criteria.add("Integrity");
-        criteria.add("Value");
 
         ArrayList<String> temp = new ArrayList<>();
         Bundle extras = getIntent().getExtras();
