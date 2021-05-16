@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.DecisionMaker">
         <activity
-            android:name=".DecisionView"
+            android:name=".UI.activities.DecisionView"
             android:label="@string/title_activity_decision_view"
             android:theme="@style/Theme.DecisionMaker.NoActionBar"></activity>
         <activity android:name=".UI.activities.Prepare" />
