@@ -1,8 +1,9 @@
 package com.android.decisionmaker.database.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Criteria {
+public class Criteria implements Serializable {
     private int id;
     private String name;
     private int weight;

@@ -1,9 +1,10 @@
 package com.android.decisionmaker.database.models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Decision {
+public class Decision implements Serializable {
     private int id;
     private String subCategory;
     private String name;

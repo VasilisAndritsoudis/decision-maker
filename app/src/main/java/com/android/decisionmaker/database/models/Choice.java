@@ -1,6 +1,8 @@
 package com.android.decisionmaker.database.models;
 
-public class Choice {
+import java.io.Serializable;
+
+public class Choice implements Serializable {
     private int id;
     private String name;
     private int value;
