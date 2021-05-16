@@ -9,10 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DecisionMaker">
-        <activity
-            android:name=".UI.activities.DecisionView"
-            android:label="@string/title_activity_decision_view"
-            android:theme="@style/Theme.DecisionMaker.NoActionBar"></activity>
+        <activity android:name=".DecisionView"></activity>
         <activity android:name=".UI.activities.Prepare" />
         <activity android:name=".UI.activities.CriteriaScore" />
         <activity android:name=".UI.activities.Perma" />

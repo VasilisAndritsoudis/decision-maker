@@ -9,6 +9,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.decisionmaker.R;
+import com.anychart.AnyChart;
+import com.anychart.AnyChartView;
+import com.anychart.chart.common.dataentry.DataEntry;
+import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Pie;
+import com.anychart.enums.Align;
+import com.anychart.enums.LegendLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,6 +71,37 @@ public class ChartView extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chart_view, container, false);
+        View view = inflater.inflate(R.layout.fragment_chart_view, container, false);
+
+        AnyChartView anyChartView = view.findViewById(R.id.any_chart_view);
+
+        Pie pie = AnyChart.pie();
+
+        List<DataEntry> data = new ArrayList<>();
+        data.add(new ValueDataEntry("Apples", 6371664));
+        data.add(new ValueDataEntry("Pears", 789622));
+        data.add(new ValueDataEntry("Bananas", 7216301));
+        data.add(new ValueDataEntry("Grapes", 1486621));
+        data.add(new ValueDataEntry("Oranges", 1200000));
+
+        pie.data(data);
+
+        pie.title("Fruits imported in 2015 (in kg)");
+
+        pie.labels().position("outside");
+
+        pie.legend().title().enabled(true);
+        pie.legend().title()
+                .text("Retail channels")
+                .padding(0d, 0d, 10d, 0d);
+
+        pie.legend()
+                .position("center-bottom")
+                .itemsLayout(LegendLayout.HORIZONTAL)
+                .align(Align.CENTER);
+
+        anyChartView.setChart(pie);
+
+        return view;
     }
 }

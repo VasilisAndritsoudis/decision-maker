@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.decisionmaker.DecisionView;
 import com.android.decisionmaker.R;
 import com.android.decisionmaker.UI.adapters.CriteriaAdapter;
 
@@ -85,7 +86,7 @@ public class CriteriaScore extends AppCompatActivity {
     }
 
     public void goToDecisionView (View view){
-        Intent intent = new Intent(this, DecisionView0.class);
+        Intent intent = new Intent(this, DecisionView.class);
         startActivity(intent);
     }
 }

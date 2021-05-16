@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.decisionmaker.UI.activities.DecisionView0;
+import com.android.decisionmaker.DecisionView;
 import com.android.decisionmaker.R;
 
 import java.util.ArrayList;
@@ -57,7 +57,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             edit = itemView.findViewById(R.id.historyEditButton);
 
             itemView.setOnClickListener(v -> {
-                Intent i = new Intent(itemView.getContext(), DecisionView0.class);
+                Intent i = new Intent(itemView.getContext(), DecisionView.class);
                 String string = nameAndDate.getText().toString();
                 i.putExtra("textView" , string);
                 itemView.getContext().startActivity(i);
