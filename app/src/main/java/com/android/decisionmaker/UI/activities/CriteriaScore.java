@@ -11,6 +11,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.android.decisionmaker.DecisionView;
 import com.android.decisionmaker.R;
 import com.android.decisionmaker.UI.adapters.CriteriaAdapter;
+import com.android.decisionmaker.database.models.Choice;
+import com.android.decisionmaker.database.models.Criteria;
+import com.android.decisionmaker.database.models.Decision;
 
 import java.util.ArrayList;
 
@@ -66,6 +69,20 @@ public class CriteriaScore extends AppCompatActivity {
     public void nextActivity (View view) {
         Bundle extras = getIntent().getExtras();
         int num;
+
+        Decision decision = (Decision) extras.get("Decision");
+        ArrayList<Choice> choices;
+
+        for (Criteria criteria : decision.getCriteria()) {
+            if (criteria.getName().equals(this.criteria.get(this.criteria.size() - num))) {
+                criteria.setWeight(1);
+                choices = criteria.getChoices();
+                break;
+            }
+        }
+
+        // TODO Set value for each choice.
+
         if(extras == null) {
             recurse(criteria.size()-1);
         } else {

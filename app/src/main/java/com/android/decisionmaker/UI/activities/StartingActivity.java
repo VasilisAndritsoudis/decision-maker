@@ -124,8 +124,8 @@ public class StartingActivity extends AppCompatActivity {
         criteriaArrayList.add(criteria);
         criteriaArrayList.add(criteria1);
 
-        dbHandler.saveCategory(category);
-        dbHandler.saveSubCategory(subCategory, criteriaArrayList);
+        Log.d("Save Category", Boolean.toString(dbHandler.saveCategory(category)));
+        Log.d("Save SubCategory", Boolean.toString(dbHandler.saveSubCategory(subCategory, criteriaArrayList)));
     }
 
     public void goToDecisionMenu(View view) {

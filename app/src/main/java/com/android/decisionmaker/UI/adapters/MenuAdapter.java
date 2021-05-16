@@ -13,43 +13,16 @@ import com.android.decisionmaker.UI.activities.Perma;
 import com.android.decisionmaker.R;
 import com.android.decisionmaker.UI.activities.Prepare;
 import com.android.decisionmaker.UI.activities.Submenu;
+import com.android.decisionmaker.database.models.Category;
 
 import java.util.ArrayList;
 
 public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>{
 
-    private final ArrayList<String> arrayList;
-    static ArrayList<String> categories;
-    static ArrayList<String> decisions;
+    private final ArrayList<Category> arrayList;
 
-    public MenuAdapter (ArrayList<String> list) {
+    public MenuAdapter (ArrayList<Category> list) {
         arrayList = list;
-
-        //This is gonna be deleted, is only for practise
-        categories = new ArrayList<>();
-        categories.add("New Category");
-        categories.add("Shopping");
-        categories.add("Activities");
-        categories.add("Movies");
-        categories.add("Theater");
-        categories.add("Drinks");
-        categories.add("New Category");
-        categories.add("Shopping");
-        categories.add("Activities");
-        categories.add("Movies");
-        categories.add("Theater");
-        categories.add("Drinks");
-
-        decisions = new ArrayList<>();
-        decisions.add("New Subcategory");
-        decisions.add("Smartphones");
-        decisions.add("Cars");
-        decisions.add("Houses");
-        decisions.add("Televisions");
-        decisions.add("Personal Computers");
-        decisions.add("Turing Machines");
-        decisions.add("Raspberry Pies");
-        decisions.add("Video Games");
     }
 
     @NonNull
@@ -62,7 +35,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull MenuAdapter.ViewHolder holder, int position) {
-        holder.button.setText(arrayList.get(position));
+        holder.button.setText(arrayList.get(position).getName());
     }
 
     @Override
@@ -86,20 +59,12 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>{
                     itemView.getContext().startActivity(i);
 
                 } else {
-                    if (decisions.contains(button.getText().toString())) {
-                        Intent i = new Intent(itemView.getContext(), Prepare.class);
-                        String string = button.getText().toString();
-                        i.putExtra("buttonPressed", string);
-                        itemView.getContext().startActivity(i);
-                    } else {
-                        Intent i = new Intent(itemView.getContext(), Submenu.class);
-                        String string = button.getText().toString();
-                        i.putExtra("buttonPressed", string);
-                        itemView.getContext().startActivity(i);
-                    }
+                    Intent i = new Intent(itemView.getContext(), Submenu.class);
+                    String string = button.getText().toString();
+                    i.putExtra("buttonPressed", string);
+                    itemView.getContext().startActivity(i);
                 }
             });
-
         }
     }
 }

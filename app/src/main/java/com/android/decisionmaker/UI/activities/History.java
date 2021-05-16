@@ -5,9 +5,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.util.Log;
 
 import com.android.decisionmaker.R;
 import com.android.decisionmaker.UI.adapters.HistoryAdapter;
+import com.android.decisionmaker.database.handlers.DBHandler;
+import com.android.decisionmaker.database.models.Choice;
+import com.android.decisionmaker.database.models.Criteria;
+import com.android.decisionmaker.database.models.Decision;
 
 import java.util.ArrayList;
 
@@ -20,6 +25,23 @@ public class History extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
+
+        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+        Decision decision = dbHandler.getDecision("First Decision");
+
+        Log.d("Dec Name", decision.getName());
+        Log.d("Dec Date", decision.getDate().toString());
+        Log.d("Dec SubCat", decision.getSubCategory());
+
+        for (Criteria criteria : decision.getCriteria()) {
+            Log.d("Dec Crit Name", criteria.getName());
+            Log.d("Dec Crit Weight", String.valueOf(criteria.getWeight()));
+
+            for (Choice choice : criteria.getChoices()) {
+                Log.d("Dec Crit Choice Name", choice.getName());
+                Log.d("Dec Crit Choice Val", String.valueOf(choice.getValue()));
+            }
+        }
 
         decisions = new ArrayList<>();
         decisions.add("Nokia vs LG\n22:25 - 13/5/2021 ");

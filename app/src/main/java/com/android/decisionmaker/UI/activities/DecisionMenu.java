@@ -7,32 +7,23 @@ import android.os.Bundle;
 
 import com.android.decisionmaker.R;
 import com.android.decisionmaker.UI.adapters.MenuAdapter;
+import com.android.decisionmaker.database.handlers.DBHandler;
+import com.android.decisionmaker.database.models.Category;
 
 import java.util.ArrayList;
 
 public class DecisionMenu extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    ArrayList<String> categories;
+    ArrayList<Category> categories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_decision_menu);
 
-        categories = new ArrayList<>();
-        categories.add("New Category");
-        categories.add("Shopping");
-        categories.add("Activities");
-        categories.add("Movies");
-        categories.add("Theater");
-        categories.add("Drinks");
-        categories.add("New Category");
-        categories.add("Shopping");
-        categories.add("Activities");
-        categories.add("Movies");
-        categories.add("Theater");
-        categories.add("Drinks");
+        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+        categories = dbHandler.getCategories();
 
         recyclerView = findViewById(R.id.menuRecyclerView);
         MenuAdapter adapter = new MenuAdapter(categories);

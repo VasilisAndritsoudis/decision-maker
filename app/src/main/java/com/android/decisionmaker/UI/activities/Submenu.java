@@ -7,44 +7,33 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.os.Bundle;
 
 import com.android.decisionmaker.R;
-import com.android.decisionmaker.UI.adapters.MenuAdapter;
+import com.android.decisionmaker.UI.adapters.SubMenuAdapter;
+import com.android.decisionmaker.database.handlers.DBHandler;
+import com.android.decisionmaker.database.models.SubCategory;
 
 import java.util.ArrayList;
 
 public class Submenu extends AppCompatActivity {
 
     RecyclerView recyclerView;
-    ArrayList<String> decisions;
+    ArrayList<SubCategory> subCategories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submenu);
 
-        decisions = new ArrayList<>();
-
-
         Bundle extras = getIntent().getExtras();
         String name;
 
         if (extras != null) {
             name = extras.getString("buttonPressed");
-            if (name.equals("Shopping")) {
-                decisions.add("New Subcategory");
-                decisions.add("Smartphones");
-                decisions.add("Cars");
-                decisions.add("Houses");
-                decisions.add("Televisions");
-            } else {
-                decisions.add("Personal Computers");
-                decisions.add("Turing Machines");
-                decisions.add("Raspberry Pies");
-                decisions.add("Video Games");
-            }
+            DBHandler dbHandler = new DBHandler(this, null, null, 1);
+            subCategories = dbHandler.getSubCategoriesOfCategory(name);
         }
 
         recyclerView = findViewById(R.id.submenuRecyclerView);
-        MenuAdapter adapter = new MenuAdapter(decisions);
+        SubMenuAdapter adapter = new SubMenuAdapter(subCategories);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }

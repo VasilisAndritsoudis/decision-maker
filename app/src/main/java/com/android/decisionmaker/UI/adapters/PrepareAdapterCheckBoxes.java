@@ -9,14 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.decisionmaker.R;
+import com.android.decisionmaker.database.models.Criteria;
 
 import java.util.ArrayList;
 
 public class PrepareAdapterCheckBoxes extends RecyclerView.Adapter<PrepareAdapterCheckBoxes.ViewHolder> {
 
-    private final ArrayList<String> arrayList;
+    private final ArrayList<Criteria> arrayList;
 
-    public PrepareAdapterCheckBoxes (ArrayList<String> list) {
+    public PrepareAdapterCheckBoxes (ArrayList<Criteria> list) {
         arrayList = list;
     }
 
@@ -31,7 +32,7 @@ public class PrepareAdapterCheckBoxes extends RecyclerView.Adapter<PrepareAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.checkBox.setText(arrayList.get(position));
+        holder.checkBox.setText(arrayList.get(position).getName());
     }
 
     @Override
