@@ -85,7 +85,7 @@ public class CriteriaScore extends AppCompatActivity {
     }
 
     public void goToDecisionView (View view){
-        Intent intent = new Intent(this, DecisionView.class);
+        Intent intent = new Intent(this, DecisionView0.class);
         startActivity(intent);
     }
 }

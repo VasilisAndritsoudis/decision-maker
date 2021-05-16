@@ -19,14 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class DecisionView extends AppCompatActivity {
+public class DecisionView0 extends AppCompatActivity {
 
     TextView name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_decision_view);
+        setContentView(R.layout.activity_decision_view0);
 
         Bundle extras = getIntent().getExtras();
         String nameAndDate;
@@ -36,6 +36,7 @@ public class DecisionView extends AppCompatActivity {
             nameAndDate = extras.getString("textView");
             name.setText(nameAndDate);
         }
+
 
         Decision decision = new Decision();  // -----------------------------------------------------------------
 
