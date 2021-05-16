@@ -5,6 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.icu.text.SimpleDateFormat;
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
 
 import com.android.decisionmaker.database.models.Category;
 import com.android.decisionmaker.database.models.Criteria;
@@ -12,6 +15,7 @@ import com.android.decisionmaker.database.models.Decision;
 import com.android.decisionmaker.database.models.Choice;
 import com.android.decisionmaker.database.models.SubCategory;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
@@ -136,9 +140,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
     }
 
-    // My methods
-    // . . .
-
     public ArrayList<Category> getCategories() {
         String query = "SELECT *" +
                 " FROM " + TABLE_CATEGORY;
@@ -166,6 +167,28 @@ public class DBHandler extends SQLiteOpenHelper {
 
         db.close();
         return response;
+    }
+
+    public boolean saveCategory(Category category) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "SELECT " + TABLE_CATEGORY + "ID" +
+                " FROM " + TABLE_CATEGORY +
+                " WHERE " + TABLE_CATEGORY + "Name = '" + category.getName() + "'";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.getCount() != 0) {
+            cursor.close();
+            return false;
+        }
+
+        String insertion = "INSERT INTO " + TABLE_CATEGORY + " (" + TABLE_CATEGORY + "Name)" +
+                " VALUES ('" + category.getName() + "')";
+
+        db.execSQL(insertion);
+
+        return true;
     }
 
     public ArrayList<SubCategory> getSubCategoriesOfCategory(String categoryName) {
@@ -213,6 +236,87 @@ public class DBHandler extends SQLiteOpenHelper {
 
         db.close();
         return response;
+    }
+
+    public boolean saveSubCategory(SubCategory subCategory, ArrayList<Criteria> subCategoryCriteria) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "SELECT " + TABLE_SUBCATEGORY + "ID" +
+                " FROM " + TABLE_SUBCATEGORY +
+                " WHERE " + TABLE_SUBCATEGORY + "Name = '" + subCategory.getName() + "'";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.getCount() != 0) {
+            cursor.close();
+            return false;
+        }
+
+        query = "SELECT " + TABLE_CATEGORY + "ID" +
+                " FROM " + TABLE_CATEGORY +
+                " WHERE " + TABLE_CATEGORY + "Name = '" + subCategory.getCategory() + "'";
+
+        cursor = db.rawQuery(query, null);
+
+        int categoryId;
+
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            categoryId = cursor.getInt(0);
+            cursor.close();
+        } else {
+            return false;
+        }
+
+        String insertion = "INSERT INTO " + TABLE_SUBCATEGORY + " (" + TABLE_SUBCATEGORY + "Name, " + TABLE_CATEGORY + "ID)" +
+                " VALUES ('" + subCategory.getName() + "', " + categoryId +")";
+
+        db.execSQL(insertion);
+
+        query = "SELECT " + TABLE_SUBCATEGORY + "ID" +
+                " FROM " + TABLE_SUBCATEGORY +
+                " WHERE " + TABLE_SUBCATEGORY + "Name = '" + subCategory.getName() + "'";
+
+        cursor = db.rawQuery(query, null);
+
+        int subCategoryId;
+
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            subCategoryId = cursor.getInt(0);
+            cursor.close();
+        } else {
+            return false;
+        }
+
+        if (!insertCriteria(subCategoryCriteria))
+            return false;
+
+        for (Criteria criteria : subCategoryCriteria) {
+            query = "SELECT " + TABLE_CRITERIA + "ID" +
+                    " FROM " + TABLE_CRITERIA +
+                    " WHERE " + TABLE_CRITERIA + "Name = '" + criteria.getName() + "'";
+
+            cursor = db.rawQuery(query, null);
+
+            int criteriaId;
+
+            if (cursor.getCount() != 0) {
+                cursor.moveToFirst();
+                criteriaId = cursor.getInt(0);
+                cursor.close();
+            } else {
+                return false;
+            }
+
+
+            insertion = "INSERT INTO " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA + " (" + TABLE_SUBCATEGORY + "ID, " + TABLE_CRITERIA + "ID)" +
+                    " VALUES (" + subCategoryId + ", " + criteriaId + ")";
+
+            db.execSQL(insertion);
+        }
+
+        return true;
     }
 
     public ArrayList<Criteria> getSubCategoryCriteria(String subCategoryName) {
@@ -278,6 +382,110 @@ public class DBHandler extends SQLiteOpenHelper {
 
         db.close();
         return response;
+    }
+
+    public Decision getDecision(String decisionName) {
+        Decision decision = new Decision();
+
+        String query = "SELECT " + TABLE_CRITERIA + "ID, " + TABLE_CRITERIA + "Name, " + TABLE_CRITERIA + "Weight" +
+                " FROM " + TABLE_CRITERIA + " JOIN " + TABLE_DECISION + "_" + TABLE_CRITERIA + " USING(" + TABLE_CRITERIA + "ID)" +
+                " JOIN " + TABLE_DECISION + " USING (" + TABLE_DECISION + "ID)" +
+                " WHERE " + TABLE_DECISION + "Name = '" + decisionName + "'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        ArrayList<Criteria> criteria = null;
+
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            criteria = new ArrayList<>();
+
+            do {
+                Criteria item = new Criteria();
+
+                item.setId(cursor.getInt(0));
+                item.setName(cursor.getString(1));
+                item.setWeight(cursor.getInt(2));
+
+                query = "SELECT " + TABLE_CHOICE + "ID, " + TABLE_CHOICE + "Name, " + TABLE_CHOICE + "Value" +
+                        " FROM " + TABLE_CHOICE + " JOIN " + TABLE_DECISION + "_" + TABLE_CHOICE + " USING(" + TABLE_CHOICE + "ID)" +
+                        " JOIN " + TABLE_CRITERIA + " USING(" + TABLE_CRITERIA + "ID)" +
+                        " JOIN " + TABLE_DECISION + " USING (" + TABLE_DECISION + "ID)" +
+                        " WHERE " + TABLE_DECISION + "Name = 'First Decision' AND " + TABLE_CRITERIA + "ID = " + item.getId();
+
+                Cursor innerCursor = db.rawQuery(query, null);
+
+                ArrayList<Choice> choices = null;
+
+                if (innerCursor.getCount() != 0) {
+                    innerCursor.moveToFirst();
+                    choices = new ArrayList<>();
+
+                    do {
+                        Choice innerItem = new Choice();
+
+                        innerItem.setId(innerCursor.getInt(0));
+                        innerItem.setName(innerCursor.getString(1));
+                        innerItem.setValue(innerCursor.getInt(2));
+
+                        choices.add(innerItem);
+                    } while (innerCursor.moveToNext());
+
+                    innerCursor.close();
+                }
+
+                item.setChoices(choices);
+
+                criteria.add(item);
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        query = "SELECT " + TABLE_DECISION + "ID, " + TABLE_DECISION + "Name, " + TABLE_DECISION + "Date, " + TABLE_SUBCATEGORY + "ID" +
+                " FROM " + TABLE_DECISION +
+                " WHERE " + TABLE_DECISION + "Name = '" + decisionName + "'";
+
+        cursor = db.rawQuery(query, null);
+
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+
+            decision.setId(cursor.getInt(0));
+            decision.setName(cursor.getString(1));
+
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                try {
+                    Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()).parse(cursor.getString(2));
+                    decision.setDate(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                decision.setDate(null);
+            }
+
+            query = "SELECT " + TABLE_SUBCATEGORY + "Name" +
+                    " FROM " + TABLE_SUBCATEGORY +
+                    " WHERE " + TABLE_SUBCATEGORY + "ID = " + cursor.getInt(3);
+
+            cursor.close();
+
+            cursor = db.rawQuery(query, null);
+
+            if (cursor.getCount() != 0) {
+                cursor.moveToFirst();
+
+                decision.setSubCategory(cursor.getString(0));
+
+                cursor.close();
+            }
+
+            decision.setCriteria(criteria);
+        }
+
+        return decision;
     }
 
     public boolean saveDecision(Decision decision) {
@@ -360,18 +568,6 @@ public class DBHandler extends SQLiteOpenHelper {
         return true;
     }
 
-    public Decision getDecision(String decisionName) {
-        Decision decision = new Decision();
-
-        // Query Choices
-
-        // Query Criteria
-
-        // Query Decision
-
-        return decision;
-    }
-
     private boolean insertChoices(ArrayList<Choice> choices) {
         if (choices.size() == 0)
             return false;
@@ -450,7 +646,7 @@ public class DBHandler extends SQLiteOpenHelper {
             return false;
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
         String date = dateFormat.format(new Date());
 
         insertion = "INSERT INTO " + TABLE_DECISION + " (" + TABLE_DECISION + "Name, " + TABLE_DECISION + "Date, " + TABLE_SUBCATEGORY + "ID)" +
