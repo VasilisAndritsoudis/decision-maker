@@ -12,14 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.decisionmaker.DecisionView;
 import com.android.decisionmaker.R;
+import com.android.decisionmaker.database.models.Decision;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
 
-    private final ArrayList<String> arrayList;
+    private final ArrayList<Decision> arrayList;
 
-    public HistoryAdapter (ArrayList<String> list) {
+    public HistoryAdapter (ArrayList<Decision> list) {
         arrayList = list;
     }
 
@@ -35,7 +38,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.nameAndDate.setText(arrayList.get(position));
+        String pattern = "HH:mm - EEE dd/MM/yy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.getDefault());
+
+        String date = simpleDateFormat.format(arrayList.get(position).getDate());
+
+        String text = arrayList.get(position).getName() + "\n" + date;
+        holder.nameAndDate.setText(text);
     }
 
     @Override

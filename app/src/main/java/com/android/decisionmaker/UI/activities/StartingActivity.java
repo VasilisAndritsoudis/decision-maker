@@ -82,50 +82,50 @@ public class StartingActivity extends AppCompatActivity {
         // Testing the database
         // Please ignore
 
-        DBHandler dbHandler = new DBHandler(this, null, null, 1);
-        ArrayList<SubCategory> subCatResponse = dbHandler.getSubCategoriesOfCategory("Shopping");
-
-        for (SubCategory item : subCatResponse) {
-            Log.d("SubCats for Shopping", item.getName());
-        }
-
-        ArrayList<Category> catResponse = dbHandler.getCategories();
-
-        for (Category item : catResponse) {
-            Log.d("Categories", item.getName());
-        }
-
-        ArrayList<Criteria> subCatCriteriaResponse = dbHandler.getSubCategoryCriteria("Phones");
-
-        for (Criteria item : subCatCriteriaResponse) {
-            Log.d("Criteria for phones", item.getName());
-        }
-
-        ArrayList<Criteria> catCriteriaResponse = dbHandler.getCategoryCriteria("Shopping");
-
-        for (Criteria item : catCriteriaResponse) {
-            Log.d("Criteria for shopping", item.getName());
-        }
-
-        Category category = new Category();
-        category.setName("Random");
-
-        SubCategory subCategory = new SubCategory();
-        subCategory.setName("Computers");
-        subCategory.setCategory("Random");
-
-        Criteria criteria = new Criteria();
-        criteria.setName("GPU");
-
-        Criteria criteria1 = new Criteria();
-        criteria1.setName("Price");
-
-        ArrayList<Criteria> criteriaArrayList = new ArrayList<>();
-        criteriaArrayList.add(criteria);
-        criteriaArrayList.add(criteria1);
-
-        Log.d("Save Category", Boolean.toString(dbHandler.saveCategory(category)));
-        Log.d("Save SubCategory", Boolean.toString(dbHandler.saveSubCategory(subCategory, criteriaArrayList)));
+//        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+//        ArrayList<SubCategory> subCatResponse = dbHandler.getSubCategoriesOfCategory("Shopping");
+//
+//        for (SubCategory item : subCatResponse) {
+//            Log.d("SubCats for Shopping", item.getName());
+//        }
+//
+//        ArrayList<Category> catResponse = dbHandler.getCategories();
+//
+//        for (Category item : catResponse) {
+//            Log.d("Categories", item.getName());
+//        }
+//
+//        ArrayList<Criteria> subCatCriteriaResponse = dbHandler.getSubCategoryCriteria("Phones");
+//
+//        for (Criteria item : subCatCriteriaResponse) {
+//            Log.d("Criteria for phones", item.getName());
+//        }
+//
+//        ArrayList<Criteria> catCriteriaResponse = dbHandler.getCategoryCriteria("Shopping");
+//
+//        for (Criteria item : catCriteriaResponse) {
+//            Log.d("Criteria for shopping", item.getName());
+//        }
+//
+//        Category category = new Category();
+//        category.setName("Random");
+//
+//        SubCategory subCategory = new SubCategory();
+//        subCategory.setName("Computers");
+//        subCategory.setCategory("Random");
+//
+//        Criteria criteria = new Criteria();
+//        criteria.setName("GPU");
+//
+//        Criteria criteria1 = new Criteria();
+//        criteria1.setName("Price");
+//
+//        ArrayList<Criteria> criteriaArrayList = new ArrayList<>();
+//        criteriaArrayList.add(criteria);
+//        criteriaArrayList.add(criteria1);
+//
+//        Log.d("Save Category", Boolean.toString(dbHandler.saveCategory(category)));
+//        Log.d("Save SubCategory", Boolean.toString(dbHandler.saveSubCategory(subCategory, criteriaArrayList)));
     }
 
     public void goToDecisionMenu(View view) {
@@ -135,21 +135,21 @@ public class StartingActivity extends AppCompatActivity {
         // Testing the database
         // Please ignore
 
-        DBHandler dbHandler = new DBHandler(this, null, null, 1);
-        Decision decision = dbHandler.getDecision("First Decision");
-
-        Log.d("Dec Name", decision.getName());
-        Log.d("Dec Date", decision.getDate().toString());
-        Log.d("Dec SubCat", decision.getSubCategory());
-
-        for (Criteria criteria : decision.getCriteria()) {
-            Log.d("Dec Crit Name", criteria.getName());
-            Log.d("Dec Crit Weight", String.valueOf(criteria.getWeight()));
-
-            for (Choice choice : criteria.getChoices()) {
-                Log.d("Dec Crit Choice Name", choice.getName());
-                Log.d("Dec Crit Choice Val", String.valueOf(choice.getValue()));
-            }
-        }
+//        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+//        Decision decision = dbHandler.getDecision("First Decision");
+//
+//        Log.d("Dec Name", decision.getName());
+//        Log.d("Dec Date", decision.getDate().toString());
+//        Log.d("Dec SubCat", decision.getSubCategory());
+//
+//        for (Criteria criteria : decision.getCriteria()) {
+//            Log.d("Dec Crit Name", criteria.getName());
+//            Log.d("Dec Crit Weight", String.valueOf(criteria.getWeight()));
+//
+//            for (Choice choice : criteria.getChoices()) {
+//                Log.d("Dec Crit Choice Name", choice.getName());
+//                Log.d("Dec Crit Choice Val", String.valueOf(choice.getValue()));
+//            }
+//        }
     }
 }

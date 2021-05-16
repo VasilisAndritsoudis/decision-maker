@@ -70,16 +70,16 @@ public class CriteriaScore extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         int num;
 
-        Decision decision = (Decision) extras.get("Decision");
-        ArrayList<Choice> choices;
-
-        for (Criteria criteria : decision.getCriteria()) {
-            if (criteria.getName().equals(this.criteria.get(this.criteria.size() - num))) {
-                criteria.setWeight(1);
-                choices = criteria.getChoices();
-                break;
-            }
-        }
+//        Decision decision = (Decision) extras.get("Decision");
+//        ArrayList<Choice> choices;
+//
+//        for (Criteria criteria : decision.getCriteria()) {
+//            if (criteria.getName().equals(this.criteria.get(this.criteria.size() - num))) {
+//                criteria.setWeight(1);
+//                choices = criteria.getChoices();
+//                break;
+//            }
+//        }
 
         // TODO Set value for each choice.
 

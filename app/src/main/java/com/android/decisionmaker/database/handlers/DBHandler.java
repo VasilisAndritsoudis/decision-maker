@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -384,13 +385,13 @@ public class DBHandler extends SQLiteOpenHelper {
         return response;
     }
 
-    public Decision getDecision(String decisionName) {
+    public Decision getDecision(String decisionName, String decisionDate) {
         Decision decision = new Decision();
 
         String query = "SELECT " + TABLE_CRITERIA + "ID, " + TABLE_CRITERIA + "Name, " + TABLE_CRITERIA + "Weight" +
                 " FROM " + TABLE_CRITERIA + " JOIN " + TABLE_DECISION + "_" + TABLE_CRITERIA + " USING(" + TABLE_CRITERIA + "ID)" +
                 " JOIN " + TABLE_DECISION + " USING (" + TABLE_DECISION + "ID)" +
-                " WHERE " + TABLE_DECISION + "Name = '" + decisionName + "'";
+                " WHERE " + TABLE_DECISION + "Name = '" + decisionName + "' AND " + TABLE_DECISION + "Date = '" + decisionDate + "'";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -412,7 +413,10 @@ public class DBHandler extends SQLiteOpenHelper {
                         " FROM " + TABLE_CHOICE + " JOIN " + TABLE_DECISION + "_" + TABLE_CHOICE + " USING(" + TABLE_CHOICE + "ID)" +
                         " JOIN " + TABLE_CRITERIA + " USING(" + TABLE_CRITERIA + "ID)" +
                         " JOIN " + TABLE_DECISION + " USING (" + TABLE_DECISION + "ID)" +
-                        " WHERE " + TABLE_DECISION + "Name = 'First Decision' AND " + TABLE_CRITERIA + "ID = " + item.getId();
+                        " WHERE " + TABLE_DECISION + "Name = '" + decisionName + "'" +
+                        " AND " + TABLE_DECISION + "Date = '" + decisionDate + "'" +
+                        " AND " + TABLE_CRITERIA + "ID = " + item.getId();
+
 
                 Cursor innerCursor = db.rawQuery(query, null);
 
@@ -445,7 +449,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         query = "SELECT " + TABLE_DECISION + "ID, " + TABLE_DECISION + "Name, " + TABLE_DECISION + "Date, " + TABLE_SUBCATEGORY + "ID" +
                 " FROM " + TABLE_DECISION +
-                " WHERE " + TABLE_DECISION + "Name = '" + decisionName + "'";
+                " WHERE " + TABLE_DECISION + "Name = '" + decisionName + "' AND " + TABLE_DECISION + "Date = '" + decisionDate + "'";
 
         cursor = db.rawQuery(query, null);
 
@@ -457,7 +461,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
                 try {
-                    Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault()).parse(cursor.getString(2));
+                    Date date = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault()).parse(cursor.getString(2));
                     decision.setDate(date);
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -488,6 +492,56 @@ public class DBHandler extends SQLiteOpenHelper {
         return decision;
     }
 
+    public ArrayList<Decision> getDecisions() {
+        String query = "SELECT " + TABLE_DECISION + "ID" +
+                " FROM " + TABLE_DECISION;
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        ArrayList<Decision> response = null;
+
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            response = new ArrayList<>();
+
+            do {
+                query = "SELECT " + TABLE_DECISION + "Name, " + TABLE_DECISION + "Date" +
+                        " FROM " + TABLE_DECISION +
+                        " WHERE " + TABLE_DECISION + "ID = " + cursor.getInt(0);
+
+                Cursor innerCursor = db.rawQuery(query, null);
+
+                String decisionName;
+                String decisionDate;
+
+                if (innerCursor.getCount() != 0) {
+                    innerCursor.moveToFirst();
+                    decisionName = innerCursor.getString(0);
+                    decisionDate = innerCursor.getString(1);
+                    innerCursor.close();
+
+                    Log.d("Hist DecID", String.valueOf(cursor.getInt(0)));
+                    Log.d("Hist DecName", decisionName);
+                    Log.d("Hist DecDate", decisionDate);
+
+                    Decision decision = getDecision(decisionName, decisionDate);
+
+                    Log.d("Resp DecID", String.valueOf(decision.getId()));
+                    Log.d("Resp DecName", decision.getName());
+                    Log.d("Resp DecDate", String.valueOf(decision.getDate()));
+
+                    response.add(decision);
+                }
+            } while (cursor.moveToNext());
+
+            cursor.close();
+        }
+
+        db.close();
+        return response;
+    }
+
     public boolean saveDecision(Decision decision) {
         if (!insertChoices(decision.getCriteria().get(0).getChoices()))
             return false;
@@ -498,9 +552,16 @@ public class DBHandler extends SQLiteOpenHelper {
         if (!insertDecision(decision))
             return false;
 
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
+            return false;
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+        String date = dateFormat.format(decision.getDate());
+
         String query = "SELECT " + TABLE_DECISION + "ID" +
                 " FROM " + TABLE_DECISION +
-                " WHERE " + TABLE_DECISION + "Name = '" + decision.getName() + "'";
+                " WHERE " + TABLE_DECISION + "Name = '" + decision.getName() + "' AND " + TABLE_DECISION + "Date = '" + date + "'";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -646,7 +707,7 @@ public class DBHandler extends SQLiteOpenHelper {
             return false;
         }
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault());
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
         String date = dateFormat.format(new Date());
 
         insertion = "INSERT INTO " + TABLE_DECISION + " (" + TABLE_DECISION + "Name, " + TABLE_DECISION + "Date, " + TABLE_SUBCATEGORY + "ID)" +

@@ -80,9 +80,9 @@ public class Prepare extends AppCompatActivity {
         decision.setSubCategory(subCategoryName);
         // -----------------------------------------
 
-        for (Criteria item : criteria) {
-            item.setChoices(choices);
-        }
+//        for (Criteria item : criteria) {
+//            item.setChoices(choices);
+//        }
 
         decision.setCriteria(criteria);
     }
