@@ -9,11 +9,9 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.decisionmaker.UI.activities.Perma;
 import com.android.decisionmaker.R;
-import com.android.decisionmaker.UI.activities.Prepare;
-import com.android.decisionmaker.UI.activities.Submenu;
-import com.android.decisionmaker.database.models.Category;
+import com.android.decisionmaker.UI.activities.AddChoices;
+import com.android.decisionmaker.UI.activities.Perma;
 import com.android.decisionmaker.database.models.SubCategory;
 
 import java.util.ArrayList;
@@ -60,7 +58,7 @@ public class SubMenuAdapter extends RecyclerView.Adapter<SubMenuAdapter.ViewHold
                     itemView.getContext().startActivity(i);
 
                 } else {
-                    Intent i = new Intent(itemView.getContext(), Prepare.class);
+                    Intent i = new Intent(itemView.getContext(), AddChoices.class);
                     String string = button.getText().toString();
                     i.putExtra("buttonPressed", string);
                     itemView.getContext().startActivity(i);

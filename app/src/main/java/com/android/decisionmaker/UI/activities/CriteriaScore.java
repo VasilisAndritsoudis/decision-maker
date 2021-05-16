@@ -8,7 +8,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.decisionmaker.DecisionView;
 import com.android.decisionmaker.R;
 import com.android.decisionmaker.UI.adapters.CriteriaAdapter;
 import com.android.decisionmaker.database.models.Choice;

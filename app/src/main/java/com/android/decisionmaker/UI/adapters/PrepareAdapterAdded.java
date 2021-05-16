@@ -9,14 +9,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.decisionmaker.R;
+import com.android.decisionmaker.database.models.Choice;
 
 import java.util.ArrayList;
 
 public class PrepareAdapterAdded extends RecyclerView.Adapter<PrepareAdapterAdded.ViewHolder> {
 
-    private final ArrayList<String> arrayList;
+    private final ArrayList<Choice> arrayList;
 
-    public PrepareAdapterAdded (ArrayList<String> list) {
+    public PrepareAdapterAdded (ArrayList<Choice> list) {
         arrayList = list;
     }
     @NonNull
@@ -30,7 +31,7 @@ public class PrepareAdapterAdded extends RecyclerView.Adapter<PrepareAdapterAdde
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.textView.setText(arrayList.get(position));
+        holder.textView.setText(arrayList.get(position).getName());
     }
 
     @Override

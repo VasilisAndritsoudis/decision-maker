@@ -1,4 +1,6 @@
-package com.android.decisionmaker;
+package com.android.decisionmaker.UI.activities;
+
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -6,10 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.os.Bundle;
-
-import com.android.decisionmaker.UI.activities.ChartView;
-import com.android.decisionmaker.UI.activities.DataView;
+import com.android.decisionmaker.R;
 import com.google.android.material.tabs.TabLayout;
 
 public class DecisionView extends AppCompatActivity {

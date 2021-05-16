@@ -9,9 +9,8 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.decisionmaker.UI.activities.Perma;
 import com.android.decisionmaker.R;
-import com.android.decisionmaker.UI.activities.Prepare;
+import com.android.decisionmaker.UI.activities.Perma;
 import com.android.decisionmaker.UI.activities.Submenu;
 import com.android.decisionmaker.database.models.Category;
 

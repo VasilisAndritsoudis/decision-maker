@@ -10,7 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.decisionmaker.DecisionView;
+import com.android.decisionmaker.UI.activities.DecisionView;
 import com.android.decisionmaker.R;
 import com.android.decisionmaker.database.models.Decision;
 

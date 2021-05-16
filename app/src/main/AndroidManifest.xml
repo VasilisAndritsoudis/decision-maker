@@ -9,11 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DecisionMaker">
-        <activity android:name=".DecisionView"></activity>
+        <activity android:name=".UI.activities.AddChoices"></activity>
+        <activity android:name=".UI.activities.DecisionView" />
         <activity android:name=".UI.activities.Prepare" />
         <activity android:name=".UI.activities.CriteriaScore" />
         <activity android:name=".UI.activities.Perma" />
-        <activity android:name=".UI.activities.DecisionView0" />
         <activity android:name=".UI.activities.Submenu" />
         <activity android:name=".UI.activities.DecisionMenu" />
         <activity android:name=".UI.activities.History" />
