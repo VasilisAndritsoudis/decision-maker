@@ -100,26 +100,37 @@ public class DBHandler extends SQLiteOpenHelper {
 
         ArrayList<String> INSERT_VALUES = new ArrayList<>();
 
-        INSERT_VALUES.add("INSERT INTO " + TABLE_CATEGORY + " (" + TABLE_CATEGORY + "Name)" +
-                "VALUES ('Shopping');");
-        INSERT_VALUES.add("INSERT INTO " + TABLE_SUBCATEGORY + " (" + TABLE_SUBCATEGORY + "Name, " + TABLE_CATEGORY + "ID)" +
-                "VALUES ('Phones', 1);");
-        INSERT_VALUES.add("INSERT INTO " + TABLE_SUBCATEGORY + " (" + TABLE_SUBCATEGORY + "Name, " + TABLE_CATEGORY + "ID)" +
-                "VALUES ('Cars', 1);");
-        INSERT_VALUES.add("INSERT INTO " + TABLE_CRITERIA + " (" + TABLE_CRITERIA + "Name)" +
-                "VALUES ('Price');");
-        INSERT_VALUES.add("INSERT INTO " + TABLE_CRITERIA + " (" + TABLE_CRITERIA + "Name)" +
-                "VALUES ('Horsepower');");
-        INSERT_VALUES.add("INSERT INTO " + TABLE_CRITERIA + " (" + TABLE_CRITERIA + "Name)" +
-                "VALUES ('RAM');");
-        INSERT_VALUES.add("INSERT INTO " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA + " (" + TABLE_SUBCATEGORY + "ID, " + TABLE_CRITERIA + "ID)" +
-                "VALUES (1, 1);");
-        INSERT_VALUES.add("INSERT INTO " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA + " (" + TABLE_SUBCATEGORY + "ID, " + TABLE_CRITERIA + "ID)" +
-                "VALUES (1, 3);");
-        INSERT_VALUES.add("INSERT INTO " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA + " (" + TABLE_SUBCATEGORY + "ID, " + TABLE_CRITERIA + "ID)" +
-                "VALUES (2, 1);");
-        INSERT_VALUES.add("INSERT INTO " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA + " (" + TABLE_SUBCATEGORY + "ID, " + TABLE_CRITERIA + "ID)" +
-                "VALUES (2, 2);");
+        StringBuilder INSERT_CATEGORIES = new StringBuilder();
+        INSERT_CATEGORIES.append("INSERT INTO " + TABLE_CATEGORY + " (" + TABLE_CATEGORY + "Name) VALUES");
+        INSERT_CATEGORIES.append("('Shopping'),");
+        INSERT_CATEGORIES.append("('Activities');");
+
+        StringBuilder INSERT_SUBCATEGORIES = new StringBuilder();
+        INSERT_SUBCATEGORIES.append("INSERT INTO " + TABLE_SUBCATEGORY + " (" + TABLE_SUBCATEGORY + "Name, " + TABLE_CATEGORY + "ID) VALUES");
+        INSERT_SUBCATEGORIES.append("('Phones', 1),");
+        INSERT_SUBCATEGORIES.append("('Cars', 1),");
+        INSERT_SUBCATEGORIES.append("('Concerts', 2),");
+        INSERT_SUBCATEGORIES.append("('Bars', 2);");
+
+        StringBuilder INSERT_CRITERIA = new StringBuilder();
+        INSERT_CRITERIA.append("INSERT INTO " + TABLE_CRITERIA + " (" + TABLE_CRITERIA + "Name) VALUES");
+        INSERT_CRITERIA.append("('Price'),");
+        INSERT_CRITERIA.append("('Horsepower'),");
+        INSERT_CRITERIA.append("('RAM'),");
+        INSERT_CRITERIA.append("('Pleasure'),");
+        INSERT_CRITERIA.append("('People');");
+
+        StringBuilder INSERT_SUBCATEGORY_CRITERIA = new StringBuilder();
+        INSERT_SUBCATEGORY_CRITERIA.append("INSERT INTO " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA
+                + " (" + TABLE_SUBCATEGORY + "ID, " + TABLE_CRITERIA + "ID) VALUES");
+        INSERT_SUBCATEGORY_CRITERIA.append("(1, 1),");
+        INSERT_SUBCATEGORY_CRITERIA.append("(1, 3),");
+        INSERT_SUBCATEGORY_CRITERIA.append("(2, 1),");
+        INSERT_SUBCATEGORY_CRITERIA.append("(2, 2),");
+        INSERT_SUBCATEGORY_CRITERIA.append("(3, 1),");
+        INSERT_SUBCATEGORY_CRITERIA.append("(3, 4),");
+        INSERT_SUBCATEGORY_CRITERIA.append("(4, 4),");
+        INSERT_SUBCATEGORY_CRITERIA.append("(4, 5);");
 
         db.execSQL(CREATE_DECISION_TABLE);
         db.execSQL(CREATE_SUBCATEGORY_TABLE);
@@ -129,9 +140,10 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_DECISION_CRITERIA_TABLE);
         db.execSQL(SUBCATEGORY_CRITERIA_TABLE);
         db.execSQL(DECISION_CHOICE_TABLE);
-        for (String INSERT_VALUE : INSERT_VALUES) {
-            db.execSQL(INSERT_VALUE);
-        }
+        db.execSQL(INSERT_CATEGORIES.toString());
+        db.execSQL(INSERT_SUBCATEGORIES.toString());
+        db.execSQL(INSERT_CRITERIA.toString());
+        db.execSQL(INSERT_SUBCATEGORY_CRITERIA.toString());
     }
 
     @Override
