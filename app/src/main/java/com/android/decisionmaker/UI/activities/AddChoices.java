@@ -29,13 +29,14 @@ public class AddChoices extends AppCompatActivity {
     String subCategoryName;
     AddChoicesAdapter choicesAdapter;
     TextView warning;
+    Bundle extras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_choices);
 
-        Bundle extras = getIntent().getExtras();
+        extras = getIntent().getExtras();
         if (extras != null) {
             subCategoryName = extras.getString("SubCategory");
         }
@@ -83,6 +84,8 @@ public class AddChoices extends AppCompatActivity {
         decision.setSubCategory(subCategoryName);
         intent.putExtra("Decision", decision);
         intent.putExtra("Choices",choices);
+        String string = extras.getString("Category");
+        intent.putExtra("Category",string);
         startActivity(intent);
     }
     

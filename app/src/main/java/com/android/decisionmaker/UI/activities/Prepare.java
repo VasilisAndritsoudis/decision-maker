@@ -52,8 +52,12 @@ public class Prepare extends AppCompatActivity {
         if (extras != null) {
             decision = (Decision) extras.get("Decision");
             checkBoxCriteria = dbHandler.getSubCategoryCriteria(decision.getSubCategory());
-            if(checkBoxCriteria == null)
-                select.setVisibility(View.INVISIBLE);
+            if(checkBoxCriteria == null) {
+                checkBoxCriteria = dbHandler.getCategoryCriteria(extras.getString("Category"));
+                if (checkBoxCriteria == null)
+                    select.setVisibility(View.INVISIBLE);
+            }
+
         }
 
         criteria = new ArrayList<>();

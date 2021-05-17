@@ -88,6 +88,7 @@ public class Perma extends AppCompatActivity {
         if(categoryName.getText().toString().equals("New Category"))
             return;
         intent.putExtra("SubCategory",subCategoryName.getText().toString());
+        intent.putExtra("Category", categoryName.getText().toString());
         startActivity(intent);
     }
 }
