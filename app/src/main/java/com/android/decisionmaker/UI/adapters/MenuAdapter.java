@@ -1,6 +1,7 @@
 package com.android.decisionmaker.UI.adapters;
 
 import android.content.Intent;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,9 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull MenuAdapter.ViewHolder holder, int position) {
+        if(position == arrayList.size()-1) {
+            holder.button.setTextSize(TypedValue.COMPLEX_UNIT_SP,40);
+        }
         holder.button.setText(arrayList.get(position).getName());
     }
 
@@ -50,17 +54,16 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.ViewHolder>{
             super(itemView);
             button = itemView.findViewById(R.id.menuButton);
             button.setOnClickListener(v -> {
-                if(button.getText().toString().contains("New")) {
+                if(button.getText().toString().contains("+")) {
 
                     Intent i = new Intent(itemView.getContext(), Perma.class);
-                    String string = button.getText().toString();
-                    i.putExtra("buttonPressed", string);
+                    i.putExtra("Perma", "None");
                     itemView.getContext().startActivity(i);
 
                 } else {
                     Intent i = new Intent(itemView.getContext(), Submenu.class);
                     String string = button.getText().toString();
-                    i.putExtra("buttonPressed", string);
+                    i.putExtra("Category", string);
                     itemView.getContext().startActivity(i);
                 }
             });

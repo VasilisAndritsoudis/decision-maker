@@ -13,11 +13,11 @@ import com.android.decisionmaker.database.models.Choice;
 
 import java.util.ArrayList;
 
-public class PrepareAdapterAdded extends RecyclerView.Adapter<PrepareAdapterAdded.ViewHolder> {
+public class AddChoicesAdapter extends RecyclerView.Adapter<AddChoicesAdapter.ViewHolder> {
 
     private final ArrayList<Choice> arrayList;
 
-    public PrepareAdapterAdded (ArrayList<Choice> list) {
+    public AddChoicesAdapter(ArrayList<Choice> list) {
         arrayList = list;
     }
     @NonNull
@@ -26,12 +26,12 @@ public class PrepareAdapterAdded extends RecyclerView.Adapter<PrepareAdapterAdde
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.prepare_added_layout, parent, false);
 
-        return new PrepareAdapterAdded.ViewHolder(v);
+        return new AddChoicesAdapter.ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.textView.setText(arrayList.get(position).getName());
+        holder.textView.setText(arrayList.get(arrayList.size() - 1 - position).getName());
     }
 
     @Override

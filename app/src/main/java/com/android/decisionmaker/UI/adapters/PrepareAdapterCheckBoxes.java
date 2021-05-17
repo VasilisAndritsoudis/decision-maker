@@ -4,6 +4,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,9 +17,16 @@ import java.util.ArrayList;
 public class PrepareAdapterCheckBoxes extends RecyclerView.Adapter<PrepareAdapterCheckBoxes.ViewHolder> {
 
     private final ArrayList<Criteria> arrayList;
+    PrepareAdapter adapter;
+    ArrayList<Criteria> criteria;
+    RecyclerView recyclerView;
 
-    public PrepareAdapterCheckBoxes (ArrayList<Criteria> list) {
+    public PrepareAdapterCheckBoxes (ArrayList<Criteria> list, PrepareAdapter adapter,
+                                     ArrayList<Criteria> criteria, RecyclerView recyclerView) {
         arrayList = list;
+        this.adapter = adapter;
+        this.criteria = criteria;
+        this.recyclerView = recyclerView;
     }
 
     @NonNull
@@ -47,6 +55,24 @@ public class PrepareAdapterCheckBoxes extends RecyclerView.Adapter<PrepareAdapte
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             checkBox = itemView.findViewById(R.id.prepareCheckBox);
+
+            checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if(isChecked) {
+                    Criteria temp = new Criteria();
+                    temp.setName(checkBox.getText().toString());
+                    criteria.add(temp);
+                    adapter.notifyDataSetChanged();
+                } else {
+                    for(int i=0;i<criteria.size();i++) {
+                        if(criteria.get(i).getName().equals(checkBox.getText().toString())) {
+                            criteria.remove(i);
+                            recyclerView.removeViewAt(criteria.size() - i);
+                            adapter.notifyItemRemoved(criteria.size() - i);
+                            adapter.notifyItemRangeChanged(criteria.size() - i, criteria.size());
+                        }
+                    }
+                }
+            });
         }
     }
 }

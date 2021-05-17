@@ -25,6 +25,9 @@ public class DecisionMenu extends AppCompatActivity {
         DBHandler dbHandler = new DBHandler(this, null, null, 1);
         categories = dbHandler.getCategories();
 
+        Category plus = new Category();
+        plus.setName("+");
+        categories.add(plus);
         recyclerView = findViewById(R.id.menuRecyclerView);
         MenuAdapter adapter = new MenuAdapter(categories);
         recyclerView.setAdapter(adapter);

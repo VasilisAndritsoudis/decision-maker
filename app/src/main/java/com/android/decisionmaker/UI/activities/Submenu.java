@@ -27,14 +27,18 @@ public class Submenu extends AppCompatActivity {
         String name;
 
         if (extras != null) {
-            name = extras.getString("buttonPressed");
+            name = extras.getString("Category");
             DBHandler dbHandler = new DBHandler(this, null, null, 1);
             subCategories = dbHandler.getSubCategoriesOfCategory(name);
+            SubCategory plus = new SubCategory();
+            plus.setName("+");
+            subCategories.add(plus);
+
+            recyclerView = findViewById(R.id.submenuRecyclerView);
+            SubMenuAdapter adapter = new SubMenuAdapter(subCategories, name);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
         }
 
-        recyclerView = findViewById(R.id.submenuRecyclerView);
-        SubMenuAdapter adapter = new SubMenuAdapter(subCategories);
-        recyclerView.setAdapter(adapter);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }

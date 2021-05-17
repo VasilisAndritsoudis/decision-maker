@@ -2,15 +2,17 @@ package com.android.decisionmaker.UI.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.decisionmaker.R;
-import com.android.decisionmaker.UI.adapters.PrepareAdapterAdded;
+import com.android.decisionmaker.UI.adapters.AddChoicesAdapter;
 import com.android.decisionmaker.database.models.Choice;
 import com.android.decisionmaker.database.models.Decision;
 
@@ -25,7 +27,8 @@ public class AddChoices extends AppCompatActivity {
     EditText name;
     RecyclerView recyclerAddedChoices;
     String subCategoryName;
-    PrepareAdapterAdded choicesAdapter;
+    AddChoicesAdapter choicesAdapter;
+    TextView warning;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +37,7 @@ public class AddChoices extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            subCategoryName = extras.getString("buttonPressed");
+            subCategoryName = extras.getString("SubCategory");
         }
 
         choices = new ArrayList<>();
@@ -47,26 +50,50 @@ public class AddChoices extends AppCompatActivity {
                 choice.setText("");
         });
 
+        choice.setOnKeyListener((v, keyCode, event) -> {
+            if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+                addChoice(v);
+                return true;
+            }
+            return false;
+        });
+
+        warning = findViewById(R.id.addChoicesWarning);
+
         recyclerAddedChoices = findViewById(R.id.prepareRecyclerChoices);
-        choicesAdapter = new PrepareAdapterAdded(choices);
+        choicesAdapter = new AddChoicesAdapter(choices);
         recyclerAddedChoices.setAdapter(choicesAdapter);
         recyclerAddedChoices.setLayoutManager(new LinearLayoutManager(this));
     }
 
     public void goToPrepare(View view) {
+        if(name.getText().toString().isEmpty()){
+            warning.setVisibility(View.VISIBLE);
+            warning.setText("You have to set a name before you continue!");
+            return;
+        } else if (choices.size()<=1) {
+            warning.setVisibility(View.VISIBLE);
+            warning.setText("You have to add at least two choices!");
+            return;
+        }
         Intent intent = new Intent(this, Prepare.class);
         Decision decision = new Decision();
         decision.setName(name.getText().toString());
         decision.setDate(new Date());
         decision.setSubCategory(subCategoryName);
-        intent.putExtra("Decision", (Serializable) decision);
+        intent.putExtra("Decision", decision);
         intent.putExtra("Choices",choices);
         startActivity(intent);
     }
-
+    
     public void addChoice (View view) {
         if(choice.getText().toString().isEmpty())
             return;
+        for(Choice item : choices)
+            if(item.getName().equals(choice.getText().toString())) {
+                choice.setText("");
+                return;
+            }
         Choice temp = new Choice();
         temp.setName(choice.getText().toString().trim());
         choices.add(temp);
