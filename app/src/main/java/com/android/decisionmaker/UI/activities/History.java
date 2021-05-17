@@ -30,10 +30,6 @@ public class History extends AppCompatActivity {
 
         decisions = dbHandler.getDecisions();
 
-        if (decisions == null) {
-            decisions = new ArrayList<>();
-        }
-
         recyclerView = findViewById(R.id.historyRecyclerView);
         HistoryAdapter adapter = new HistoryAdapter(decisions);
         recyclerView.setAdapter(adapter);

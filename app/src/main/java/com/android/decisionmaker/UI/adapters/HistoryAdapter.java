@@ -22,7 +22,7 @@ import java.util.Locale;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
 
-    private class Pair {
+    private static class Pair {
         Decision decision;
         String date;
 
@@ -32,9 +32,11 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         }
     }
 
-    private static final ArrayList<Pair> pairArrayList = new ArrayList<>();
+    private static ArrayList<Pair> pairArrayList;
 
     public HistoryAdapter (ArrayList<Decision> list) {
+        pairArrayList = new ArrayList<>();
+
         for (Decision decision : list) {
             String pattern = "HH:mm - EEE dd/MM/yy";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.getDefault());
