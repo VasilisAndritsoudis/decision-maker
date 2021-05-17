@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.decisionmaker.R;
+import com.android.decisionmaker.algorithms.WAS;
 import com.android.decisionmaker.database.models.Choice;
 import com.android.decisionmaker.database.models.Criteria;
 import com.android.decisionmaker.database.models.Decision;
@@ -17,9 +18,18 @@ import com.anychart.AnyChart;
 import com.anychart.AnyChartView;
 import com.anychart.chart.common.dataentry.DataEntry;
 import com.anychart.chart.common.dataentry.ValueDataEntry;
+import com.anychart.charts.Cartesian;
+import com.anychart.charts.Cartesian3d;
 import com.anychart.charts.Pie;
+import com.anychart.core.SeparateChart;
+import com.anychart.core.cartesian.series.Column;
+import com.anychart.core.cartesian.series.Column3d;
 import com.anychart.enums.Align;
+import com.anychart.enums.Anchor;
+import com.anychart.enums.HoverMode;
 import com.anychart.enums.LegendLayout;
+import com.anychart.enums.Position;
+import com.anychart.enums.TooltipPositionMode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,26 +107,51 @@ public class ChartView extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chart_view, container, false);
 
+        Bundle extras = this.getArguments();
+        if (extras != null) {
+            decision = (Decision) extras.get("Decision");
+        }
+
         AnyChartView anyChartView = view.findViewById(R.id.any_chart_view);
+
+        int temp = 2;
+        switch (temp) {
+            case 0:
+                anyChartView.setChart(prepareChart(decision));
+                break;
+            case 1:
+                anyChartView.setChart(prepareHistogram(decision));
+                break;
+            case 2:
+                anyChartView.setChart(prepareHistogram3D(decision));
+        }
+
+        return view;
+    }
+
+    private SeparateChart prepareChart(Decision decision) {
+        ArrayList<Integer> percentages = WAS.logic(createScoresMatrix(decision), createWeightsMatrix(decision));
+
+        Criteria temp = decision.getCriteria().get(0);
+        List<DataEntry> data = new ArrayList<>();
+
+        int count = 0;
+        for (Choice choice : temp.getChoices()) {
+            data.add(new ValueDataEntry(choice.getName(), percentages.get(count)));
+            count++;
+        }
 
         Pie pie = AnyChart.pie();
 
-        List<DataEntry> data = new ArrayList<>();
-        data.add(new ValueDataEntry("Apples", 6371664));
-        data.add(new ValueDataEntry("Pears", 789622));
-        data.add(new ValueDataEntry("Bananas", 7216301));
-        data.add(new ValueDataEntry("Grapes", 1486621));
-        data.add(new ValueDataEntry("Oranges", 1200000));
-
         pie.data(data);
 
-        pie.title("Fruits imported in 2015 (in kg)");
+        pie.title(decision.getName());
 
-        pie.labels().position("outside");
+        pie.labels().position("inside");
 
         pie.legend().title().enabled(true);
         pie.legend().title()
-                .text("Retail channels")
+                .text("Choices")
                 .padding(0d, 0d, 10d, 0d);
 
         pie.legend()
@@ -124,8 +159,124 @@ public class ChartView extends Fragment {
                 .itemsLayout(LegendLayout.HORIZONTAL)
                 .align(Align.CENTER);
 
-        anyChartView.setChart(pie);
+        return pie;
+    }
 
-        return view;
+    private SeparateChart prepareHistogram(Decision decision) {
+        ArrayList<Integer> percentages = WAS.logic(createScoresMatrix(decision), createWeightsMatrix(decision));
+
+        Criteria temp = decision.getCriteria().get(0);
+        List<DataEntry> data = new ArrayList<>();
+
+        int count = 0;
+        for (Choice choice : temp.getChoices()) {
+            data.add(new ValueDataEntry(choice.getName(), percentages.get(count)));
+            count++;
+        }
+
+        //Cartesian3d pie = AnyChart.column3d();
+        Cartesian cartesian = AnyChart.column();
+
+        Column column = cartesian.column(data);
+
+        column.tooltip()
+                .titleFormat("{%X}")
+                .position(Position.CENTER_BOTTOM)
+                .anchor(Anchor.CENTER_BOTTOM)
+                .offsetX(0d)
+                .offsetY(5d)
+                .format("{%Value}{groupsSeparator: }%");
+
+        cartesian.animation(true);
+        cartesian.title(decision.getName());
+
+        cartesian.yScale().minimum(0d);
+
+        cartesian.yAxis(0).labels().format("{%Value}{groupsSeparator: }%");
+
+        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+        cartesian.interactivity().hoverMode(HoverMode.BY_X);
+
+        cartesian.xAxis(0).title("Choice");
+
+        return cartesian;
+    }
+
+    private SeparateChart prepareHistogram3D(Decision decision) {
+        ArrayList<Integer> percentages = WAS.logic(createScoresMatrix(decision), createWeightsMatrix(decision));
+
+        Criteria temp = decision.getCriteria().get(0);
+        List<DataEntry> data = new ArrayList<>();
+
+        int count = 0;
+        for (Choice choice : temp.getChoices()) {
+            data.add(new ValueDataEntry(choice.getName(), percentages.get(count)));
+            count++;
+        }
+
+        //Cartesian3d pie = AnyChart.column3d();
+        Cartesian cartesian = AnyChart.column();
+
+        Column column = cartesian.column(data);
+
+        column.tooltip()
+                .titleFormat("{%X}")
+                .position(Position.CENTER_BOTTOM)
+                .anchor(Anchor.CENTER_BOTTOM)
+                .offsetX(0d)
+                .offsetY(5d)
+                .format("{%Value}{groupsSeparator: }%");
+
+        cartesian.animation(true);
+        cartesian.title(decision.getName());
+
+        cartesian.yScale().minimum(0d);
+
+        cartesian.yAxis(0).labels().format("{%Value}{groupsSeparator: }%");
+
+        cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
+        cartesian.interactivity().hoverMode(HoverMode.BY_X);
+
+        cartesian.xAxis(0).title("Choice");
+
+        return cartesian;
+    }
+
+    /**
+     * Creates a 2D matrix with the scores of each choice in every criterion
+     * Each row is a choice and each column is a criterion
+     * @param decision need to decomposed
+     * @return the matrix with the scores
+     */
+    private ArrayList<ArrayList<Integer>> createScoresMatrix(Decision decision) {
+        ArrayList<ArrayList<Integer>> scores = new ArrayList<>();
+
+        for (int i = 0; i < decision.getCriteria().get(0).getChoices().size(); i++)
+            scores.add(new ArrayList<>());
+
+
+        for (Criteria criteria : decision.getCriteria()) {
+            int pos = 0;
+            for (Choice choice : criteria.getChoices()) {
+                scores.get(pos).add(choice.getValue());
+                pos++;
+            }
+        }
+
+        return  scores;
+    }
+
+    /**
+     * Creates a matrix with the weights of the criteria
+     * @param decision with the need weights
+     * @return the matrix the the weights
+     */
+    private ArrayList<Integer> createWeightsMatrix(Decision decision) {
+        ArrayList<Integer> weights = new ArrayList<>();
+
+        for (Criteria criterion : decision.getCriteria())
+            weights.add(criterion.getWeight());
+
+        return weights;
     }
 }
