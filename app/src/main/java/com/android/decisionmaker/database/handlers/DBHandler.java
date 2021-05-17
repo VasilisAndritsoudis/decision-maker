@@ -649,6 +649,7 @@ public class DBHandler extends SQLiteOpenHelper {
         }
 
         cursor.close();
+        db.close();
 
         // Delete Choices and Criteria from table Decision_Choice
         // By deleting Choices from table Decision_Choice, Criteria are deleted from there as well
@@ -679,8 +680,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
         // Delete Decision from table Decision
         String deletion = "DELETE FROM " + TABLE_DECISION +
-                "WHERE " + TABLE_DECISION + "ID =" + decision.getId();
+                " WHERE " + TABLE_DECISION + "ID =" + decision.getId();
 
+        db = this.getWritableDatabase();
         db.execSQL(deletion);
         db.close();
 
@@ -695,32 +697,32 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        db.close();
-
         if (cursor.getCount() != 0) {
             cursor.close();
+            db.close();
             return true;
         } else {
             cursor.close();
+            db.close();
             return false;
         }
     }
 
     private boolean criteriaIsUsed(Criteria criteria) {
         String query = "SELECT *" +
-                " FROM " + TABLE_DECISION + "_" + TABLE_CRITERIA +
+                " FROM " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA +
                 " WHERE " + TABLE_CRITERIA + "ID =" + criteria.getId();
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        db.close();
-
         if (cursor.getCount() != 0) {
             cursor.close();
+            db.close();
             return true;
         } else {
             cursor.close();
+            db.close();
             return false;
         }
     }
@@ -854,17 +856,16 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        db.close();
-
         if (cursor.getCount() == 0) {
             cursor.close();
+            db.close();
             return false;
         }
 
         cursor.close();
 
         String deletion = "DELETE FROM " + TABLE_CHOICE +
-                "WHERE " + TABLE_CHOICE + "ID =" + choice.getId();
+                " WHERE " + TABLE_CHOICE + "ID =" + choice.getId();
 
         db.execSQL(deletion);
         db.close();
@@ -880,17 +881,16 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        db.close();
-
         if (cursor.getCount() == 0) {
             cursor.close();
+            db.close();
             return false;
         }
 
         cursor.close();
 
         String deletion = "DELETE FROM " + TABLE_CRITERIA +
-                "WHERE " + TABLE_CRITERIA + "ID =" + criteria.getId();
+                " WHERE " + TABLE_CRITERIA + "ID =" + criteria.getId();
 
         db.execSQL(deletion);
         db.close();
