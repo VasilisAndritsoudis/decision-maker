@@ -1,6 +1,7 @@
 package com.android.decisionmaker.UI.adapters;
 
 import android.content.Intent;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +20,11 @@ import java.util.ArrayList;
 public class SubMenuAdapter extends RecyclerView.Adapter<SubMenuAdapter.ViewHolder>{
 
     private final ArrayList<SubCategory> arrayList;
+    static String category;
 
-    public SubMenuAdapter (ArrayList<SubCategory> list) {
+    public SubMenuAdapter (ArrayList<SubCategory> list, String category) {
         arrayList = list;
+        this.category = category;
     }
 
     @NonNull
@@ -34,6 +37,9 @@ public class SubMenuAdapter extends RecyclerView.Adapter<SubMenuAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull SubMenuAdapter.ViewHolder holder, int position) {
+        if(position == arrayList.size()-1) {
+            holder.button.setTextSize(TypedValue.COMPLEX_UNIT_SP,40);
+        }
         holder.button.setText(arrayList.get(position).getName());
     }
 
@@ -50,17 +56,14 @@ public class SubMenuAdapter extends RecyclerView.Adapter<SubMenuAdapter.ViewHold
             super(itemView);
             button = itemView.findViewById(R.id.menuButton);
             button.setOnClickListener(v -> {
-                if(button.getText().toString().contains("New")) {
-
+                if(button.getText().toString().equals("+")) {
                     Intent i = new Intent(itemView.getContext(), Perma.class);
-                    String string = button.getText().toString();
-                    i.putExtra("buttonPressed", string);
+                    i.putExtra("Perma", category);
                     itemView.getContext().startActivity(i);
-
                 } else {
                     Intent i = new Intent(itemView.getContext(), AddChoices.class);
                     String string = button.getText().toString();
-                    i.putExtra("buttonPressed", string);
+                    i.putExtra("SubCategory", string);
                     itemView.getContext().startActivity(i);
                 }
             });

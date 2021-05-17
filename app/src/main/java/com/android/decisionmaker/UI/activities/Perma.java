@@ -24,20 +24,13 @@ public class Perma extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perma);
 
-        categories = new ArrayList<>();
-        categories.add("New Category");
-        categories.add("Shopping");
-        categories.add("Activities");
-        categories.add("Movies");
-        categories.add("Theater");
-        categories.add("Drinks");
-        categories.add("New Category");
-        categories.add("Shopping");
-        categories.add("Activities");
-        categories.add("Movies");
-        categories.add("Theater");
-        categories.add("Drinks");
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            String string = extras.getString("Perma");
+            if (!string.equals("None")) {
 
+            }
+        }
 
         recyclerView = findViewById(R.id.permaRecyclerView);
         PermaAdapter adapter = new PermaAdapter(categories);

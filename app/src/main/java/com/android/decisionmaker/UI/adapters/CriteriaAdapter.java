@@ -11,15 +11,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.decisionmaker.R;
+import com.android.decisionmaker.database.models.Decision;
 
 import java.util.ArrayList;
 
 public class CriteriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private final ArrayList<String> arrayList;
+    Decision decision;
+    int num;
 
-    public CriteriaAdapter (ArrayList<String> list) {
+    public CriteriaAdapter (ArrayList<String> list, Decision decision, int num) {
         arrayList = list;
+        this.decision = decision;
+        this.num = num;
     }
     @NonNull
     @Override
@@ -52,6 +57,26 @@ public class CriteriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else {
             ViewHolder0 viewHolder0 = (ViewHolder0) holder;
             viewHolder0.name.setText(arrayList.get(position));
+            viewHolder0.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    if(position == 1) {
+                        decision.getCriteria().get(num).setWeight(progress + 1);
+                    } else {
+                        decision.getCriteria().get(num).getChoices().get(position - 2).setValue(progress + 1);
+                    }
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
         }
     }
 

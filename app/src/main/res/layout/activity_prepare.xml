@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".UI.activities.Prepare"
-    tools:layout_editor_absoluteY="81dp">
+    tools:layout_editor_absoluteY="81dp"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
@@ -23,13 +25,12 @@
             android:layout_height="match_parent">
 
             <EditText
-                android:id="@+id/editTextTextPersonName4"
+                android:id="@+id/prepareEditText"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:layout_marginStart="8dp"
                 android:ems="10"
                 android:inputType="textPersonName"
-                android:text="Name"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/textView5"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -41,9 +42,9 @@
                 android:fontFamily="sans-serif-medium"
                 android:text="New Criterion:"
                 android:textSize="18sp"
-                app:layout_constraintBottom_toBottomOf="@+id/editTextTextPersonName4"
+                app:layout_constraintBottom_toBottomOf="@+id/prepareEditText"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/editTextTextPersonName4" />
+                app:layout_constraintTop_toTopOf="@+id/prepareEditText" />
 
             <ImageView
                 android:id="@+id/prepareAddCritButton"
@@ -52,7 +53,7 @@
                 android:layout_marginStart="8dp"
                 android:onClick="addCriterion"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName4"
+                app:layout_constraintStart_toEndOf="@+id/prepareEditText"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/ic_add_circle_outline" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -74,8 +75,7 @@
         android:id="@+id/prepareRecyclerCriteria"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintBottom_toTopOf="@+id/prepareWarning"
         app:layout_constraintEnd_toEndOf="@+id/cardView"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="@+id/cardView"
@@ -90,8 +90,9 @@
         android:text="Continue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/prepareRecyclerCriteria" />
+        app:layout_constraintTop_toBottomOf="@+id/prepareWarning" />
 
     <TextView
         android:id="@+id/textView6"
@@ -105,4 +106,19 @@
         app:layout_constraintBottom_toTopOf="@+id/prepareRecyclerCheckBoxes"
         app:layout_constraintStart_toStartOf="@+id/prepareRecyclerCheckBoxes"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/prepareWarning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginBottom="16dp"
+        android:text="TextView"
+        android:textSize="20sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/button3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/prepareRecyclerCriteria" />
 </androidx.constraintlayout.widget.ConstraintLayout>
