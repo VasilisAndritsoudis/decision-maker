@@ -35,7 +35,7 @@ public class StartingActivity extends AppCompatActivity {
 
         Decision decision = new Decision();
 
-        decision.setName("First Decision");
+        decision.setName(String.valueOf(new Date().getTime()));
         decision.setDate(new Date());
         decision.setSubCategory("Phones");
 

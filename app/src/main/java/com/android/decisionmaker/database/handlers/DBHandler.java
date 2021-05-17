@@ -5,10 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.icu.text.SimpleDateFormat;
-import android.os.Build;
 import android.util.Log;
-
-import androidx.annotation.RequiresApi;
 
 import com.android.decisionmaker.database.models.Category;
 import com.android.decisionmaker.database.models.Criteria;
@@ -18,6 +15,7 @@ import com.android.decisionmaker.database.models.SubCategory;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 
@@ -170,28 +168,6 @@ public class DBHandler extends SQLiteOpenHelper {
         return response;
     }
 
-    public boolean saveCategory(Category category) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String query = "SELECT " + TABLE_CATEGORY + "ID" +
-                " FROM " + TABLE_CATEGORY +
-                " WHERE " + TABLE_CATEGORY + "Name = '" + category.getName() + "'";
-
-        Cursor cursor = db.rawQuery(query, null);
-
-        if (cursor.getCount() != 0) {
-            cursor.close();
-            return false;
-        }
-
-        String insertion = "INSERT INTO " + TABLE_CATEGORY + " (" + TABLE_CATEGORY + "Name)" +
-                " VALUES ('" + category.getName() + "')";
-
-        db.execSQL(insertion);
-
-        return true;
-    }
-
     public ArrayList<SubCategory> getSubCategoriesOfCategory(String categoryName) {
         String query = "SELECT " + TABLE_CATEGORY + "ID " +
                 " FROM " + TABLE_CATEGORY +
@@ -237,87 +213,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
         db.close();
         return response;
-    }
-
-    public boolean saveSubCategory(SubCategory subCategory, ArrayList<Criteria> subCategoryCriteria) {
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        String query = "SELECT " + TABLE_SUBCATEGORY + "ID" +
-                " FROM " + TABLE_SUBCATEGORY +
-                " WHERE " + TABLE_SUBCATEGORY + "Name = '" + subCategory.getName() + "'";
-
-        Cursor cursor = db.rawQuery(query, null);
-
-        if (cursor.getCount() != 0) {
-            cursor.close();
-            return false;
-        }
-
-        query = "SELECT " + TABLE_CATEGORY + "ID" +
-                " FROM " + TABLE_CATEGORY +
-                " WHERE " + TABLE_CATEGORY + "Name = '" + subCategory.getCategory() + "'";
-
-        cursor = db.rawQuery(query, null);
-
-        int categoryId;
-
-        if (cursor.getCount() != 0) {
-            cursor.moveToFirst();
-            categoryId = cursor.getInt(0);
-            cursor.close();
-        } else {
-            return false;
-        }
-
-        String insertion = "INSERT INTO " + TABLE_SUBCATEGORY + " (" + TABLE_SUBCATEGORY + "Name, " + TABLE_CATEGORY + "ID)" +
-                " VALUES ('" + subCategory.getName() + "', " + categoryId +")";
-
-        db.execSQL(insertion);
-
-        query = "SELECT " + TABLE_SUBCATEGORY + "ID" +
-                " FROM " + TABLE_SUBCATEGORY +
-                " WHERE " + TABLE_SUBCATEGORY + "Name = '" + subCategory.getName() + "'";
-
-        cursor = db.rawQuery(query, null);
-
-        int subCategoryId;
-
-        if (cursor.getCount() != 0) {
-            cursor.moveToFirst();
-            subCategoryId = cursor.getInt(0);
-            cursor.close();
-        } else {
-            return false;
-        }
-
-        if (!insertCriteria(subCategoryCriteria))
-            return false;
-
-        for (Criteria criteria : subCategoryCriteria) {
-            query = "SELECT " + TABLE_CRITERIA + "ID" +
-                    " FROM " + TABLE_CRITERIA +
-                    " WHERE " + TABLE_CRITERIA + "Name = '" + criteria.getName() + "'";
-
-            cursor = db.rawQuery(query, null);
-
-            int criteriaId;
-
-            if (cursor.getCount() != 0) {
-                cursor.moveToFirst();
-                criteriaId = cursor.getInt(0);
-                cursor.close();
-            } else {
-                return false;
-            }
-
-
-            insertion = "INSERT INTO " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA + " (" + TABLE_SUBCATEGORY + "ID, " + TABLE_CRITERIA + "ID)" +
-                    " VALUES (" + subCategoryId + ", " + criteriaId + ")";
-
-            db.execSQL(insertion);
-        }
-
-        return true;
     }
 
     public ArrayList<Criteria> getSubCategoryCriteria(String subCategoryName) {
@@ -539,7 +434,117 @@ public class DBHandler extends SQLiteOpenHelper {
         }
 
         db.close();
+
+        if (response != null) {
+            Collections.reverse(response);
+        } else {
+            response = new ArrayList<>();
+        }
+
         return response;
+    }
+
+    public boolean saveCategory(Category category) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "SELECT " + TABLE_CATEGORY + "ID" +
+                " FROM " + TABLE_CATEGORY +
+                " WHERE " + TABLE_CATEGORY + "Name = '" + category.getName() + "'";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.getCount() != 0) {
+            cursor.close();
+            return false;
+        }
+
+        String insertion = "INSERT INTO " + TABLE_CATEGORY + " (" + TABLE_CATEGORY + "Name)" +
+                " VALUES ('" + category.getName() + "')";
+
+        db.execSQL(insertion);
+
+        return true;
+    }
+
+    public boolean saveSubCategory(SubCategory subCategory, ArrayList<Criteria> subCategoryCriteria) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        String query = "SELECT " + TABLE_SUBCATEGORY + "ID" +
+                " FROM " + TABLE_SUBCATEGORY +
+                " WHERE " + TABLE_SUBCATEGORY + "Name = '" + subCategory.getName() + "'";
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.getCount() != 0) {
+            cursor.close();
+            return false;
+        }
+
+        query = "SELECT " + TABLE_CATEGORY + "ID" +
+                " FROM " + TABLE_CATEGORY +
+                " WHERE " + TABLE_CATEGORY + "Name = '" + subCategory.getCategory() + "'";
+
+        cursor = db.rawQuery(query, null);
+
+        int categoryId;
+
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            categoryId = cursor.getInt(0);
+            cursor.close();
+        } else {
+            return false;
+        }
+
+        String insertion = "INSERT INTO " + TABLE_SUBCATEGORY + " (" + TABLE_SUBCATEGORY + "Name, " + TABLE_CATEGORY + "ID)" +
+                " VALUES ('" + subCategory.getName() + "', " + categoryId +")";
+
+        db.execSQL(insertion);
+
+        query = "SELECT " + TABLE_SUBCATEGORY + "ID" +
+                " FROM " + TABLE_SUBCATEGORY +
+                " WHERE " + TABLE_SUBCATEGORY + "Name = '" + subCategory.getName() + "'";
+
+        cursor = db.rawQuery(query, null);
+
+        int subCategoryId;
+
+        if (cursor.getCount() != 0) {
+            cursor.moveToFirst();
+            subCategoryId = cursor.getInt(0);
+            cursor.close();
+        } else {
+            return false;
+        }
+
+        if (!insertCriteria(subCategoryCriteria))
+            return false;
+
+        for (Criteria criteria : subCategoryCriteria) {
+            query = "SELECT " + TABLE_CRITERIA + "ID" +
+                    " FROM " + TABLE_CRITERIA +
+                    " WHERE " + TABLE_CRITERIA + "Name = '" + criteria.getName() + "'";
+
+            cursor = db.rawQuery(query, null);
+
+            int criteriaId;
+
+            if (cursor.getCount() != 0) {
+                cursor.moveToFirst();
+                criteriaId = cursor.getInt(0);
+                cursor.close();
+            } else {
+                return false;
+            }
+
+
+            insertion = "INSERT INTO " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA + " (" + TABLE_SUBCATEGORY + "ID, " + TABLE_CRITERIA + "ID)" +
+                    " VALUES (" + subCategoryId + ", " + criteriaId + ")";
+
+            db.execSQL(insertion);
+        }
+
+        return true;
     }
 
     public boolean saveDecision(Decision decision) {
@@ -629,6 +634,99 @@ public class DBHandler extends SQLiteOpenHelper {
         return true;
     }
 
+    public boolean deleteDecision(Decision decision) {
+        // Check if Decision exists
+        String query = "SELECT " + TABLE_DECISION + "ID" +
+                " FROM " + TABLE_DECISION +
+                " WHERE " + TABLE_DECISION + "ID = " + decision.getId();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.getCount() == 0) {
+            cursor.close();
+            return false;
+        }
+
+        cursor.close();
+        db.close();
+
+        // Delete Choices and Criteria from table Decision_Choice
+        // By deleting Choices from table Decision_Choice, Criteria are deleted from there as well
+        for (Choice choice : decision.getCriteria().get(0).getChoices()) {
+            if (!deleteChoiceUsages(choice, decision)) {
+                return false;
+            }
+
+            if (!choiceIsUsed(choice)) {
+                if (!deleteChoice(choice)) {
+                    return false;
+                }
+            }
+        }
+
+        // Delete Criteria from table Decision_Criteria
+        for (Criteria criteria : decision.getCriteria()) {
+            if (!deleteCriteriaUsages(criteria, decision)) {
+                return false;
+            }
+
+            if (!criteriaIsUsed(criteria)) {
+                if (!deleteCriteria(criteria)) {
+                    return false;
+                }
+            }
+        }
+
+        // Delete Decision from table Decision
+        String deletion = "DELETE FROM " + TABLE_DECISION +
+                " WHERE " + TABLE_DECISION + "ID =" + decision.getId();
+
+        db = this.getWritableDatabase();
+        db.execSQL(deletion);
+        db.close();
+
+        return true;
+    }
+
+    private boolean choiceIsUsed(Choice choice) {
+        String query = "SELECT *" +
+                " FROM " + TABLE_DECISION + "_" + TABLE_CHOICE +
+                " WHERE " + TABLE_CHOICE + "ID =" + choice.getId();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.getCount() != 0) {
+            cursor.close();
+            db.close();
+            return true;
+        } else {
+            cursor.close();
+            db.close();
+            return false;
+        }
+    }
+
+    private boolean criteriaIsUsed(Criteria criteria) {
+        String query = "SELECT *" +
+                " FROM " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA +
+                " WHERE " + TABLE_CRITERIA + "ID =" + criteria.getId();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.getCount() != 0) {
+            cursor.close();
+            db.close();
+            return true;
+        } else {
+            cursor.close();
+            db.close();
+            return false;
+        }
+    }
+
     private boolean insertChoices(ArrayList<Choice> choices) {
         if (choices.size() == 0)
             return false;
@@ -714,6 +812,88 @@ public class DBHandler extends SQLiteOpenHelper {
                 " VALUES ('" + decision.getName() + "', '" + date + "', " + subCategoryId + ")";
 
         db.execSQL(insertion);
+
+        return true;
+    }
+
+    private boolean deleteChoiceUsages(Choice choice, Decision decision) {
+        if (!choiceIsUsed(choice)) {
+            return false;
+        }
+
+        String deletion = "DELETE FROM " + TABLE_DECISION + "_" + TABLE_CHOICE +
+                " WHERE " + TABLE_CHOICE + "ID =" + choice.getId() +
+                " AND " + TABLE_DECISION + "ID =" + decision.getId();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(deletion);
+        db.close();
+
+        return true;
+    }
+
+    private boolean deleteCriteriaUsages(Criteria criteria, Decision decision) {
+        if (!criteriaIsUsed(criteria)) {
+            return false;
+        }
+
+        String deletion = "DELETE FROM " + TABLE_DECISION + "_" + TABLE_CRITERIA +
+                " WHERE " + TABLE_CRITERIA + "ID =" + criteria.getId() +
+                " AND " + TABLE_DECISION + "ID =" + decision.getId();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.execSQL(deletion);
+        db.close();
+
+        return true;
+    }
+
+    private boolean deleteChoice(Choice choice) {
+        String query = "SELECT " + TABLE_CHOICE + "ID" +
+                " FROM " + TABLE_CHOICE +
+                " WHERE " + TABLE_CHOICE + "ID = " + choice.getId();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.getCount() == 0) {
+            cursor.close();
+            db.close();
+            return false;
+        }
+
+        cursor.close();
+
+        String deletion = "DELETE FROM " + TABLE_CHOICE +
+                " WHERE " + TABLE_CHOICE + "ID =" + choice.getId();
+
+        db.execSQL(deletion);
+        db.close();
+
+        return true;
+    }
+
+    private boolean deleteCriteria(Criteria criteria) {
+        String query = "SELECT " + TABLE_CRITERIA + "ID" +
+                " FROM " + TABLE_CRITERIA +
+                " WHERE " + TABLE_CRITERIA + "ID = " + criteria.getId();
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.getCount() == 0) {
+            cursor.close();
+            db.close();
+            return false;
+        }
+
+        cursor.close();
+
+        String deletion = "DELETE FROM " + TABLE_CRITERIA +
+                " WHERE " + TABLE_CRITERIA + "ID =" + criteria.getId();
+
+        db.execSQL(deletion);
+        db.close();
 
         return true;
     }

@@ -1,6 +1,7 @@
 package com.android.decisionmaker.UI.adapters;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.decisionmaker.UI.activities.DecisionView;
 import com.android.decisionmaker.R;
+import com.android.decisionmaker.UI.activities.History;
+import com.android.decisionmaker.database.handlers.DBHandler;
 import com.android.decisionmaker.database.models.Decision;
 
 import java.io.Serializable;
@@ -22,27 +25,32 @@ import java.util.Locale;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
 
-    private class Pair {
+    public static class Pair {
         Decision decision;
         String date;
 
-        Pair(Decision decision, String date) {
+        public Pair(Decision decision, String date) {
             this.decision = decision;
             this.date = date;
         }
+
+        public Decision getDecision() {
+            return decision;
+        }
+
+        public String getDate() {
+            return date;
+        }
     }
 
-    private static final ArrayList<Pair> pairArrayList = new ArrayList<>();
+    private static ArrayList<Pair> pairArrayList;
+    private HistoryAdapterInterface listenerInterface;
 
-    public HistoryAdapter (ArrayList<Decision> list) {
-        for (Decision decision : list) {
-            String pattern = "HH:mm - EEE dd/MM/yy";
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.getDefault());
-            String date = simpleDateFormat.format(decision.getDate());
+    private HistoryAdapter adapter = this;
 
-            Pair pair = new Pair(decision, date);
-            pairArrayList.add(pair);
-        }
+    public HistoryAdapter (ArrayList<Pair> list, HistoryAdapterInterface listenerInterface) {
+        pairArrayList = list;
+        this.listenerInterface = listenerInterface;
     }
 
     @NonNull
@@ -66,7 +74,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         return pairArrayList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView nameAndDate;
         ImageButton delete;
@@ -100,6 +108,29 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                 }
             });
 
+            delete.setOnClickListener(v -> {
+                listenerInterface.onClick(getAbsoluteAdapterPosition());
+            });
+
+//            delete.setOnClickListener(v -> {
+//                String name = nameAndDate.getText().toString().split("\n")[0];
+//                String date = nameAndDate.getText().toString().split("\n")[1];
+//
+//                Pair remove = null;
+//
+//                for (Pair pair : HistoryAdapter.pairArrayList) {
+//                    if (pair.date.equals(date) && pair.decision.getName().equals(name)) {
+//                        remove = pair;
+//                        break;
+//                    }
+//                }
+//
+//                if (remove != null) {
+//                    HistoryAdapter.pairArrayList.remove(remove);
+//                    Log.d("Dec Name", name);
+//                    Log.d("Dec Date", date);
+//                }
+//            });
         }
     }
 }
