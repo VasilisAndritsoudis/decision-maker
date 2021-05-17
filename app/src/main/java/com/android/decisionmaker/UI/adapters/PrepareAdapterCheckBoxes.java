@@ -45,6 +45,8 @@ public class PrepareAdapterCheckBoxes extends RecyclerView.Adapter<PrepareAdapte
 
     @Override
     public int getItemCount() {
+        if (arrayList == null)
+            return 0;
         return arrayList.size();
     }
 

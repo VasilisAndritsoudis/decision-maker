@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".UI.activities.Perma">
+    tools:context=".UI.activities.Perma"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <TextView
         android:id="@+id/textView4"
@@ -58,21 +60,20 @@
     </RadioGroup>
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/permaSubCategoryLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="24dp"
+        android:layout_marginBottom="48dp"
         android:fontFamily="sans-serif-medium"
         android:text="Subcategory's Name:"
         android:textSize="18sp"
-        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/permaNextButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
+        app:layout_constraintTop_toBottomOf="@+id/permaCategoryLabel" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/permaCategoryLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="48dp"
@@ -80,12 +81,12 @@
         android:text="Category's Name:"
         android:textSize="18sp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="@+id/textView2"
+        app:layout_constraintBottom_toTopOf="@+id/permaSubCategoryLabel"
+        app:layout_constraintEnd_toEndOf="@+id/permaSubCategoryLabel"
         app:layout_constraintTop_toBottomOf="@+id/permaRecyclerView" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/permaCategoryEditext"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -93,23 +94,21 @@
         android:ems="10"
         android:inputType="textPersonName"
         android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/textView3"
+        app:layout_constraintBottom_toBottomOf="@+id/permaCategoryLabel"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView3"
-        app:layout_constraintTop_toTopOf="@+id/textView3" />
+        app:layout_constraintStart_toEndOf="@+id/permaCategoryLabel"
+        app:layout_constraintTop_toTopOf="@+id/permaCategoryLabel" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/permaSubCategoryEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="@+id/editTextTextPersonName"
-        app:layout_constraintStart_toStartOf="@+id/editTextTextPersonName"
-        app:layout_constraintTop_toTopOf="@+id/textView2"
+        app:layout_constraintBottom_toBottomOf="@+id/permaSubCategoryLabel"
+        app:layout_constraintEnd_toEndOf="@+id/permaCategoryEditext"
+        app:layout_constraintStart_toStartOf="@+id/permaCategoryEditext"
+        app:layout_constraintTop_toTopOf="@+id/permaSubCategoryLabel"
         app:layout_constraintVertical_bias="0.476" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -121,8 +120,8 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="48dp"
         android:background="#8B434240"
-        android:foregroundTint="#1B1818"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        android:foregroundTint="#03A9F4"
+        app:layout_constraintBottom_toTopOf="@+id/permaCategoryLabel"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -133,9 +132,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:onClick="goToPrepare"
+        android:onClick="goToAddChoices"
         android:text="Next"
         android:textAllCaps="false"
+        android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

@@ -24,7 +24,7 @@ public class SubMenuAdapter extends RecyclerView.Adapter<SubMenuAdapter.ViewHold
 
     public SubMenuAdapter (ArrayList<SubCategory> list, String category) {
         arrayList = list;
-        this.category = category;
+        SubMenuAdapter.category = category;
     }
 
     @NonNull

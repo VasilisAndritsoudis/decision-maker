@@ -36,6 +36,7 @@ public class Prepare extends AppCompatActivity {
     RecyclerView checkBoxes;
     TextView warning;
     Bundle extras;
+    TextView select;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +44,7 @@ public class Prepare extends AppCompatActivity {
         setContentView(R.layout.activity_prepare);
 
         criterion = findViewById(R.id.prepareEditText);
+        select = findViewById(R.id.prepareSelectTv);
 
         DBHandler dbHandler = new DBHandler(this, null, null, 1);
 
@@ -50,6 +52,8 @@ public class Prepare extends AppCompatActivity {
         if (extras != null) {
             decision = (Decision) extras.get("Decision");
             checkBoxCriteria = dbHandler.getSubCategoryCriteria(decision.getSubCategory());
+            if(checkBoxCriteria == null)
+                select.setVisibility(View.INVISIBLE);
         }
 
         criteria = new ArrayList<>();
