@@ -14,16 +14,35 @@ import com.android.decisionmaker.UI.activities.DecisionView;
 import com.android.decisionmaker.R;
 import com.android.decisionmaker.database.models.Decision;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Locale;
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
 
-    private final ArrayList<Decision> arrayList;
+    private class Pair {
+        Decision decision;
+        String date;
+
+        Pair(Decision decision, String date) {
+            this.decision = decision;
+            this.date = date;
+        }
+    }
+
+    private static final ArrayList<Pair> pairArrayList = new ArrayList<>();
 
     public HistoryAdapter (ArrayList<Decision> list) {
-        arrayList = list;
+        for (Decision decision : list) {
+            String pattern = "HH:mm - EEE dd/MM/yy";
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.getDefault());
+            String date = simpleDateFormat.format(decision.getDate());
+
+            Pair pair = new Pair(decision, date);
+            pairArrayList.add(pair);
+        }
     }
 
     @NonNull
@@ -38,18 +57,13 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        String pattern = "HH:mm - EEE dd/MM/yy";
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.getDefault());
-
-        String date = simpleDateFormat.format(arrayList.get(position).getDate());
-
-        String text = arrayList.get(position).getName() + "\n" + date;
+        String text = pairArrayList.get(position).decision.getName() + "\n" + pairArrayList.get(position).date;
         holder.nameAndDate.setText(text);
     }
 
     @Override
     public int getItemCount() {
-        return arrayList.size();
+        return pairArrayList.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -67,9 +81,23 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
 
             itemView.setOnClickListener(v -> {
                 Intent i = new Intent(itemView.getContext(), DecisionView.class);
-                String string = nameAndDate.getText().toString();
-                i.putExtra("textView" , string);
-                itemView.getContext().startActivity(i);
+
+                String name = nameAndDate.getText().toString().split("\n")[0];
+                String date = nameAndDate.getText().toString().split("\n")[1];
+
+                Decision decision = null;
+
+                for (Pair pair : HistoryAdapter.pairArrayList) {
+                    if (pair.date.equals(date) && pair.decision.getName().equals(name)) {
+                        decision = pair.decision;
+                        break;
+                    }
+                }
+
+                if (decision != null) {
+                    i.putExtra("Decision" , decision);
+                    itemView.getContext().startActivity(i);
+                }
             });
 
         }

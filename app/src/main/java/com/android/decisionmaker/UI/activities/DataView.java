@@ -4,11 +4,15 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.android.decisionmaker.R;
+import com.android.decisionmaker.database.models.Choice;
+import com.android.decisionmaker.database.models.Criteria;
+import com.android.decisionmaker.database.models.Decision;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,8 +30,28 @@ public class DataView extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private Decision decision;
+
     public DataView() {
         // Required empty public constructor
+    }
+
+    public DataView(Decision decision) {
+        this.decision = decision;
+
+        Log.d("Dec Name", decision.getName());
+        Log.d("Dec Date", decision.getDate().toString());
+        Log.d("Dec SubCat", decision.getSubCategory());
+
+        for (Criteria criteria : decision.getCriteria()) {
+            Log.d("Dec Crit Name", criteria.getName());
+            Log.d("Dec Crit Weight", String.valueOf(criteria.getWeight()));
+
+            for (Choice choice : criteria.getChoices()) {
+                Log.d("Dec Crit Choice Name", choice.getName());
+                Log.d("Dec Crit Choice Val", String.valueOf(choice.getValue()));
+            }
+        }
     }
 
     /**
