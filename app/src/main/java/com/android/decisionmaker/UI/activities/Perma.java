@@ -19,6 +19,7 @@ import com.android.decisionmaker.database.models.Decision;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class Perma extends AppCompatActivity {
 
@@ -34,6 +35,9 @@ public class Perma extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perma);
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
 
         DBHandler dbHandler = DBHandler.getDBHandler(this);
         ArrayList<Category> temp = dbHandler.getCategories();

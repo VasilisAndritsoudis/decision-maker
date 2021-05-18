@@ -14,6 +14,7 @@ import com.android.decisionmaker.database.models.Choice;
 import com.android.decisionmaker.database.models.Decision;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class CriteriaScore extends AppCompatActivity {
 
@@ -25,6 +26,9 @@ public class CriteriaScore extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_criteria_score);
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
 
         Bundle extras = getIntent().getExtras();
         if(extras != null) {

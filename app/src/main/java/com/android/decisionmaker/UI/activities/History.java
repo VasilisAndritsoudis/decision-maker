@@ -21,6 +21,7 @@ import com.android.decisionmaker.database.models.Decision;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Objects;
 
 public class History extends AppCompatActivity implements HistoryAdapterInterface {
 
@@ -36,6 +37,9 @@ public class History extends AppCompatActivity implements HistoryAdapterInterfac
         setContentView(R.layout.activity_history);
 
         DBHandler dbHandler = DBHandler.getDBHandler(this);
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
 
         decisions = dbHandler.getDecisions();
         pairs = new ArrayList<>();

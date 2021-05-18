@@ -11,6 +11,7 @@ import com.android.decisionmaker.database.handlers.DBHandler;
 import com.android.decisionmaker.database.models.Category;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class DecisionMenu extends AppCompatActivity {
 
@@ -21,6 +22,9 @@ public class DecisionMenu extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_decision_menu);
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
 
         DBHandler dbHandler = DBHandler.getDBHandler(this);
         categories = dbHandler.getCategories();

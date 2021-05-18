@@ -10,6 +10,8 @@ import android.widget.Spinner;
 
 import com.android.decisionmaker.R;
 
+import java.util.Objects;
+
 public class Settings extends AppCompatActivity {
 
     Spinner resultView;
@@ -21,6 +23,9 @@ public class Settings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
 
         resultView = findViewById(R.id.settingsResultSpinner);
         ArrayAdapter<String> resultAdapter = new ArrayAdapter<>(this,

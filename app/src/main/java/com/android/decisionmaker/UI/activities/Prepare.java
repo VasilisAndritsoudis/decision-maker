@@ -23,6 +23,7 @@ import com.android.decisionmaker.database.models.Decision;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Prepare extends AppCompatActivity {
 
@@ -45,6 +46,10 @@ public class Prepare extends AppCompatActivity {
 
         criterion = findViewById(R.id.prepareEditText);
         select = findViewById(R.id.prepareSelectTv);
+
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
 
         DBHandler dbHandler = DBHandler.getDBHandler(this);
 
