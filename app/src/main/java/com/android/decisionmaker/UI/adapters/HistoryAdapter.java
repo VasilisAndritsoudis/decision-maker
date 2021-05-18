@@ -46,8 +46,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     private static ArrayList<Pair> pairArrayList;
     private HistoryAdapterInterface listenerInterface;
 
-    private HistoryAdapter adapter = this;
-
     public HistoryAdapter (ArrayList<Pair> list, HistoryAdapterInterface listenerInterface) {
         pairArrayList = list;
         this.listenerInterface = listenerInterface;
@@ -111,26 +109,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
             delete.setOnClickListener(v -> {
                 listenerInterface.onClick(getAbsoluteAdapterPosition());
             });
-
-//            delete.setOnClickListener(v -> {
-//                String name = nameAndDate.getText().toString().split("\n")[0];
-//                String date = nameAndDate.getText().toString().split("\n")[1];
-//
-//                Pair remove = null;
-//
-//                for (Pair pair : HistoryAdapter.pairArrayList) {
-//                    if (pair.date.equals(date) && pair.decision.getName().equals(name)) {
-//                        remove = pair;
-//                        break;
-//                    }
-//                }
-//
-//                if (remove != null) {
-//                    HistoryAdapter.pairArrayList.remove(remove);
-//                    Log.d("Dec Name", name);
-//                    Log.d("Dec Date", date);
-//                }
-//            });
         }
     }
 }

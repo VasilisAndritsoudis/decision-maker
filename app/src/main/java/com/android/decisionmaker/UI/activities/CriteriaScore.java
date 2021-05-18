@@ -2,6 +2,7 @@ package com.android.decisionmaker.UI.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.decisionmaker.R;
 import com.android.decisionmaker.UI.adapters.CriteriaAdapter;
+import com.android.decisionmaker.database.handlers.DBHandler;
 import com.android.decisionmaker.database.models.Choice;
 import com.android.decisionmaker.database.models.Decision;
 
@@ -76,6 +78,12 @@ public class CriteriaScore extends AppCompatActivity {
     public void goToDecisionView (Decision decision){
         Intent intent = new Intent(this, DecisionView.class);
         intent.putExtra("Decision", decision);
+
+        Log.d("Dec Save Debug", String.valueOf(decision.getCriteria().get(0).getChoices().size()));
+
+        DBHandler dbHandler = DBHandler.getDBHandler(this);
+        Log.d("Save Decision", Boolean.toString(dbHandler.saveDecision(decision)));
+
         startActivity(intent);
     }
 }

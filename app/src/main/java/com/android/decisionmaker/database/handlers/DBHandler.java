@@ -107,39 +107,33 @@ public class DBHandler extends SQLiteOpenHelper {
                 "DarkMode BOOLEAN NOT NULL" +
                 ");";
 
-        ArrayList<String> INSERT_VALUES = new ArrayList<>();
+        String INSERT_CATEGORIES = "INSERT INTO " + TABLE_CATEGORY + " (" + TABLE_CATEGORY + "Name) VALUES" +
+                "('Shopping')," +
+                "('Activities');";
 
-        StringBuilder INSERT_CATEGORIES = new StringBuilder();
-        INSERT_CATEGORIES.append("INSERT INTO " + TABLE_CATEGORY + " (" + TABLE_CATEGORY + "Name) VALUES");
-        INSERT_CATEGORIES.append("('Shopping'),");
-        INSERT_CATEGORIES.append("('Activities');");
+        String INSERT_SUBCATEGORIES = "INSERT INTO " + TABLE_SUBCATEGORY + " (" + TABLE_SUBCATEGORY + "Name, " + TABLE_CATEGORY + "ID) VALUES" +
+                "('Phones', 1)," +
+                "('Cars', 1)," +
+                "('Concerts', 2)," +
+                "('Bars', 2);";
 
-        StringBuilder INSERT_SUBCATEGORIES = new StringBuilder();
-        INSERT_SUBCATEGORIES.append("INSERT INTO " + TABLE_SUBCATEGORY + " (" + TABLE_SUBCATEGORY + "Name, " + TABLE_CATEGORY + "ID) VALUES");
-        INSERT_SUBCATEGORIES.append("('Phones', 1),");
-        INSERT_SUBCATEGORIES.append("('Cars', 1),");
-        INSERT_SUBCATEGORIES.append("('Concerts', 2),");
-        INSERT_SUBCATEGORIES.append("('Bars', 2);");
+        String INSERT_CRITERIA = "INSERT INTO " + TABLE_CRITERIA + " (" + TABLE_CRITERIA + "Name) VALUES" +
+                "('Price')," +
+                "('Horsepower')," +
+                "('RAM')," +
+                "('Pleasure')," +
+                "('People');";
 
-        StringBuilder INSERT_CRITERIA = new StringBuilder();
-        INSERT_CRITERIA.append("INSERT INTO " + TABLE_CRITERIA + " (" + TABLE_CRITERIA + "Name) VALUES");
-        INSERT_CRITERIA.append("('Price'),");
-        INSERT_CRITERIA.append("('Horsepower'),");
-        INSERT_CRITERIA.append("('RAM'),");
-        INSERT_CRITERIA.append("('Pleasure'),");
-        INSERT_CRITERIA.append("('People');");
-
-        StringBuilder INSERT_SUBCATEGORY_CRITERIA = new StringBuilder();
-        INSERT_SUBCATEGORY_CRITERIA.append("INSERT INTO " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA
-                + " (" + TABLE_SUBCATEGORY + "ID, " + TABLE_CRITERIA + "ID) VALUES");
-        INSERT_SUBCATEGORY_CRITERIA.append("(1, 1),");
-        INSERT_SUBCATEGORY_CRITERIA.append("(1, 3),");
-        INSERT_SUBCATEGORY_CRITERIA.append("(2, 1),");
-        INSERT_SUBCATEGORY_CRITERIA.append("(2, 2),");
-        INSERT_SUBCATEGORY_CRITERIA.append("(3, 1),");
-        INSERT_SUBCATEGORY_CRITERIA.append("(3, 4),");
-        INSERT_SUBCATEGORY_CRITERIA.append("(4, 4),");
-        INSERT_SUBCATEGORY_CRITERIA.append("(4, 5);");
+        String INSERT_SUBCATEGORY_CRITERIA = "INSERT INTO " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA
+                + " (" + TABLE_SUBCATEGORY + "ID, " + TABLE_CRITERIA + "ID) VALUES" +
+                "(1, 1)," +
+                "(1, 3)," +
+                "(2, 1)," +
+                "(2, 2)," +
+                "(3, 1)," +
+                "(3, 4)," +
+                "(4, 4)," +
+                "(4, 5);";
 
         db.execSQL(CREATE_DECISION_TABLE);
         db.execSQL(CREATE_SUBCATEGORY_TABLE);
@@ -149,10 +143,10 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_DECISION_CRITERIA_TABLE);
         db.execSQL(SUBCATEGORY_CRITERIA_TABLE);
         db.execSQL(DECISION_CHOICE_TABLE);
-        db.execSQL(INSERT_CATEGORIES.toString());
-        db.execSQL(INSERT_SUBCATEGORIES.toString());
-        db.execSQL(INSERT_CRITERIA.toString());
-        db.execSQL(INSERT_SUBCATEGORY_CRITERIA.toString());
+        db.execSQL(INSERT_CATEGORIES);
+        db.execSQL(INSERT_SUBCATEGORIES);
+        db.execSQL(INSERT_CRITERIA);
+        db.execSQL(INSERT_SUBCATEGORY_CRITERIA);
     }
 
     @Override
@@ -575,11 +569,17 @@ public class DBHandler extends SQLiteOpenHelper {
         if (!insertChoices(decision.getCriteria().get(0).getChoices()))
             return false;
 
+        Log.d("Dec Save Debug", "Choices saved");
+
         if (!insertCriteria(decision.getCriteria()))
             return false;
 
+        Log.d("Dec Save Debug", "Criteria saved");
+
         if (!insertDecision(decision))
             return false;
+
+        Log.d("Dec Save Debug", "Decision saved");
 
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
             return false;
@@ -602,6 +602,7 @@ public class DBHandler extends SQLiteOpenHelper {
             decisionId = cursor.getInt(0);
         } else {
             cursor.close();
+            Log.d("Dec Save Debug", "Decision was not saved");
             return false;
         }
 
@@ -621,6 +622,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 criteriaId = cursor.getInt(0);
             } else {
                 cursor.close();
+                Log.d("Dec Save Debug", "Criterion was not saved");
                 return false;
             }
 
@@ -646,6 +648,7 @@ public class DBHandler extends SQLiteOpenHelper {
                     choiceId = cursor.getInt(0);
                 } else {
                     cursor.close();
+                    Log.d("Dec Save Debug", "Choice was not saved");
                     return false;
                 }
 
@@ -842,7 +845,7 @@ public class DBHandler extends SQLiteOpenHelper {
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
-        String date = dateFormat.format(new Date());
+        String date = dateFormat.format(decision.getDate());
 
         insertion = "INSERT INTO " + TABLE_DECISION + " (" + TABLE_DECISION + "Name, " + TABLE_DECISION + "Date, " + TABLE_SUBCATEGORY + "ID)" +
                 " VALUES ('" + decision.getName() + "', '" + date + "', " + subCategoryId + ")";
