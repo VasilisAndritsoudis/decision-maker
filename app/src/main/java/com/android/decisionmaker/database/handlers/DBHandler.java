@@ -172,10 +172,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
                 response.add(cat);
             } while (cursor.moveToNext());
-
-            cursor.close();
         }
 
+        cursor.close();
         db.close();
         return response;
     }
@@ -195,6 +194,7 @@ public class DBHandler extends SQLiteOpenHelper {
             categoryId = cursor.getInt(0);
             cursor.close();
         } else {
+            cursor.close();
             return null;
         }
 
@@ -219,10 +219,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
                 response.add(subCat);
             } while (cursor.moveToNext());
-
-            cursor.close();
         }
 
+        cursor.close();
         db.close();
         return response;
     }
@@ -250,10 +249,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
                 response.add(criteria);
             } while (cursor.moveToNext());
-
-            cursor.close();
         }
 
+        cursor.close();
         db.close();
         return response;
     }
@@ -284,10 +282,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
                 response.add(criteria);
             } while (cursor.moveToNext());
-
-            cursor.close();
         }
 
+        cursor.close();
         db.close();
         return response;
     }
@@ -342,17 +339,16 @@ public class DBHandler extends SQLiteOpenHelper {
 
                         choices.add(innerItem);
                     } while (innerCursor.moveToNext());
-
-                    innerCursor.close();
                 }
 
+                innerCursor.close();
                 item.setChoices(choices);
 
                 criteria.add(item);
             } while (cursor.moveToNext());
-
-            cursor.close();
         }
+
+        cursor.close();
 
         query = "SELECT " + TABLE_DECISION + "ID, " + TABLE_DECISION + "Name, " + TABLE_DECISION + "Date, " + TABLE_SUBCATEGORY + "ID" +
                 " FROM " + TABLE_DECISION +
@@ -470,6 +466,8 @@ public class DBHandler extends SQLiteOpenHelper {
             return false;
         }
 
+        cursor.close();
+
         String insertion = "INSERT INTO " + TABLE_CATEGORY + " (" + TABLE_CATEGORY + "Name)" +
                 " VALUES ('" + category.getName() + "')";
 
@@ -492,6 +490,8 @@ public class DBHandler extends SQLiteOpenHelper {
             return false;
         }
 
+        cursor.close();
+
         query = "SELECT " + TABLE_CATEGORY + "ID" +
                 " FROM " + TABLE_CATEGORY +
                 " WHERE " + TABLE_CATEGORY + "Name = '" + subCategory.getCategory() + "'";
@@ -505,6 +505,7 @@ public class DBHandler extends SQLiteOpenHelper {
             categoryId = cursor.getInt(0);
             cursor.close();
         } else {
+            cursor.close();
             return false;
         }
 
@@ -526,6 +527,7 @@ public class DBHandler extends SQLiteOpenHelper {
             subCategoryId = cursor.getInt(0);
             cursor.close();
         } else {
+            cursor.close();
             return false;
         }
 
@@ -546,6 +548,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 criteriaId = cursor.getInt(0);
                 cursor.close();
             } else {
+                cursor.close();
                 return false;
             }
 
@@ -588,10 +591,12 @@ public class DBHandler extends SQLiteOpenHelper {
         if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             decisionId = cursor.getInt(0);
-            cursor.close();
         } else {
+            cursor.close();
             return false;
         }
+
+        cursor.close();
 
         for (Criteria criteria : decision.getCriteria()) {
             query = "SELECT " + TABLE_CRITERIA + "ID" +
@@ -605,10 +610,12 @@ public class DBHandler extends SQLiteOpenHelper {
             if (cursor.getCount() != 0) {
                 cursor.moveToFirst();
                 criteriaId = cursor.getInt(0);
-                cursor.close();
             } else {
+                cursor.close();
                 return false;
             }
+
+            cursor.close();
 
             String insertion = "INSERT INTO " + TABLE_DECISION + "_" + TABLE_CRITERIA +
                     " (" + TABLE_DECISION + "ID, " + TABLE_CRITERIA + "ID, " + TABLE_CRITERIA + "Weight)" +
@@ -628,10 +635,12 @@ public class DBHandler extends SQLiteOpenHelper {
                 if (cursor.getCount() != 0) {
                     cursor.moveToFirst();
                     choiceId = cursor.getInt(0);
-                    cursor.close();
                 } else {
+                    cursor.close();
                     return false;
                 }
+
+                cursor.close();
 
                 insertion = "INSERT INTO " + TABLE_DECISION + "_" + TABLE_CHOICE +
                         " (" + TABLE_DECISION + "ID, " + TABLE_CHOICE + "ID, " + TABLE_CRITERIA + "ID, " + TABLE_CHOICE + "Value)" +
@@ -757,6 +766,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 continue;
             }
 
+            cursor.close();
+
             String insertion = "INSERT INTO " + TABLE_CHOICE + " (" + TABLE_CHOICE + "Name)" +
                     " VALUES ('" + item.getName() + "')";
 
@@ -784,6 +795,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 continue;
             }
 
+            cursor.close();
+
             String insertion = "INSERT INTO " + TABLE_CRITERIA + " (" + TABLE_CRITERIA + "Name)" +
                     " VALUES ('" + item.getName() + "')";
 
@@ -806,10 +819,12 @@ public class DBHandler extends SQLiteOpenHelper {
         if (cursor.getCount() != 0) {
             cursor.moveToFirst();
             subCategoryId = cursor.getInt(0);
-            cursor.close();
         } else {
+            cursor.close();
             return false;
         }
+
+        cursor.close();
 
         String insertion;
 
