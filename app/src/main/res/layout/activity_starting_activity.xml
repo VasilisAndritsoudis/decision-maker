@@ -71,6 +71,7 @@
         android:layout_marginEnd="8dp"
         android:background="#FFFFFF"
         android:contentDescription="@string/info"
+        android:onClick="createDecision"
         app:layout_constraintBottom_toBottomOf="@+id/startLangButton"
         app:layout_constraintEnd_toStartOf="@+id/startLangButton"
         app:srcCompat="@drawable/ic_info_outline" />

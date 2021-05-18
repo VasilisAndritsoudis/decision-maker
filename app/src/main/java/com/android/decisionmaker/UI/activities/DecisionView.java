@@ -15,6 +15,8 @@ import com.android.decisionmaker.database.models.Criteria;
 import com.android.decisionmaker.database.models.Decision;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.Objects;
+
 public class DecisionView extends AppCompatActivity {
 
     private Decision decision;
@@ -38,6 +40,9 @@ public class DecisionView extends AppCompatActivity {
 
         tabLayout.addTab(tabLayout.newTab().setText("Results"));
         tabLayout.addTab(tabLayout.newTab().setText("Data"));
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
 
         viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull

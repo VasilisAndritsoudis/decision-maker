@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 
 import com.android.decisionmaker.R;
 import com.android.decisionmaker.database.handlers.DBHandler;
@@ -17,13 +18,63 @@ import com.android.decisionmaker.database.models.SubCategory;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 public class StartingActivity extends AppCompatActivity {
+
+    ImageButton imageButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        imageButton = findViewById(R.id.startInfoButton);
+
+
         setContentView(R.layout.activity_starting_activity);
+    }
+
+    public void createDecision(View view){
+        Decision decision = new Decision();
+
+        decision.setName(String.valueOf(new Date().getTime()));
+        decision.setDate(new Date());
+        decision.setSubCategory("Phones");
+
+        ArrayList<Criteria> criteria = new ArrayList<>();
+
+        Criteria criteria1 = new Criteria();
+        criteria1.setName("Price");
+        criteria1.setWeight(8);
+
+        Criteria criteria2 = new Criteria();
+        criteria2.setName("RAM");
+        criteria2.setWeight(6);
+
+        ArrayList<Choice> choices = new ArrayList<>();
+
+        Choice choice = new Choice();
+        choice.setName("Samsung");
+        choice.setValue(7);
+
+        Choice choice1 = new Choice();
+        choice1.setName("Iphone");
+        choice1.setValue(8);
+
+        choices.add(choice);
+        choices.add(choice1);
+
+        criteria1.setChoices(choices);
+        criteria2.setChoices(choices);
+
+        criteria.add(criteria1);
+        criteria.add(criteria2);
+
+        decision.setCriteria(criteria);
+
+        DBHandler dbHandler = DBHandler.getDBHandler(this);
+
+        Log.d("Save Decision", Boolean.toString(dbHandler.saveDecision(decision)));
     }
 
     public void goToSettings(View view) {
@@ -74,6 +125,8 @@ public class StartingActivity extends AppCompatActivity {
 
         Log.d("Save Decision", Boolean.toString(dbHandler.saveDecision(decision)));
     }
+
+
 
     public void goToHistory(View view) {
         Intent intent = new Intent(this, History.class);

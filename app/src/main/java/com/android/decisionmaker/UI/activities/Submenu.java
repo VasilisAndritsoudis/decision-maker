@@ -12,6 +12,7 @@ import com.android.decisionmaker.database.handlers.DBHandler;
 import com.android.decisionmaker.database.models.SubCategory;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Submenu extends AppCompatActivity {
 
@@ -25,6 +26,9 @@ public class Submenu extends AppCompatActivity {
 
         Bundle extras = getIntent().getExtras();
         String name;
+
+        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
 
         if (extras != null) {
             name = extras.getString("Category");
