@@ -3,6 +3,7 @@ package com.android.decisionmaker.UI.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -114,12 +115,36 @@ public class Prepare extends AppCompatActivity {
             return;
         ArrayList<Choice> choices;
         choices = (ArrayList<Choice>) extras.get("Choices");
-        for(Criteria criterion:criteria)
-            criterion.setChoices(choices);
+
+        for (Criteria criterion : criteria) {
+            ArrayList<Choice> newChoices = new ArrayList<>();
+            for (Choice choice : choices) {
+                Choice temp = new Choice();
+                temp.setId(choice.getId());
+                temp.setName(choice.getName());
+                temp.setValue(choice.getValue());
+                newChoices.add(temp);
+            }
+            criterion.setChoices(newChoices);
+        }
+
         decision.setCriteria(criteria);
         Intent intent = new Intent(this, CriteriaScore.class);
+
+        for (Criteria criteria : decision.getCriteria()) {
+            for (Choice choice : criteria.getChoices()) {
+                choice.setValue(1);
+            }
+        }
+
+
         intent.putExtra("Times",decision.getCriteria().size());
         intent.putExtra("Decision", decision);
+
+        if (extras.containsKey("Category")) {
+            intent.putExtra("Category", extras.getString("Category"));
+        }
+
         startActivity(intent);
     }
 

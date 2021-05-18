@@ -59,19 +59,19 @@ public class ChartView extends Fragment {
     public ChartView(Decision decision) {
         this.decision = decision;
 
-        Log.d("Dec Name", decision.getName());
-        Log.d("Dec Date", decision.getDate().toString());
-        Log.d("Dec SubCat", decision.getSubCategory());
-
-        for (Criteria criteria : decision.getCriteria()) {
-            Log.d("Dec Crit Name", criteria.getName());
-            Log.d("Dec Crit Weight", String.valueOf(criteria.getWeight()));
-
-            for (Choice choice : criteria.getChoices()) {
-                Log.d("Dec Crit Choice Name", choice.getName());
-                Log.d("Dec Crit Choice Val", String.valueOf(choice.getValue()));
-            }
-        }
+//        Log.d("Dec Name", decision.getName());
+//        Log.d("Dec Date", decision.getDate().toString());
+//        Log.d("Dec SubCat", decision.getSubCategory());
+//
+//        for (Criteria criteria : decision.getCriteria()) {
+//            Log.d("Dec Crit Name", criteria.getName());
+//            Log.d("Dec Crit Weight", String.valueOf(criteria.getWeight()));
+//
+//            for (Choice choice : criteria.getChoices()) {
+//                Log.d("Dec Crit Choice Name", choice.getName());
+//                Log.d("Dec Crit Choice Val", String.valueOf(choice.getValue()));
+//            }
+//        }
     }
 
     /**
@@ -115,7 +115,7 @@ public class ChartView extends Fragment {
 
         AnyChartView anyChartView = view.findViewById(R.id.any_chart_view);
 
-        int temp = 2;
+        int temp = 0;
         switch (temp) {
             case 0:
                 anyChartView.setChart(prepareChart(decision));
@@ -216,9 +216,9 @@ public class ChartView extends Fragment {
         }
 
         //Cartesian3d pie = AnyChart.column3d();
-        Cartesian cartesian = AnyChart.column();
+        Cartesian3d cartesian = AnyChart.column3d();
 
-        Column column = cartesian.column(data);
+        Column3d column = cartesian.column(data);
 
         column.tooltip()
                 .titleFormat("{%X}")

@@ -39,19 +39,19 @@ public class DataView extends Fragment {
     public DataView(Decision decision) {
         this.decision = decision;
 
-        Log.d("Dec Name", decision.getName());
-        Log.d("Dec Date", decision.getDate().toString());
-        Log.d("Dec SubCat", decision.getSubCategory());
-
-        for (Criteria criteria : decision.getCriteria()) {
-            Log.d("Dec Crit Name", criteria.getName());
-            Log.d("Dec Crit Weight", String.valueOf(criteria.getWeight()));
-
-            for (Choice choice : criteria.getChoices()) {
-                Log.d("Dec Crit Choice Name", choice.getName());
-                Log.d("Dec Crit Choice Val", String.valueOf(choice.getValue()));
-            }
-        }
+//        Log.d("Dec Name", decision.getName());
+//        Log.d("Dec Date", decision.getDate().toString());
+//        Log.d("Dec SubCat", decision.getSubCategory());
+//
+//        for (Criteria criteria : decision.getCriteria()) {
+//            Log.d("Dec Crit Name", criteria.getName());
+//            Log.d("Dec Crit Weight", String.valueOf(criteria.getWeight()));
+//
+//            for (Choice choice : criteria.getChoices()) {
+//                Log.d("Dec Crit Choice Name", choice.getName());
+//                Log.d("Dec Crit Choice Val", String.valueOf(choice.getValue()));
+//            }
+//        }
     }
 
     /**

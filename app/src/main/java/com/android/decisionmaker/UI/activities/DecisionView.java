@@ -37,6 +37,19 @@ public class DecisionView extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
 
+//        Log.d("Dec Name", decision.getName());
+//        Log.d("Dec Date", decision.getDate().toString());
+//        Log.d("Dec SubCat", decision.getSubCategory());
+//
+//        for (Criteria criteria : decision.getCriteria()) {
+//            Log.d("Dec Crit Name", criteria.getName());
+//            Log.d("Dec Crit Weight", String.valueOf(criteria.getWeight()));
+//
+//            for (Choice choice : criteria.getChoices()) {
+//                Log.d("Dec Crit Choice Name", choice.getName());
+//                Log.d("Dec Crit Choice Val", String.valueOf(choice.getValue()));
+//            }
+//        }
 
         tabLayout.addTab(tabLayout.newTab().setText("Results"));
         tabLayout.addTab(tabLayout.newTab().setText("Data"));

@@ -11,6 +11,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.decisionmaker.R;
+import com.android.decisionmaker.database.models.Choice;
+import com.android.decisionmaker.database.models.Criteria;
 import com.android.decisionmaker.database.models.Decision;
 
 import java.util.ArrayList;
@@ -18,13 +20,15 @@ import java.util.ArrayList;
 public class CriteriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private final ArrayList<String> arrayList;
-    Decision decision;
-    int num;
+    private CriteriaAdapterInterface listenerInterface;
+//    Decision decision;
+//    int num;
 
-    public CriteriaAdapter (ArrayList<String> list, Decision decision, int num) {
+    public CriteriaAdapter (ArrayList<String> list, CriteriaAdapterInterface listenerInterface) {
         arrayList = list;
-        this.decision = decision;
-        this.num = num;
+//        this.decision = decision;
+//        this.num = num;
+        this.listenerInterface = listenerInterface;
     }
     @NonNull
     @Override
@@ -32,7 +36,6 @@ public class CriteriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if(viewType == 0) {
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.criteria_recycler_title, parent, false);
-
             return new ViewHolder1(v);
         } else if (viewType == arrayList.size()-1) {
             View v = LayoutInflater.from(parent.getContext())
@@ -43,7 +46,6 @@ public class CriteriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     .inflate(R.layout.criteria_recycler_layout, parent, false);
             return new ViewHolder0(v);
         }
-
     }
 
     @Override
@@ -57,26 +59,6 @@ public class CriteriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         } else {
             ViewHolder0 viewHolder0 = (ViewHolder0) holder;
             viewHolder0.name.setText(arrayList.get(position));
-            viewHolder0.seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-                @Override
-                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    if(position == 1) {
-                        decision.getCriteria().get(num).setWeight(progress + 1);
-                    } else {
-                        decision.getCriteria().get(num).getChoices().get(position - 2).setValue(progress + 1);
-                    }
-                }
-
-                @Override
-                public void onStartTrackingTouch(SeekBar seekBar) {
-
-                }
-
-                @Override
-                public void onStopTrackingTouch(SeekBar seekBar) {
-
-                }
-            });
         }
     }
 
@@ -90,7 +72,7 @@ public class CriteriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return position;
     }
 
-    public static class ViewHolder0 extends RecyclerView.ViewHolder {
+    public class ViewHolder0 extends RecyclerView.ViewHolder {
 
         TextView name;
         SeekBar seekBar;
@@ -100,7 +82,24 @@ public class CriteriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
             name = itemView.findViewById(R.id.criteriaProductName);
             seekBar = itemView.findViewById(R.id.criteriaSeekBar);
-            seekBar.setMax(1000);
+            seekBar.setMax(99);
+
+            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    listenerInterface.onSeekBarChange(getAbsoluteAdapterPosition(), seekBar.getProgress(), arrayList.get(0));
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
 
         }
     }
