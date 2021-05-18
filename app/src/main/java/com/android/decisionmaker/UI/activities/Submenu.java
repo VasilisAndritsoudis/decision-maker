@@ -28,7 +28,7 @@ public class Submenu extends AppCompatActivity {
 
         if (extras != null) {
             name = extras.getString("Category");
-            DBHandler dbHandler = new DBHandler(this, null, null, 1);
+            DBHandler dbHandler = DBHandler.getDBHandler(this);
             subCategories = dbHandler.getSubCategoriesOfCategory(name);
             SubCategory plus = new SubCategory();
             plus.setName("+");

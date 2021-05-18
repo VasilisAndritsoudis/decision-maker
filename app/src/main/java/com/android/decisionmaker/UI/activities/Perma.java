@@ -35,7 +35,7 @@ public class Perma extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perma);
 
-        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+        DBHandler dbHandler = DBHandler.getDBHandler(this);
         ArrayList<Category> temp = dbHandler.getCategories();
 
         categoryName =findViewById(R.id.permaCategoryEditext);

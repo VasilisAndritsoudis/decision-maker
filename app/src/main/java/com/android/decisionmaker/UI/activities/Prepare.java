@@ -46,7 +46,7 @@ public class Prepare extends AppCompatActivity {
         criterion = findViewById(R.id.prepareEditText);
         select = findViewById(R.id.prepareSelectTv);
 
-        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+        DBHandler dbHandler = DBHandler.getDBHandler(this);
 
         extras = getIntent().getExtras();
         if (extras != null) {

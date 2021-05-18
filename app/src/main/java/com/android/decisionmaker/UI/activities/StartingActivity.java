@@ -70,7 +70,7 @@ public class StartingActivity extends AppCompatActivity {
 
         decision.setCriteria(criteria);
 
-        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+        DBHandler dbHandler = DBHandler.getDBHandler(this);
 
         Log.d("Save Decision", Boolean.toString(dbHandler.saveDecision(decision)));
     }

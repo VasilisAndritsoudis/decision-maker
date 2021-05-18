@@ -20,6 +20,8 @@ import java.util.Date;
 import java.util.Locale;
 
 public class DBHandler extends SQLiteOpenHelper {
+    private static DBHandler instance = null;
+
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "decision_maker.db";
 
@@ -30,8 +32,15 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String TABLE_CHOICE = "Choice";
     private static final String TABLE_SETTINGS = "Settings";
 
-    public DBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version){
-        super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+    public static DBHandler getDBHandler(Context ctx) {
+        if (instance == null) {
+            instance = new DBHandler(ctx.getApplicationContext());
+        }
+        return instance;
+    }
+
+    private DBHandler(Context context){
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override

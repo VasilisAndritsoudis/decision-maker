@@ -22,7 +22,7 @@ public class DecisionMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_decision_menu);
 
-        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+        DBHandler dbHandler = DBHandler.getDBHandler(this);
         categories = dbHandler.getCategories();
 
         Category plus = new Category();

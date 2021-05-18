@@ -35,7 +35,7 @@ public class History extends AppCompatActivity implements HistoryAdapterInterfac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history);
 
-        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+        DBHandler dbHandler = DBHandler.getDBHandler(this);
 
         decisions = dbHandler.getDecisions();
         pairs = new ArrayList<>();
@@ -57,7 +57,7 @@ public class History extends AppCompatActivity implements HistoryAdapterInterfac
 
     @Override
     public void onClick(int position) {
-        DBHandler dbHandler = new DBHandler(this, null, null, 1);
+        DBHandler dbHandler = DBHandler.getDBHandler(this);
 
         Log.d("Dec Delete", String.valueOf(dbHandler.deleteDecision(pairs.get(position).getDecision())));
 
