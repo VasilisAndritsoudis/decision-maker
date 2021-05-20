@@ -6,9 +6,11 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.android.decisionmaker.R;
+import com.android.decisionmaker.database.handlers.DBHandler;
 
 import java.util.Objects;
 
@@ -16,6 +18,7 @@ public class Settings extends AppCompatActivity {
 
     Spinner resultView;
     String[] resultViews = {"Pie chart", "Histogram"};
+    RadioGroup radioGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,17 +26,17 @@ public class Settings extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
 
         resultView = findViewById(R.id.settingsResultSpinner);
         ArrayAdapter<String> resultAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_spinner_item,resultViews);
-        resultAdapter.setDropDownViewResource(android.R.layout.simple_spinner_item);
+                R.layout.spinner_item, resultViews);
+        resultAdapter.setDropDownViewResource(R.layout.spinner_item);
         resultView.setAdapter(resultAdapter);
         resultView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
+                DBHandler dbHandler = DBHandler.getDBHandler(Settings.this);
+                dbHandler.updateViewType(resultViews[position].split(" ")[0]);
             }
 
             @Override
@@ -42,6 +45,15 @@ public class Settings extends AppCompatActivity {
             }
         });
 
+        radioGroup = findViewById(R.id.settingsRadioGroup);
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            DBHandler dbHandler = DBHandler.getDBHandler(Settings.this);
+            if(checkedId == 0) {
+                dbHandler.updateDarkMode(false);
+            } else {
+                dbHandler.updateDarkMode(true);
+            }
+        });
 
     }
 }

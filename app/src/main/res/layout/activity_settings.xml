@@ -37,7 +37,7 @@
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/radioGroup3" />
+        app:layout_constraintTop_toBottomOf="@+id/settingsRadioGroup" />
 
     <TextView
         android:id="@+id/settingsResultExplanation"
@@ -51,7 +51,7 @@
         app:layout_constraintTop_toBottomOf="@+id/settingsResultSpinner" />
 
     <RadioGroup
-        android:id="@+id/radioGroup3"
+        android:id="@+id/settingsRadioGroup"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -65,9 +65,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:checked="true"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="sans-serif"
             android:layoutDirection="rtl"
-            android:text="Bright Mode"
+            android:text="Light Mode"
             android:textAlignment="textStart"
             android:textSize="20sp" />
 
@@ -76,8 +76,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:checked="true"
-            android:fontFamily="sans-serif-medium"
+            android:fontFamily="sans-serif"
             android:layoutDirection="rtl"
             android:text="Dark Mode"
             android:textAlignment="textStart"
