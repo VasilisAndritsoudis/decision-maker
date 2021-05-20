@@ -106,8 +106,12 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                 }
             });
 
+            edit.setOnClickListener(v -> {
+                listenerInterface.onClickEdit(getAbsoluteAdapterPosition());
+            });
+
             delete.setOnClickListener(v -> {
-                listenerInterface.onClick(getAbsoluteAdapterPosition());
+                listenerInterface.onClickDelete(getAbsoluteAdapterPosition());
             });
         }
     }

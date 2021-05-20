@@ -38,7 +38,11 @@ public class AddChoices extends AppCompatActivity {
 
         extras = getIntent().getExtras();
         if (extras != null) {
-            subCategoryName = extras.getString("SubCategory");
+            if (extras.containsKey("SubCategory") && extras.getString("SubCategory") != null) {
+                subCategoryName = extras.getString("SubCategory");
+            } else {
+                subCategoryName = null;
+            }
         }
 
         choices = new ArrayList<>();

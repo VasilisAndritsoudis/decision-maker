@@ -60,7 +60,27 @@ public class History extends AppCompatActivity implements HistoryAdapterInterfac
     }
 
     @Override
-    public void onClick(int position) {
+    public void onClickEdit(int position) {
+        Decision decision = pairs.get(position).getDecision();
+
+        for (Criteria criteria : decision.getCriteria()) {
+            for (Choice choice : criteria.getChoices()) {
+                choice.setValue(1);
+            }
+            criteria.setWeight(1);
+        }
+
+        Intent intent = new Intent(this, CriteriaScore.class);
+
+        intent.putExtra("Times",decision.getCriteria().size());
+        intent.putExtra("Decision", decision);
+        intent.putExtra("Edit", true);
+
+        startActivity(intent);
+    }
+
+    @Override
+    public void onClickDelete(int position) {
         DBHandler dbHandler = DBHandler.getDBHandler(this);
 
         Log.d("Dec Delete", String.valueOf(dbHandler.deleteDecision(pairs.get(position).getDecision())));

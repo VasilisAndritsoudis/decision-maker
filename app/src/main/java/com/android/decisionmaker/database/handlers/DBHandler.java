@@ -104,7 +104,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 ");";
 
         String SETTINGS_TABLE = "CREATE TABLE " + TABLE_SETTINGS + "(" +
-                "DarkMode BOOLEAN NOT NULL" +
+                " DarkMode BOOLEAN NOT NULL," +
+                " DecisionViewType VARCHAR(30) NOT NULL" +
                 ");";
 
         String INSERT_CATEGORIES = "INSERT INTO " + TABLE_CATEGORY + " (" + TABLE_CATEGORY + "Name) VALUES" +
@@ -143,6 +144,7 @@ public class DBHandler extends SQLiteOpenHelper {
         db.execSQL(CREATE_DECISION_CRITERIA_TABLE);
         db.execSQL(SUBCATEGORY_CRITERIA_TABLE);
         db.execSQL(DECISION_CHOICE_TABLE);
+        db.execSQL(SETTINGS_TABLE);
         db.execSQL(INSERT_CATEGORIES);
         db.execSQL(INSERT_SUBCATEGORIES);
         db.execSQL(INSERT_CRITERIA);

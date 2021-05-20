@@ -86,6 +86,9 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
             if (extras.containsKey("Category")) {
                 intent.putExtra("Category", extras.getString("Category"));
             }
+            if (extras.containsKey("Edit")) {
+                intent.putExtra("Edit", extras.getBoolean("Edit"));
+            }
         }
 
         startActivity(intent);
@@ -98,7 +101,7 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
         DBHandler dbHandler = DBHandler.getDBHandler(this);
 
         if (extras != null) {
-            if (extras.containsKey("Category")) {
+            if (extras.containsKey("Category") && extras.getString("Category") != null) {
                 Log.d("Save Cat", "Score Criteria Contains Category");
                 Category category = new Category();
                 category.setName(extras.getString("Category"));
@@ -111,7 +114,9 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
             }
         }
 
-        Log.d("Save Decision", Boolean.toString(dbHandler.saveDecision(decision)));
+        if (!(extras != null && extras.containsKey("Edit"))) {
+            Log.d("Save Decision", Boolean.toString(dbHandler.saveDecision(decision)));
+        }
 
         startActivity(intent);
     }

@@ -1,5 +1,6 @@
 package com.android.decisionmaker.UI.adapters;
 
 public interface HistoryAdapterInterface {
-    void onClick(int position);
+    void onClickEdit(int position);
+    void onClickDelete(int position);
 }
