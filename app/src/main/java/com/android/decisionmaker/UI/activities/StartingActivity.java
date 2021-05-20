@@ -81,6 +81,17 @@ public class StartingActivity extends AppCompatActivity {
         Intent intent = new Intent(this, Settings.class);
         startActivity(intent);
 
+        DBHandler dbHandler = DBHandler.getDBHandler(this);
+
+        Log.d("Settings Dark Mode", String.valueOf(dbHandler.getDarkMode()));
+        Log.d("Settings View Type", dbHandler.getViewType());
+
+        dbHandler.updateDarkMode(true);
+        dbHandler.updateViewType("Histogram");
+
+        Log.d("Settings Dark Mode", String.valueOf(dbHandler.getDarkMode()));
+        Log.d("Settings View Type", dbHandler.getViewType());
+
         // Testing the database
         // Please ignore
 
