@@ -10,93 +10,78 @@
         android:id="@+id/settingsTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="64dp"
         android:text="@string/settings"
         android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Switch
-        android:id="@+id/settingsColourButton"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/settingsColourText"
-        app:layout_constraintStart_toStartOf="@+id/settingsResultSpinner"
-        app:layout_constraintTop_toTopOf="@+id/settingsColourText" />
-
     <Spinner
         android:id="@+id/settingsResultSpinner"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginStart="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/settingsResultText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/settingsResultText" />
-
-    <Spinner
-        android:id="@+id/settingsAlgorithmSpinner"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:spinnerMode="dialog"
-        app:layout_constraintBottom_toBottomOf="@+id/settingsAlgorithmText"
-        app:layout_constraintEnd_toEndOf="@+id/settingsResultSpinner"
-        app:layout_constraintStart_toStartOf="@+id/settingsResultSpinner" />
-
-    <TextView
-        android:id="@+id/settingsColourText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
-        android:text="@string/white_mode"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/settingsResultText"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settingsTitle" />
+        app:layout_constraintStart_toEndOf="@+id/settingsResultText"
+        app:layout_constraintTop_toTopOf="@+id/settingsResultText" />
 
     <TextView
         android:id="@+id/settingsResultText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="64dp"
+        android:fontFamily="sans-serif-medium"
         android:text="@string/result_view"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/settingsAlgorithmText"
-        app:layout_constraintEnd_toEndOf="@+id/settingsColourText"
-        app:layout_constraintTop_toBottomOf="@+id/settingsColourText" />
-
-    <TextView
-        android:id="@+id/settingsAlgorithmText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="@string/algorithm"
-        android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/settingsColourText"
-        app:layout_constraintTop_toBottomOf="@+id/settingsResultText" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup3" />
 
     <TextView
         android:id="@+id/settingsResultExplanation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:textSize="18sp"
         android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/settingsResultSpinner" />
 
-    <TextView
-        android:id="@+id/settingsAlgorithmExplanation"
+    <RadioGroup
+        android:id="@+id/radioGroup3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="18sp"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/settingsResultText"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/settingsAlgorithmSpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/settingsTitle">
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:checked="true"
+            android:fontFamily="sans-serif-medium"
+            android:layoutDirection="rtl"
+            android:text="Bright Mode"
+            android:textAlignment="textStart"
+            android:textSize="20sp" />
+
+        <RadioButton
+            android:id="@+id/radioButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:checked="true"
+            android:fontFamily="sans-serif-medium"
+            android:layoutDirection="rtl"
+            android:text="Dark Mode"
+            android:textAlignment="textStart"
+            android:textSize="20sp" />
+    </RadioGroup>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
