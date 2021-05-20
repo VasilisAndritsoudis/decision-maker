@@ -11,23 +11,17 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.decisionmaker.R;
-import com.android.decisionmaker.database.models.Choice;
-import com.android.decisionmaker.database.models.Criteria;
-import com.android.decisionmaker.database.models.Decision;
 
 import java.util.ArrayList;
 
 public class CriteriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
     private final ArrayList<String> arrayList;
-    private CriteriaAdapterInterface listenerInterface;
-//    Decision decision;
-//    int num;
+    private final CriteriaAdapterInterface listenerInterface;
+
 
     public CriteriaAdapter (ArrayList<String> list, CriteriaAdapterInterface listenerInterface) {
         arrayList = list;
-//        this.decision = decision;
-//        this.num = num;
         this.listenerInterface = listenerInterface;
     }
     @NonNull
@@ -104,14 +98,34 @@ public class CriteriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    public static class ViewHolder1 extends RecyclerView.ViewHolder {
+    public class ViewHolder1 extends RecyclerView.ViewHolder {
 
         TextView name;
+        SeekBar seekBar;
 
         public ViewHolder1(@NonNull View itemView) {
             super(itemView);
 
             name = itemView.findViewById(R.id.criteriaTitle);
+            seekBar = itemView.findViewById(R.id.criteriaWeightSeekBar);
+            seekBar.setMax(99);
+
+            seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    listenerInterface.onSeekBarChange(getAbsoluteAdapterPosition(), seekBar.getProgress(), arrayList.get(0));
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
 
         }
     }

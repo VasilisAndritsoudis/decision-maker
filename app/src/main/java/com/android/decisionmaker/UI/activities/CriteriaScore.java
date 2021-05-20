@@ -29,6 +29,7 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
     Decision decision;
     Bundle extras;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +45,6 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
 
             criteria = new ArrayList<>();
             criteria.add(decision.getCriteria().get(decision.getCriteria().size()-num).getName());
-            criteria.add("Weight");
 
             for(Choice choice : decision.getCriteria().get(0).getChoices()) {
                 criteria.add(choice.getName());
@@ -120,10 +120,10 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
     public void onSeekBarChange(int position, int seekBarValue, String criterionName) {
         for (Criteria criterion : decision.getCriteria()) {
             if (criterion.getName().equals(criterionName)) {
-                if (position == 1) {
+                if (position == 0) {
                     criterion.setWeight(seekBarValue + 1);
                 } else {
-                    criterion.getChoices().get(position - 2).setValue(seekBarValue + 1);
+                    criterion.getChoices().get(position - 1).setValue(seekBarValue + 1);
                 }
             }
         }
