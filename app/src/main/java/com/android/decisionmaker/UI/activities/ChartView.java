@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 
 import com.android.decisionmaker.R;
 import com.android.decisionmaker.algorithms.WAS;
+import com.android.decisionmaker.database.handlers.DBHandler;
 import com.android.decisionmaker.database.models.Choice;
 import com.android.decisionmaker.database.models.Criteria;
 import com.android.decisionmaker.database.models.Decision;
@@ -115,15 +116,15 @@ public class ChartView extends Fragment {
 
         AnyChartView anyChartView = view.findViewById(R.id.any_chart_view);
 
-        int temp = 0;
-        switch (temp) {
-            case 0:
+        String viewType = DBHandler.getDBHandler(this.getContext()).getViewType();
+        switch (viewType) {
+            case "Pie":
                 anyChartView.setChart(prepareChart(decision));
                 break;
-            case 1:
+            case "Histogram":
                 anyChartView.setChart(prepareHistogram(decision));
                 break;
-            case 2:
+            case "Histogram3D":
                 anyChartView.setChart(prepareHistogram3D(decision));
         }
 

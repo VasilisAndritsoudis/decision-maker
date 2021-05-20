@@ -143,6 +143,8 @@ public class StartingActivity extends AppCompatActivity {
         Intent intent = new Intent(this, History.class);
         startActivity(intent);
 
+        Log.d("Settings Dark Mode", String.valueOf(DBHandler.getDBHandler(this).getDarkMode()));
+
         // Testing the database
         // Please ignore
 

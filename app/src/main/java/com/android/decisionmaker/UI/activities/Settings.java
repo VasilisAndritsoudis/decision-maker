@@ -1,5 +1,6 @@
 package com.android.decisionmaker.UI.activities;
 
+import androidx.annotation.IdRes;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -45,15 +46,22 @@ public class Settings extends AppCompatActivity {
             }
         });
 
+        if (DBHandler.getDBHandler(this).getViewType().equals("Pie")) {
+            resultView.setSelection(0);
+        } else if (DBHandler.getDBHandler(this).getViewType().equals("Histogram")) {
+            resultView.setSelection(1);
+        }
+
         radioGroup = findViewById(R.id.settingsRadioGroup);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             DBHandler dbHandler = DBHandler.getDBHandler(Settings.this);
-            if(checkedId == 0) {
-                dbHandler.updateDarkMode(false);
-            } else {
-                dbHandler.updateDarkMode(true);
-            }
+            dbHandler.updateDarkMode(checkedId == R.id.darkMode);
         });
 
+        if (DBHandler.getDBHandler(this).getDarkMode()) {
+            radioGroup.check(R.id.darkMode);
+        } else {
+            radioGroup.check(R.id.lightMode);
+        }
     }
 }

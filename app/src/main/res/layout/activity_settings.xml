@@ -60,11 +60,10 @@
         app:layout_constraintTop_toBottomOf="@+id/settingsTitle">
 
         <RadioButton
-            android:id="@+id/radioButton2"
+            android:id="@+id/lightMode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"
-            android:checked="true"
             android:fontFamily="sans-serif"
             android:layoutDirection="rtl"
             android:text="Light Mode"
@@ -72,7 +71,7 @@
             android:textSize="20sp" />
 
         <RadioButton
-            android:id="@+id/radioButton"
+            android:id="@+id/darkMode"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="start"

@@ -728,6 +728,10 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
     }
 
+    public boolean updateDecision(Decision decision) {
+        return true;
+    }
+
     public void updateViewType(String viewType) {
         String update = "UPDATE " + TABLE_SETTINGS +
                 " SET DecisionViewType = '" + viewType + "'";
