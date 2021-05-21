@@ -218,4 +218,9 @@ public class StartingActivity extends AppCompatActivity {
 //            }
 //        }
     }
+
+    public void goToAddChoices(View view) {
+        Intent intent = new Intent(this, AddChoices.class);
+        startActivity(intent);
+    }
 }
