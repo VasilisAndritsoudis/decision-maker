@@ -5,16 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
-    tools:context=".UI.activities.Perma"
     android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    tools:context=".UI.activities.Perma">
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:layout_weight="1"
         android:fontFamily="sans-serif-medium"
         android:text="Select category of your interest or create one:"
@@ -27,80 +27,97 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginBottom="48dp"
+        android:layout_marginEnd="8dp"
         android:fontFamily="sans-serif-medium"
         android:text="Subcategory's Name:"
         android:textSize="18sp"
-        app:layout_constraintBottom_toTopOf="@+id/permaNextButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/permaCategoryLabel" />
+        app:layout_constraintBottom_toBottomOf="@+id/permaSubCategoryEditText"
+        app:layout_constraintEnd_toStartOf="@+id/permaSubCategoryEditText"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/permaCategoryLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="48dp"
         android:fontFamily="sans-serif-medium"
         android:text="Category's Name:"
         android:textSize="18sp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/permaSubCategoryLabel"
-        app:layout_constraintEnd_toEndOf="@+id/permaSubCategoryLabel"
-        app:layout_constraintTop_toBottomOf="@+id/permaRecyclerView" />
-
-    <EditText
-        android:id="@+id/permaCategoryEditext"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="@+id/permaCategoryLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/permaCategoryLabel"
-        app:layout_constraintTop_toTopOf="@+id/permaCategoryLabel" />
+        app:layout_constraintBottom_toBottomOf="@+id/permaCategoryEditext"
+        app:layout_constraintEnd_toEndOf="@+id/permaSubCategoryLabel" />
 
     <EditText
         android:id="@+id/permaSubCategoryEditText"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
         android:ems="10"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="@+id/permaSubCategoryLabel"
-        app:layout_constraintEnd_toEndOf="@+id/permaCategoryEditext"
-        app:layout_constraintStart_toStartOf="@+id/permaCategoryEditext"
-        app:layout_constraintTop_toTopOf="@+id/permaSubCategoryLabel"
-        app:layout_constraintVertical_bias="0.476" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/permaRecyclerView"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="48dp"
-        android:background="#8B434240"
-        android:foregroundTint="#03A9F4"
-        app:layout_constraintBottom_toTopOf="@+id/permaCategoryLabel"
+        app:layout_constraintBottom_toTopOf="@+id/permaWarning"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/permaSubCategoryLabel"
+        app:layout_constraintTop_toBottomOf="@+id/permaCategoryEditext" />
+
+    <EditText
+        android:id="@+id/permaCategoryEditext"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/permaSubCategoryEditText"
+        app:layout_constraintEnd_toEndOf="@+id/permaSubCategoryEditText"
+        app:layout_constraintStart_toStartOf="@+id/permaSubCategoryEditText"
+        app:layout_constraintTop_toBottomOf="@+id/permaRecyclerView" />
 
     <Button
         android:id="@+id/permaNextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:onClick="goToAddChoices"
         android:text="Next"
         android:textAllCaps="false"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/permaWarning" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/permaRecyclerView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="#8B434240"
+        android:foregroundTint="#03A9F4"
+        app:layout_constraintBottom_toTopOf="@+id/permaCategoryEditext"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+    <TextView
+        android:id="@+id/permaWarning"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="TextView"
+        android:textSize="16sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/permaNextButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/permaSubCategoryEditText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

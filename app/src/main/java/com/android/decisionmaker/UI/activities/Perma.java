@@ -15,10 +15,9 @@ import com.android.decisionmaker.R;
 import com.android.decisionmaker.UI.adapters.PermaAdapter;
 import com.android.decisionmaker.database.handlers.DBHandler;
 import com.android.decisionmaker.database.models.Category;
-import com.android.decisionmaker.database.models.Decision;
+import com.android.decisionmaker.database.models.SubCategory;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Objects;
 
 public class Perma extends AppCompatActivity {
@@ -30,6 +29,8 @@ public class Perma extends AppCompatActivity {
     TextView subCategoryNameTv;
     EditText categoryName;
     EditText subCategoryName;
+    TextView warning;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +47,8 @@ public class Perma extends AppCompatActivity {
         categoryNameTv = findViewById(R.id.permaCategoryLabel);
         subCategoryNameTv = findViewById(R.id.permaSubCategoryLabel);
         subCategoryName = findViewById(R.id.permaSubCategoryEditText);
+
+        warning = findViewById(R.id.permaWarning);
 
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -86,11 +89,16 @@ public class Perma extends AppCompatActivity {
     public void goToAddChoices(View view) {
         Intent intent = new Intent(this, AddChoices.class);
         if(categoryName.getText().toString().isEmpty())
-            return;
+            warning.setText("You have to select a category or create one!");
         if (subCategoryName.getText().toString().isEmpty())
-            return;
+            warning.setText("You have to name your subcategory to continue!");
         if(categoryName.getText().toString().equals("New Category"))
-            return;
+            warning.setText("\"New Category\" as name of category is prohibited!");
+        DBHandler dbHandler = DBHandler.getDBHandler(this);
+        for (Category category : dbHandler.getCategories())
+            for (SubCategory subCategory : dbHandler.getSubCategoriesOfCategory(category.getName()))
+                if(subCategoryName.getText().toString().equals(subCategory.getName()))
+                    warning.setText("This subcategory already exists in " + category.getName() + " category!");
         intent.putExtra("SubCategory",subCategoryName.getText().toString());
         intent.putExtra("Category", categoryName.getText().toString());
         startActivity(intent);

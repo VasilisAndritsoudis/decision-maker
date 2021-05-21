@@ -10,27 +10,27 @@
         android:id="@+id/startQuickDecision"
         android:layout_width="0dp"
         android:layout_height="80dp"
+        android:layout_marginTop="32dp"
         android:onClick="goToAddChoices"
         android:text="@string/quick_decision"
         android:textAllCaps="false"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/startNewDecisionButton"
-        app:layout_constraintEnd_toEndOf="@+id/startNewDecisionButton"
-        app:layout_constraintStart_toStartOf="@+id/startNewDecisionButton"
+        app:layout_constraintEnd_toEndOf="@+id/startHistoryButton"
+        app:layout_constraintStart_toStartOf="@+id/startHistoryButton"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/startSettingsButton"
-        android:layout_width="0dp"
+        android:layout_width="243dp"
         android:layout_height="80dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="32dp"
         android:onClick="goToSettings"
         android:text="@string/settings"
         android:textAllCaps="false"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/startInfoButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/startHistoryButton"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/startHistoryButton"
         app:layout_constraintTop_toBottomOf="@+id/startHistoryButton" />
 
@@ -38,23 +38,19 @@
         android:id="@+id/startNewDecisionButton"
         android:layout_width="0dp"
         android:layout_height="80dp"
-        android:layout_marginTop="180dp"
         android:onClick="goToDecisionMenu"
         android:text="@string/new_decision"
         android:textAllCaps="false"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/startHistoryButton"
         app:layout_constraintEnd_toEndOf="@+id/startHistoryButton"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/startHistoryButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/startQuickDecision" />
 
     <Button
         android:id="@+id/startHistoryButton"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginBottom="32dp"
         android:onClick="goToHistory"
         android:text="@string/decision_history"
         android:textAllCaps="false"
@@ -62,18 +58,18 @@
         app:layout_constraintBottom_toTopOf="@+id/startSettingsButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startNewDecisionButton"
-        app:layout_constraintVertical_bias="0.499" />
+        app:layout_constraintTop_toBottomOf="@+id/startNewDecisionButton" />
 
     <ImageButton
         android:id="@+id/startInfoButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:background="#FFFFFF"
         android:contentDescription="@string/info"
         android:onClick="createDecision"
-        app:layout_constraintBottom_toBottomOf="@+id/startLangButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/startLangButton"
         app:srcCompat="@drawable/ic_info_outline" />
 
@@ -81,7 +77,7 @@
         android:id="@+id/startLangButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:background="#FFFFFF"
         android:contentDescription="@string/language"
