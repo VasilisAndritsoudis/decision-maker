@@ -121,6 +121,7 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
         startActivity(intent);
     }
 
+
     @Override
     public void onSeekBarChange(int position, int seekBarValue, String criterionName) {
         for (Criteria criterion : decision.getCriteria()) {
