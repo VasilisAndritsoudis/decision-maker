@@ -57,7 +57,7 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
             }
 
             recyclerView = findViewById(R.id.criteriaRecyclerView);
-            CriteriaAdapter adapter = new CriteriaAdapter(criteria, this);
+            CriteriaAdapter adapter = new CriteriaAdapter(criteria, decision, decision.getCriteria().size() - num,  this);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
         }
@@ -115,7 +115,9 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
         }
 
         if (!(extras != null && extras.containsKey("Edit"))) {
-            Log.d("Save Decision", Boolean.toString(dbHandler.saveDecision(decision)));
+             Log.d("Save Decision", Boolean.toString(dbHandler.saveDecision(decision)));
+        } else {
+            Log.d("Update Decision", Boolean.toString(dbHandler.updateDecision(decision)));
         }
 
         startActivity(intent);

@@ -133,9 +133,9 @@ public class Prepare extends AppCompatActivity {
 
         for (Criteria criteria : decision.getCriteria()) {
             for (Choice choice : criteria.getChoices()) {
-                choice.setValue(1);
+                choice.setValue(50);
             }
-            criteria.setWeight(1);
+            criteria.setWeight(50);
         }
 
         intent.putExtra("Times",decision.getCriteria().size());

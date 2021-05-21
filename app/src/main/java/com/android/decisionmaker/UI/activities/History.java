@@ -63,12 +63,12 @@ public class History extends AppCompatActivity implements HistoryAdapterInterfac
     public void onClickEdit(int position) {
         Decision decision = pairs.get(position).getDecision();
 
-        for (Criteria criteria : decision.getCriteria()) {
-            for (Choice choice : criteria.getChoices()) {
-                choice.setValue(1);
-            }
-            criteria.setWeight(1);
-        }
+//        for (Criteria criteria : decision.getCriteria()) {
+//            for (Choice choice : criteria.getChoices()) {
+//                choice.setValue(1);
+//            }
+//            criteria.setWeight(1);
+//        }
 
         Intent intent = new Intent(this, CriteriaScore.class);
 

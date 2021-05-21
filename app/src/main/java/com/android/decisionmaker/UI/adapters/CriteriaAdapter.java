@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.decisionmaker.R;
+import com.android.decisionmaker.database.models.Decision;
 
 import java.util.ArrayList;
 
@@ -18,12 +19,17 @@ public class CriteriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private final ArrayList<String> arrayList;
     private final CriteriaAdapterInterface listenerInterface;
+    private final Decision decision;
+    private final int count;
 
 
-    public CriteriaAdapter (ArrayList<String> list, CriteriaAdapterInterface listenerInterface) {
+    public CriteriaAdapter(ArrayList<String> list, Decision decision, int count, CriteriaAdapterInterface listenerInterface) {
         arrayList = list;
         this.listenerInterface = listenerInterface;
+        this.decision = decision;
+        this.count = count;
     }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -47,12 +53,14 @@ public class CriteriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         if(position == 0) {
             ViewHolder1 viewHolder1 = (ViewHolder1) holder;
             viewHolder1.name.setText(arrayList.get(position));
+            viewHolder1.seekBar.setProgress(decision.getCriteria().get(count).getWeight());
         } else if (position == arrayList.size()-1) {
             ViewHolder2 viewHolder2 = (ViewHolder2) holder;
             viewHolder2.name.setText(arrayList.get(position));
         } else {
             ViewHolder0 viewHolder0 = (ViewHolder0) holder;
             viewHolder0.name.setText(arrayList.get(position));
+            viewHolder0.seekBar.setProgress(decision.getCriteria().get(count).getChoices().get(position-1).getValue());
         }
     }
 
