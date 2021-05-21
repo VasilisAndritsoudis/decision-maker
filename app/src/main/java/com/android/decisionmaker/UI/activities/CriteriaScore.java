@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,6 +28,7 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
     RecyclerView recyclerView;
     ArrayList<String> criteria;
     Decision decision;
+    CriteriaAdapter adapter;
     Bundle extras;
 
 
@@ -39,8 +41,15 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
 
         extras = getIntent().getExtras();
-        if(extras != null) {
+
+        if(savedInstanceState != null) {
+            decision = (Decision) savedInstanceState.get("Decision");
+        } else {
             decision = (Decision) extras.get("Decision");
+        }
+
+        if(extras != null) {
+
             int num = (int) extras.get("Times");
 
             criteria = new ArrayList<>();
@@ -57,7 +66,7 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
             }
 
             recyclerView = findViewById(R.id.criteriaRecyclerView);
-            CriteriaAdapter adapter = new CriteriaAdapter(criteria, decision,
+            adapter = new CriteriaAdapter(criteria, decision,
                     decision.getCriteria().size() - num,  this);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -138,4 +147,12 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
             }
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putAll(extras);
+        outState.putSerializable("Decision", adapter.getDecision());
+        super.onSaveInstanceState(outState);
+    }
+
 }

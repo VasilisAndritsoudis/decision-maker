@@ -30,6 +30,10 @@ public class CriteriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         this.count = count;
     }
 
+    public Decision getDecision() {
+        return decision;
+    }
+
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

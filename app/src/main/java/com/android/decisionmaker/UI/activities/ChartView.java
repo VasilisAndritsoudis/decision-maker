@@ -1,13 +1,12 @@
 package com.android.decisionmaker.UI.activities;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 
 import com.android.decisionmaker.R;
 import com.android.decisionmaker.algorithms.WAS;
@@ -52,6 +51,7 @@ public class ChartView extends Fragment {
     private String mParam2;
 
     private Decision decision;
+    Bundle extras;
 
     public ChartView() {
         // Required empty public constructor
@@ -109,9 +109,13 @@ public class ChartView extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chart_view, container, false);
 
-        Bundle extras = this.getArguments();
-        if (extras != null) {
-            decision = (Decision) extras.get("Decision");
+        if (savedInstanceState != null) {
+            decision = (Decision) savedInstanceState.get("Decision");
+        } else {
+            extras = this.getArguments();
+            if (extras != null) {
+                decision = (Decision) extras.get("Decision");
+            }
         }
 
         AnyChartView anyChartView = view.findViewById(R.id.any_chart_view);
@@ -129,6 +133,12 @@ public class ChartView extends Fragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putSerializable("Decision", decision);
+        super.onSaveInstanceState(outState);
     }
 
     private SeparateChart prepareChart(Decision decision) {

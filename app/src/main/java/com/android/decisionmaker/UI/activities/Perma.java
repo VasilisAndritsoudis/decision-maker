@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -26,11 +27,12 @@ public class Perma extends AppCompatActivity {
     ArrayList<Pair<Category,Boolean>> categories;
 
     TextView categoryNameTv;
-    TextView subCategoryNameTv;
     EditText categoryName;
     EditText subCategoryName;
     TextView warning;
-
+    Bundle extras;
+    boolean enable;
+    PermaAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,48 +45,87 @@ public class Perma extends AppCompatActivity {
         DBHandler dbHandler = DBHandler.getDBHandler(this);
         ArrayList<Category> temp = dbHandler.getCategories();
 
-        categoryName =findViewById(R.id.permaCategoryEditext);
+        categoryName = findViewById(R.id.permaCategoryEditext);
         categoryNameTv = findViewById(R.id.permaCategoryLabel);
-        subCategoryNameTv = findViewById(R.id.permaSubCategoryLabel);
         subCategoryName = findViewById(R.id.permaSubCategoryEditText);
 
         warning = findViewById(R.id.permaWarning);
 
-        Bundle extras = getIntent().getExtras();
-        if (extras != null) {
-            categories = new ArrayList<>();
-            boolean enable;
+        extras = getIntent().getExtras();
+
+        categories = new ArrayList<>();
+
+        if (savedInstanceState != null) {
+            enable = savedInstanceState.getBoolean("Enable");
+            categoryName.setText(savedInstanceState.getString("CategoryName"));
+            categoryName.setVisibility(savedInstanceState.getInt("CategoryVisibility"));
+            categoryNameTv.setVisibility(savedInstanceState.getInt("CategoryVisibility"));
+            subCategoryName.setText(savedInstanceState.getString("SubCategoryName"));
+            if (savedInstanceState.containsKey("Warning")) {
+                warning.setText(savedInstanceState.getString("Warning"));
+                warning.setVisibility(savedInstanceState.getInt("Visibility"));
+            }
+            if (categoryName.getText().toString().isEmpty() || categoryName.getVisibility() == View.VISIBLE) {
+                for (Category category : temp) {
+                    categories.add(new Pair<>(category, false));
+                }
+                Category category = new Category();
+                category.setName("New Category");
+                if (categoryName.getVisibility() == View.VISIBLE) {
+                    categories.add(new Pair<>(category, true));
+                } else {
+                    categories.add(new Pair<>(category, false));
+                }
+            } else {
+                for (Category category : temp) {
+                    if (category.getName().equals(categoryName.getText().toString()))
+                        categories.add(new Pair<>(category, true));
+                    else
+                        categories.add(new Pair<>(category, false));
+                }
+                Category category = new Category();
+                category.setName("New Category");
+                categories.add(new Pair<>(category, false));
+            }
+        }
+
+
+        if (extras != null && savedInstanceState == null) {
             String string = extras.getString("Perma");
             if (!string.equals("None")) {
                 enable = false;
                 categoryName.setText(string);
-                subCategoryName.setVisibility(View.VISIBLE);
-                subCategoryNameTv.setVisibility(View.VISIBLE);
-                for(Category category : temp) {
-                    if(category.getName().equals(string)){
+                for (Category category : temp) {
+                    if (category.getName().equals(string)) {
                         categories.add(new Pair<>(category, true));
                     } else {
-                        categories.add(new Pair<>(category,false));
+                        categories.add(new Pair<>(category, false));
                     }
                 }
-
+                Category category = new Category();
+                category.setName("New Category");
+                categories.add(new Pair<>(category, false));
             } else {
                 enable = true;
-                for(Category category : temp) {
-                    categories.add(new Pair<>(category,false));
+                for (Category category : temp) {
+                    categories.add(new Pair<>(category, false));
                 }
+                Category category = new Category();
+                category.setName("New Category");
+                categories.add(new Pair<>(category, false));
             }
-            Category category = new Category();
-            category.setName("New Category");
-            categories.add(new Pair<>(category,false));
-            recyclerView = findViewById(R.id.permaRecyclerView);
-            PermaAdapter adapter = new PermaAdapter(categories, enable,categoryName,categoryNameTv);
-            recyclerView.setAdapter(adapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
         }
+
+        recyclerView = findViewById(R.id.permaRecyclerView);
+        adapter = new PermaAdapter(categories, enable, categoryName, categoryNameTv);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
 
     }
+
+
+
 
     public void goToAddChoices(View view) {
         Intent intent = new Intent(this, AddChoices.class);
@@ -114,5 +155,19 @@ public class Perma extends AppCompatActivity {
         intent.putExtra("SubCategory",subCategoryName.getText().toString());
         intent.putExtra("Category", categoryName.getText().toString());
         startActivity(intent);
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putAll(extras);
+        outState.putInt("CategoryVisibility", categoryName.getVisibility());
+        outState.putString("CategoryName", categoryName.getText().toString());
+        outState.putString("SubCategoryName", subCategoryName.toString());
+        if(!warning.getText().toString().isEmpty()){
+            outState.putString("Warning", warning.getText().toString());
+            outState.putInt("Visibility", warning.getVisibility());
+        }
+        outState.putBoolean("Enable", enable);
+        super.onSaveInstanceState(outState);
     }
 }

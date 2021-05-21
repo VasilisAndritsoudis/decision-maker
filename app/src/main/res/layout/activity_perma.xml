@@ -34,7 +34,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/permaSubCategoryEditText"
         app:layout_constraintEnd_toStartOf="@+id/permaSubCategoryEditText"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/permaSubCategoryEditText" />
 
     <TextView
         android:id="@+id/permaCategoryLabel"
@@ -45,7 +46,8 @@
         android:textSize="18sp"
         android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="@+id/permaCategoryEditext"
-        app:layout_constraintEnd_toEndOf="@+id/permaSubCategoryLabel" />
+        app:layout_constraintEnd_toEndOf="@+id/permaSubCategoryLabel"
+        app:layout_constraintTop_toTopOf="@+id/permaCategoryEditext" />
 
     <EditText
         android:id="@+id/permaSubCategoryEditText"

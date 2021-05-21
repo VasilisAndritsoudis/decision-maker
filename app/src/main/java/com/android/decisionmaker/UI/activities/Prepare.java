@@ -1,4 +1,4 @@
-package com.android.decisionmaker.UI.activities;
+    package com.android.decisionmaker.UI.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -51,6 +51,8 @@ public class Prepare extends AppCompatActivity {
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
 
+        checkBoxCriteria = new ArrayList<>();
+
         DBHandler dbHandler = DBHandler.getDBHandler(this);
         ArrayList<Criteria> temp = null;
         extras = getIntent().getExtras();
@@ -71,6 +73,7 @@ public class Prepare extends AppCompatActivity {
             }
         }
 
+
         if(savedInstanceState != null) {
             criteria = (ArrayList<Criteria>) savedInstanceState.get("AddedCriteria");
             criterion.setText(savedInstanceState.getString("Criterion"));
@@ -78,10 +81,21 @@ public class Prepare extends AppCompatActivity {
                 warning.setText(savedInstanceState.getString("Warning"));
                 warning.setVisibility(savedInstanceState.getInt("Visibility"));
             }
-            checkBoxCriteria = (ArrayList<Pair<Criteria, Boolean>>) savedInstanceState.get("CheckBoxes");
+            if (temp != null)
+                for(Criteria criteria1 : temp) {
+                    boolean added = false;
+                    for (Criteria criteria2 : criteria){
+                        if (criteria2.getName().equals(criteria1.getName())){
+                            checkBoxCriteria.add(new Pair<>(criteria1,true));
+                            added = true;
+                            break;
+                        }
+                    }
+                    if (!added)
+                        checkBoxCriteria.add(new Pair<>(criteria1,false));
+                }
         } else {
             criteria = new ArrayList<>();
-            checkBoxCriteria = new ArrayList<>();
             if (temp != null)
                 for(Criteria criteria : temp) {
                     checkBoxCriteria.add(new Pair<>(criteria,false));
@@ -176,7 +190,6 @@ public class Prepare extends AppCompatActivity {
             outState.putString("Warning", warning.getText().toString());
             outState.putInt("Visibility", warning.getVisibility());
         }
-        outState.put("CheckBoxes", checkBoxAdapter.getArrayList()); //Has to be fixed
         super.onSaveInstanceState(outState);
     }
 
