@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.adefruandta.spinningwheel.SpinningWheelView;
 import com.android.decisionmaker.R;
 import com.android.decisionmaker.database.models.Choice;
 import com.android.decisionmaker.database.models.Criteria;
@@ -19,7 +20,7 @@ import com.android.decisionmaker.database.models.Decision;
  * Use the {@link DataView#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class DataView extends Fragment {
+public class DataView extends Fragment{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -85,6 +86,41 @@ public class DataView extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_data_view, container, false);
+        View view = inflater.inflate(R.layout.fragment_data_view, container, false);
+
+        SpinningWheelView wheelView = (SpinningWheelView) view.findViewById(R.id.wheel);
+
+        // Can be array string or list of object
+        wheelView.setItems(R.array.dummy);
+
+        // Set listener for rotation event
+        wheelView.setOnRotationListener(new SpinningWheelView.OnRotationListener<String>() {
+            // Call once when start rotation
+            @Override
+            public void onRotation() {
+                Log.d("XXXX", "On Rotation");
+            }
+
+            // Call once when stop rotation
+            @Override
+            public void onStopRotation(String item) {
+                Log.d("XXXX", "On Rotation");
+            }
+        });
+
+        // If true: user can rotate by touch
+        // If false: user can not rotate by touch
+        wheelView.setEnabled(false);
+
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // max angle 50
+                // duration 10 second
+                // every 50 ms rander rotation
+                wheelView.rotate(200, 5000, 50);
+            }
+        });
+        return view;
     }
 }
