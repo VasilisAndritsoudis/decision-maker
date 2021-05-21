@@ -36,6 +36,8 @@ public class AddChoicesAdapter extends RecyclerView.Adapter<AddChoicesAdapter.Vi
 
     @Override
     public int getItemCount() {
+        if(arrayList == null)
+            return 0;
         return arrayList.size();
     }
 

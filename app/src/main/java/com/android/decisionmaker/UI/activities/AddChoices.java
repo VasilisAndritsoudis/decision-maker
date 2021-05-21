@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,7 +17,6 @@ import com.android.decisionmaker.UI.adapters.AddChoicesAdapter;
 import com.android.decisionmaker.database.models.Choice;
 import com.android.decisionmaker.database.models.Decision;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -36,6 +36,11 @@ public class AddChoices extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_choices);
 
+        choice = findViewById(R.id.addChoicesChoiceEdit);
+        name = findViewById(R.id.addChoicesNameEdit);
+        warning = findViewById(R.id.addChoicesWarning);
+
+
         extras = getIntent().getExtras();
         if (extras != null) {
             if (extras.containsKey("SubCategory") && extras.getString("SubCategory") != null) {
@@ -45,15 +50,18 @@ public class AddChoices extends AppCompatActivity {
             }
         }
 
-        choices = new ArrayList<>();
+        if(savedInstanceState != null) {
+            choices = (ArrayList<Choice>) savedInstanceState.get("AddedChoices");
+            name.setText(savedInstanceState.getString("Decision Name"));
+            choice.setText(savedInstanceState.getString("Choice"));
+            if (savedInstanceState.containsKey("Warning")) {
+                warning.setText(savedInstanceState.getString("Warning"));
+                warning.setVisibility(savedInstanceState.getInt("Visibility"));
+            }
+        } else {
+            choices = new ArrayList<>();
+        }
 
-        choice = findViewById(R.id.addChoicesChoiceEdit);
-        name = findViewById(R.id.addChoicesNameEdit);
-
-        choice.setOnFocusChangeListener((v, hasFocus) -> {
-            if(hasFocus)
-                choice.setText("");
-        });
 
         choice.setOnKeyListener((v, keyCode, event) -> {
             if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
@@ -63,7 +71,7 @@ public class AddChoices extends AppCompatActivity {
             return false;
         });
 
-        warning = findViewById(R.id.addChoicesWarning);
+
 
         recyclerAddedChoices = findViewById(R.id.prepareRecyclerChoices);
         choicesAdapter = new AddChoicesAdapter(choices);
@@ -88,8 +96,12 @@ public class AddChoices extends AppCompatActivity {
         decision.setSubCategory(subCategoryName);
         intent.putExtra("Decision", decision);
         intent.putExtra("Choices",choices);
-        String string = extras.getString("Category");
-        intent.putExtra("Category",string);
+        if(extras != null) {
+            if(extras.containsKey("Category") && extras.getString("Category") != null){
+                String string = extras.getString("Category");
+                intent.putExtra("Category",string);
+            }
+        }
         startActivity(intent);
     }
     
@@ -97,7 +109,7 @@ public class AddChoices extends AppCompatActivity {
         if(choice.getText().toString().isEmpty())
             return;
         for(Choice item : choices)
-            if(item.getName().equals(choice.getText().toString())) {
+            if(item.getName().equalsIgnoreCase(choice.getText().toString())) {
                 choice.setText("");
                 return;
             }
@@ -107,4 +119,18 @@ public class AddChoices extends AppCompatActivity {
         choice.setText("");
         choicesAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putAll(extras);
+        outState.putSerializable("AddedChoices", choices);
+        outState.putString("Decision Name", name.getText().toString());
+        outState.putString("Choice", choice.getText().toString());
+        if(!warning.getText().toString().isEmpty()){
+            outState.putString("Warning", warning.getText().toString());
+            outState.putInt("Visibility", warning.getVisibility());
+        }
+        super.onSaveInstanceState(outState);
+    }
+
 }

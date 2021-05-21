@@ -1,10 +1,10 @@
 package com.android.decisionmaker.UI.adapters;
 
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,17 +16,21 @@ import java.util.ArrayList;
 
 public class PrepareAdapterCheckBoxes extends RecyclerView.Adapter<PrepareAdapterCheckBoxes.ViewHolder> {
 
-    private final ArrayList<Criteria> arrayList;
+    private ArrayList<Pair<Criteria, Boolean>> arrayList;
     PrepareAdapter adapter;
     ArrayList<Criteria> criteria;
     RecyclerView recyclerView;
 
-    public PrepareAdapterCheckBoxes (ArrayList<Criteria> list, PrepareAdapter adapter,
+    public PrepareAdapterCheckBoxes (ArrayList<Pair<Criteria, Boolean>> list, PrepareAdapter adapter,
                                      ArrayList<Criteria> criteria, RecyclerView recyclerView) {
         arrayList = list;
         this.adapter = adapter;
         this.criteria = criteria;
         this.recyclerView = recyclerView;
+    }
+
+    public ArrayList<Pair<Criteria, Boolean>> getArrayList() {
+        return arrayList;
     }
 
     @NonNull
@@ -40,7 +44,8 @@ public class PrepareAdapterCheckBoxes extends RecyclerView.Adapter<PrepareAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.checkBox.setText(arrayList.get(position).getName());
+        holder.checkBox.setText(arrayList.get(position).first.getName());
+        holder.checkBox.setChecked(arrayList.get(position).second);
     }
 
     @Override
@@ -60,9 +65,27 @@ public class PrepareAdapterCheckBoxes extends RecyclerView.Adapter<PrepareAdapte
 
             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if(isChecked) {
-                    Criteria temp = new Criteria();
-                    temp.setName(checkBox.getText().toString());
-                    criteria.add(temp);
+                    boolean add = true;
+                    for(Criteria criterion : criteria) {
+                        if(criterion.getName().equals(checkBox.getText().toString()))
+                            add = false;
+                    }
+                    if(add) {
+                        Criteria temp = new Criteria();
+                        temp.setName(checkBox.getText().toString());
+                        criteria.add(temp);
+                    }
+
+                    ArrayList<Pair<Criteria,Boolean>> tmp = new ArrayList<>();
+                    for(Pair<Criteria,Boolean> pair : arrayList) {
+                        if(pair.first.getName().equals(checkBox.getText().toString())) {
+                            tmp.add(new Pair<>(pair.first, true));
+                        } else {
+                            tmp.add(pair);
+                        }
+                    }
+                    arrayList = tmp;
+
                     adapter.notifyDataSetChanged();
                 } else {
                     for(int i=0;i<criteria.size();i++) {
@@ -73,6 +96,16 @@ public class PrepareAdapterCheckBoxes extends RecyclerView.Adapter<PrepareAdapte
                             adapter.notifyItemRangeChanged(criteria.size() - i, criteria.size());
                         }
                     }
+
+                    ArrayList<Pair<Criteria,Boolean>> tmp = new ArrayList<>();
+                    for(Pair<Criteria,Boolean> pair : arrayList) {
+                        if(pair.first.getName().equals(checkBox.getText().toString())) {
+                            tmp.add(new Pair<>(pair.first, false));
+                        } else {
+                            tmp.add(pair);
+                        }
+                    }
+                    arrayList = tmp;
                 }
             });
         }

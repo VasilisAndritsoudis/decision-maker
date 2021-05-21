@@ -88,17 +88,29 @@ public class Perma extends AppCompatActivity {
 
     public void goToAddChoices(View view) {
         Intent intent = new Intent(this, AddChoices.class);
-        if(categoryName.getText().toString().isEmpty())
+        if(categoryName.getText().toString().isEmpty()) {
             warning.setText("You have to select a category or create one!");
-        if (subCategoryName.getText().toString().isEmpty())
+            warning.setVisibility(View.VISIBLE);
+            return;
+        }
+        if (subCategoryName.getText().toString().isEmpty()) {
             warning.setText("You have to name your subcategory to continue!");
-        if(categoryName.getText().toString().equals("New Category"))
+            warning.setVisibility(View.VISIBLE);
+            return;
+        }
+        if(categoryName.getText().toString().equalsIgnoreCase("New Category")) {
             warning.setText("\"New Category\" as name of category is prohibited!");
+            warning.setVisibility(View.VISIBLE);
+            return;
+        }
         DBHandler dbHandler = DBHandler.getDBHandler(this);
         for (Category category : dbHandler.getCategories())
             for (SubCategory subCategory : dbHandler.getSubCategoriesOfCategory(category.getName()))
-                if(subCategoryName.getText().toString().equals(subCategory.getName()))
+                if(subCategoryName.getText().toString().equalsIgnoreCase(subCategory.getName())){
                     warning.setText("This subcategory already exists in " + category.getName() + " category!");
+                    warning.setVisibility(View.VISIBLE);
+                    return;
+                }
         intent.putExtra("SubCategory",subCategoryName.getText().toString());
         intent.putExtra("Category", categoryName.getText().toString());
         startActivity(intent);

@@ -57,7 +57,8 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
             }
 
             recyclerView = findViewById(R.id.criteriaRecyclerView);
-            CriteriaAdapter adapter = new CriteriaAdapter(criteria, decision, decision.getCriteria().size() - num,  this);
+            CriteriaAdapter adapter = new CriteriaAdapter(criteria, decision,
+                    decision.getCriteria().size() - num,  this);
             recyclerView.setAdapter(adapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(this));
         }
@@ -110,7 +111,8 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
                 SubCategory subCategory = new SubCategory();
                 subCategory.setName(decision.getSubCategory());
                 subCategory.setCategory(extras.getString("Category"));
-                Log.d("Save SubCategory", String.valueOf(dbHandler.saveSubCategory(subCategory, decision.getCriteria())));
+                Log.d("Save SubCategory", String.valueOf(dbHandler.saveSubCategory(subCategory,
+                        decision.getCriteria())));
             }
         }
 

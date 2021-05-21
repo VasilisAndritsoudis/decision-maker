@@ -9,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.decisionmaker.R;
-import com.android.decisionmaker.database.models.Choice;
 import com.android.decisionmaker.database.models.Criteria;
 
 import java.util.ArrayList;
@@ -37,6 +36,8 @@ public class PrepareAdapter extends RecyclerView.Adapter<PrepareAdapter.ViewHold
 
     @Override
     public int getItemCount() {
+        if (arrayList == null)
+            return 0;
         return arrayList.size();
     }
 

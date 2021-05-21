@@ -2,19 +2,18 @@ package com.android.decisionmaker.UI.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
+import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.decisionmaker.R;
-import com.android.decisionmaker.UI.adapters.AddChoicesAdapter;
 import com.android.decisionmaker.UI.adapters.PrepareAdapter;
 import com.android.decisionmaker.UI.adapters.PrepareAdapterCheckBoxes;
 import com.android.decisionmaker.database.handlers.DBHandler;
@@ -22,7 +21,6 @@ import com.android.decisionmaker.database.models.Choice;
 import com.android.decisionmaker.database.models.Criteria;
 import com.android.decisionmaker.database.models.Decision;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -30,7 +28,8 @@ public class Prepare extends AppCompatActivity {
 
 
     ArrayList<Criteria> criteria;
-    ArrayList<Criteria> checkBoxCriteria;
+    ArrayList<Pair<Criteria,Boolean>> checkBoxCriteria;
+    PrepareAdapterCheckBoxes checkBoxAdapter;
     Decision decision;
     EditText criterion;
     PrepareAdapter criteriaAdapter;
@@ -47,26 +46,47 @@ public class Prepare extends AppCompatActivity {
 
         criterion = findViewById(R.id.prepareEditText);
         select = findViewById(R.id.prepareSelectTv);
-
+        warning = findViewById(R.id.prepareWarning);
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
 
         DBHandler dbHandler = DBHandler.getDBHandler(this);
-
+        ArrayList<Criteria> temp = null;
         extras = getIntent().getExtras();
         if (extras != null) {
             decision = (Decision) extras.get("Decision");
-            checkBoxCriteria = dbHandler.getSubCategoryCriteria(decision.getSubCategory());
-            if(checkBoxCriteria == null) {
-                checkBoxCriteria = dbHandler.getCategoryCriteria(extras.getString("Category"));
-                if (checkBoxCriteria == null)
-                    select.setVisibility(View.INVISIBLE);
+            if(decision.getSubCategory() != null){
+                temp = dbHandler.getSubCategoryCriteria(decision.getSubCategory());
+                if(temp == null) {
+                    if(extras.containsKey("Category") && extras.getString("Category") != null){
+                        temp = dbHandler.getCategoryCriteria(extras.getString("Category"));
+                    } else {
+                        select.setVisibility(View.INVISIBLE);
+                    }
+                }
+            } else {
+                checkBoxCriteria = null;
+                select.setVisibility(View.INVISIBLE);
             }
-
         }
 
-        criteria = new ArrayList<>();
+        if(savedInstanceState != null) {
+            criteria = (ArrayList<Criteria>) savedInstanceState.get("AddedCriteria");
+            criterion.setText(savedInstanceState.getString("Criterion"));
+            if(savedInstanceState.containsKey("Warning")) {
+                warning.setText(savedInstanceState.getString("Warning"));
+                warning.setVisibility(savedInstanceState.getInt("Visibility"));
+            }
+            checkBoxCriteria = (ArrayList<Pair<Criteria, Boolean>>) savedInstanceState.get("CheckBoxes");
+        } else {
+            criteria = new ArrayList<>();
+            checkBoxCriteria = new ArrayList<>();
+            if (temp != null)
+                for(Criteria criteria : temp) {
+                    checkBoxCriteria.add(new Pair<>(criteria,false));
+                }
+        }
 
         recyclerAddedCriteria = findViewById(R.id.prepareRecyclerCriteria);
         criteriaAdapter = new PrepareAdapter(criteria);
@@ -74,7 +94,7 @@ public class Prepare extends AppCompatActivity {
         recyclerAddedCriteria.setLayoutManager(new LinearLayoutManager(this));
 
         checkBoxes = findViewById(R.id.prepareRecyclerCheckBoxes);
-        PrepareAdapterCheckBoxes checkBoxAdapter = new PrepareAdapterCheckBoxes(checkBoxCriteria,
+        checkBoxAdapter = new PrepareAdapterCheckBoxes(checkBoxCriteria,
                 criteriaAdapter, criteria, recyclerAddedCriteria);
         checkBoxes.setAdapter(checkBoxAdapter);
         checkBoxes.setLayoutManager(new LinearLayoutManager(this));
@@ -87,14 +107,13 @@ public class Prepare extends AppCompatActivity {
             return false;
         });
 
-        warning = findViewById(R.id.prepareWarning);
     }
 
     public void addCriterion(View view) {
         if(criterion.getText().toString().isEmpty())
             return;
         for(Criteria item : criteria)
-            if(item.getName().equals(criterion.getText().toString())) {
+            if(item.getName().equalsIgnoreCase(criterion.getText().toString())) {
                 criterion.setText("");
                 return;
             }
@@ -106,9 +125,9 @@ public class Prepare extends AppCompatActivity {
     }
 
     public void goToCriteriaScoring(View view) {
-        if(criteria.size()<=1) {
+        if(criteria.size()<=0) {
             warning.setVisibility(View.VISIBLE);
-            warning.setText("You have to select or add at least\ntwo criteria to proceed!");
+            warning.setText("You have to select or add at least\none criterion to proceed!");
             return;
         }
         if(extras==null)
@@ -148,6 +167,17 @@ public class Prepare extends AppCompatActivity {
         startActivity(intent);
     }
 
-    // On every Choice/Criteria addition, add the Choice/Criteria (object) to its respective array list
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putAll(extras);
+        outState.putString("Criterion", criterion.getText().toString());
+        outState.putSerializable("AddedCriteria", criteria);
+        if(!warning.getText().toString().isEmpty()){
+            outState.putString("Warning", warning.getText().toString());
+            outState.putInt("Visibility", warning.getVisibility());
+        }
+        outState.put("CheckBoxes", checkBoxAdapter.getArrayList()); //Has to be fixed
+        super.onSaveInstanceState(outState);
+    }
 
 }

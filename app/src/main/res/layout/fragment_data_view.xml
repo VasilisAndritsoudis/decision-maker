@@ -8,6 +8,6 @@
     <com.adefruandta.spinningwheel.SpinningWheelView
         android:id="@+id/wheel"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </FrameLayout>
