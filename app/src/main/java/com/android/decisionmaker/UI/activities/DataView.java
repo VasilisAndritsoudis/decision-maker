@@ -15,6 +15,8 @@ import com.android.decisionmaker.database.models.Choice;
 import com.android.decisionmaker.database.models.Criteria;
 import com.android.decisionmaker.database.models.Decision;
 
+import java.util.ArrayList;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link DataView#newInstance} factory method to
@@ -91,7 +93,10 @@ public class DataView extends Fragment{
         SpinningWheelView wheelView = (SpinningWheelView) view.findViewById(R.id.wheel);
 
         // Can be array string or list of object
-        wheelView.setItems(R.array.dummy);
+        ArrayList<String> choices = new ArrayList<>();
+        for (Choice choice : decision.getCriteria().get(0).getChoices())
+            choices.add(choice.getName());
+        wheelView.setItems(choices);
 
         // Set listener for rotation event
         wheelView.setOnRotationListener(new SpinningWheelView.OnRotationListener<String>() {
@@ -110,7 +115,12 @@ public class DataView extends Fragment{
 
         // If true: user can rotate by touch
         // If false: user can not rotate by touch
-        wheelView.setEnabled(false);
+        wheelView.setEnabled(true);
+
+        System.out.println("---------------------------------------------------------------------------------------------------");
+        System.out.println(wheelView.getWheelTextSize());
+        wheelView.setWheelTextSize(100f);
+        System.out.println(wheelView.getWheelTextSize());
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,6 +131,7 @@ public class DataView extends Fragment{
                 wheelView.rotate(200, 5000, 50);
             }
         });
+
         return view;
     }
 }

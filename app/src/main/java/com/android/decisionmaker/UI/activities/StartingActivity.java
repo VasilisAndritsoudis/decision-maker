@@ -223,4 +223,9 @@ public class StartingActivity extends AppCompatActivity {
         Intent intent = new Intent(this, AddChoices.class);
         startActivity(intent);
     }
+
+    public void goToInformation(View view) {
+        Intent intent = new Intent(this, Information.class);
+        startActivity(intent);
+    }
 }
