@@ -1,7 +1,6 @@
 package com.android.decisionmaker.UI.activities;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,8 +9,6 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import com.android.decisionmaker.R;
-import com.android.decisionmaker.database.models.Choice;
-import com.android.decisionmaker.database.models.Criteria;
 import com.android.decisionmaker.database.models.Decision;
 import com.google.android.material.tabs.TabLayout;
 
@@ -37,22 +34,10 @@ public class DecisionView extends AppCompatActivity {
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
 
-//        Log.d("Dec Name", decision.getName());
-//        Log.d("Dec Date", decision.getDate().toString());
-//        Log.d("Dec SubCat", decision.getSubCategory());
-//
-//        for (Criteria criteria : decision.getCriteria()) {
-//            Log.d("Dec Crit Name", criteria.getName());
-//            Log.d("Dec Crit Weight", String.valueOf(criteria.getWeight()));
-//
-//            for (Choice choice : criteria.getChoices()) {
-//                Log.d("Dec Crit Choice Name", choice.getName());
-//                Log.d("Dec Crit Choice Val", String.valueOf(choice.getValue()));
-//            }
-//        }
-
         tabLayout.addTab(tabLayout.newTab().setText("Results"));
         tabLayout.addTab(tabLayout.newTab().setText("Data"));
+
+        tabLayout.selectTab(tabLayout.getTabAt(viewPager.getCurrentItem()));
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
@@ -77,6 +62,23 @@ public class DecisionView extends AppCompatActivity {
             }
         });
 
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                tabLayout.selectTab(tabLayout.getTabAt(viewPager.getCurrentItem()));
+            }
+        });
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             @Override
@@ -94,5 +96,12 @@ public class DecisionView extends AppCompatActivity {
 
             }
         });
+    }
+
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+       // outState.putInt("Position", viewPager.getCurrentItem());
+        super.onSaveInstanceState(outState);
     }
 }

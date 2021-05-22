@@ -1,17 +1,17 @@
 package com.android.decisionmaker.UI.activities;
-
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.adefruandta.spinningwheel.SpinningWheelView;
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.decisionmaker.R;
-import com.android.decisionmaker.database.models.Choice;
+import com.android.decisionmaker.UI.adapters.DataButtonsAdapter;
+import com.android.decisionmaker.UI.adapters.DataTextsAdapter;
 import com.android.decisionmaker.database.models.Criteria;
 import com.android.decisionmaker.database.models.Decision;
 
@@ -34,6 +34,8 @@ public class DataView extends Fragment{
     private String mParam2;
 
     private Decision decision;
+    Bundle extras;
+    DataTextsAdapter textsAdapter;
 
     public DataView() {
         // Required empty public constructor
@@ -41,20 +43,6 @@ public class DataView extends Fragment{
 
     public DataView(Decision decision) {
         this.decision = decision;
-
-//        Log.d("Dec Name", decision.getName());
-//        Log.d("Dec Date", decision.getDate().toString());
-//        Log.d("Dec SubCat", decision.getSubCategory());
-//
-//        for (Criteria criteria : decision.getCriteria()) {
-//            Log.d("Dec Crit Name", criteria.getName());
-//            Log.d("Dec Crit Weight", String.valueOf(criteria.getWeight()));
-//
-//            for (Choice choice : criteria.getChoices()) {
-//                Log.d("Dec Crit Choice Name", choice.getName());
-//                Log.d("Dec Crit Choice Val", String.valueOf(choice.getValue()));
-//            }
-//        }
     }
 
     /**
@@ -82,6 +70,8 @@ public class DataView extends Fragment{
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
+
     }
 
     @Override
@@ -90,6 +80,39 @@ public class DataView extends Fragment{
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_data_view, container, false);
 
+        ArrayList<String> namesAndValues;
+
+        if (savedInstanceState != null) {
+            decision = (Decision) savedInstanceState.get("Decision");
+            namesAndValues = savedInstanceState.getStringArrayList("Names and Values");
+        } else {
+            extras = this.getArguments();
+            if (extras != null) {
+                decision = (Decision) extras.get("Decision");
+            }
+            namesAndValues = new ArrayList<>();
+        }
+
+
+        RecyclerView recycler = view.findViewById(R.id.dataTextRecycler);
+        textsAdapter = new DataTextsAdapter(namesAndValues);
+        recycler.setAdapter(textsAdapter);
+        recycler.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
+        ArrayList<Criteria> criteria = decision.getCriteria();
+
+        RecyclerView recyclerView = view.findViewById(R.id.dataButtonRecycler);
+        DataButtonsAdapter adapter = new DataButtonsAdapter(criteria, namesAndValues, textsAdapter);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
+
         return view;
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        outState.putSerializable("Decision", decision);
+        outState.putStringArrayList("Names and Values", textsAdapter.getArrayList());
+        super.onSaveInstanceState(outState);
     }
 }
