@@ -84,7 +84,6 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
         } else {
             recurse(num - 1, decision);
         }
-
     }
 
     public void recurse(int num, Decision decision) {
@@ -154,5 +153,4 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
         outState.putSerializable("Decision", adapter.getDecision());
         super.onSaveInstanceState(outState);
     }
-
 }
