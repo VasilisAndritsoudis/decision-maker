@@ -132,6 +132,7 @@ public class ChartView extends Fragment {
                 anyChartView.setChart(prepareHistogram3D(decision));
         }
 
+
         return view;
     }
 
