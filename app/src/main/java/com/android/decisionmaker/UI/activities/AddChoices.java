@@ -122,7 +122,8 @@ public class AddChoices extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putAll(extras);
+        if(extras != null)
+            outState.putAll(extras);
         outState.putSerializable("AddedChoices", choices);
         outState.putString("Decision Name", name.getText().toString());
         outState.putString("Choice", choice.getText().toString());
