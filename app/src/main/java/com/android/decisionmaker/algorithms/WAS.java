@@ -63,31 +63,5 @@ public class WAS {
 
         return res;
     }
-
-
-    public static void main(String[] args){
-
-        ArrayList<Integer> P1 = new ArrayList<>(
-                Arrays.asList(43, 56, 77)
-        );
-        ArrayList<Integer> P2 = new ArrayList<>(
-                Arrays.asList(72, 49, 91)
-        );
-        ArrayList<Integer> P3 = new ArrayList<>(
-                Arrays.asList(78, 75, 70)
-        );
-
-        ArrayList<ArrayList<Integer>> choices = new ArrayList<>(
-                Arrays.asList(P1, P2, P3)
-        );
-
-        ArrayList<Integer> weights = new ArrayList<>(
-                Arrays.asList(25, 80, 38)
-        );
-
-        ArrayList<Integer> out = logic(choices, weights);
-
-        System.out.println(out);
-    }
 }
 

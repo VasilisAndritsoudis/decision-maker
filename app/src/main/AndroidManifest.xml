@@ -11,7 +11,7 @@
         android:theme="@style/Theme.DecisionMaker">
         <activity
             android:name=".UI.activities.Information"
-            android:parentActivityName=".UI.activities.StartingActivity"/>
+            android:parentActivityName=".UI.activities.StartingActivity" />
         <activity
             android:name=".UI.activities.AddChoices"
             android:parentActivityName=".UI.activities.StartingActivity" />
