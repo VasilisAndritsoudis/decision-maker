@@ -331,7 +331,6 @@ public class DBHandler extends SQLiteOpenHelper {
                         " AND " + TABLE_DECISION + "Date = '" + decisionDate + "'" +
                         " AND " + TABLE_CRITERIA + "ID = " + item.getId();
 
-
                 Cursor innerCursor = db.rawQuery(query, null);
 
                 ArrayList<Choice> choices = null;
@@ -397,6 +396,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 decision.setSubCategory(cursor.getString(0));
 
                 cursor.close();
+            } else {
+                decision.setSubCategory(null);
             }
 
             decision.setCriteria(criteria);
@@ -407,7 +408,8 @@ public class DBHandler extends SQLiteOpenHelper {
 
     public ArrayList<Decision> getDecisions() {
         String query = "SELECT " + TABLE_DECISION + "ID" +
-                " FROM " + TABLE_DECISION;
+                " FROM " + TABLE_DECISION +
+                " ORDER BY dateTime(" + TABLE_DECISION + "Date) DESC";
 
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -453,11 +455,11 @@ public class DBHandler extends SQLiteOpenHelper {
 
         db.close();
 
-        if (response != null) {
-            Collections.reverse(response);
-        } else {
-            response = new ArrayList<>();
-        }
+//        if (response != null) {
+//            Collections.reverse(response);
+//        } else {
+//            response = new ArrayList<>();
+//        }
 
         return response;
     }
@@ -893,24 +895,27 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     private boolean insertDecision(Decision decision) {
-        String query = "SELECT " + TABLE_SUBCATEGORY + "ID" +
-                " FROM " + TABLE_SUBCATEGORY +
-                " WHERE " + TABLE_SUBCATEGORY + "Name = '" + decision.getSubCategory() + "'";
-
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
 
-        int subCategoryId;
+        int subCategoryId = -1;
 
-        if (cursor.getCount() != 0) {
-            cursor.moveToFirst();
-            subCategoryId = cursor.getInt(0);
-        } else {
+        if (decision.getSubCategory() != null) {
+            String query = "SELECT " + TABLE_SUBCATEGORY + "ID" +
+                    " FROM " + TABLE_SUBCATEGORY +
+                    " WHERE " + TABLE_SUBCATEGORY + "Name = '" + decision.getSubCategory() + "'";
+
+            Cursor cursor = db.rawQuery(query, null);
+
+            if (cursor.getCount() != 0) {
+                cursor.moveToFirst();
+                subCategoryId = cursor.getInt(0);
+            } else {
+                cursor.close();
+                return false;
+            }
+
             cursor.close();
-            return false;
         }
-
-        cursor.close();
 
         String insertion;
 
