@@ -37,10 +37,6 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
         public Decision getDecision() {
             return decision;
         }
-
-        public String getDate() {
-            return date;
-        }
     }
 
     private static ArrayList<Pair> pairArrayList;

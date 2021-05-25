@@ -455,11 +455,9 @@ public class DBHandler extends SQLiteOpenHelper {
 
         db.close();
 
-//        if (response != null) {
-//            Collections.reverse(response);
-//        } else {
-//            response = new ArrayList<>();
-//        }
+        if (response == null) {
+            response = new ArrayList<>();
+        }
 
         return response;
     }
@@ -731,6 +729,56 @@ public class DBHandler extends SQLiteOpenHelper {
     }
 
     public boolean updateDecision(Decision decision) {
+        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.N) {
+            return false;
+        }
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.getDefault());
+        String date = dateFormat.format(decision.getDate());
+
+        String query = "SELECT " + TABLE_DECISION + "ID" +
+                " FROM " + TABLE_DECISION +
+                " WHERE " + TABLE_DECISION + "Name = '" + decision.getName() + "'" +
+                " AND " + TABLE_DECISION + "Date = '" + date + "'";
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.getCount() == 0) {
+            cursor.close();
+            db.close();
+            return false;
+        }
+
+        cursor.close();
+
+        String newDate = dateFormat.format(new Date());
+
+        String update = "UPDATE " + TABLE_DECISION +
+                " SET " + TABLE_DECISION + "Date = '" + newDate + "'" +
+                " WHERE " + TABLE_DECISION + "ID = " + decision.getId();
+
+        db.execSQL(update);
+
+        for (Criteria criteria : decision.getCriteria()) {
+            update = "UPDATE " + TABLE_DECISION + "_" + TABLE_CRITERIA +
+                    " SET " + TABLE_CRITERIA + "Weight = " + criteria.getWeight() +
+                    " WHERE " + TABLE_DECISION + "ID = " + decision.getId() +
+                    " AND " + TABLE_CRITERIA + "ID = " + criteria.getId();
+
+            db.execSQL(update);
+
+            for (Choice choice : criteria.getChoices()) {
+                update = "UPDATE " + TABLE_DECISION + "_" + TABLE_CHOICE +
+                        " SET " + TABLE_CHOICE + "Value = " + choice.getValue() +
+                        " WHERE " + TABLE_DECISION + "ID = " + decision.getId() +
+                        " AND " + TABLE_CRITERIA + "ID = " + criteria.getId() +
+                        " AND " + TABLE_CHOICE + "ID = " + choice.getId();
+
+                db.execSQL(update);
+            }
+        }
+
         return true;
     }
 
@@ -754,18 +802,16 @@ public class DBHandler extends SQLiteOpenHelper {
 
         if (cursor.getCount() == 0) {
             cursor.close();
+            db.close();
             return false;
         }
 
         cursor.close();
-        db.close();
 
         // Delete Choices and Criteria from table Decision_Choice
         // By deleting Choices from table Decision_Choice, Criteria are deleted from there as well
         for (Choice choice : decision.getCriteria().get(0).getChoices()) {
-            if (!deleteChoiceUsages(choice, decision)) {
-                return false;
-            }
+            deleteChoiceUsages(choice, decision);
 
             if (!choiceIsUsed(choice)) {
                 if (!deleteChoice(choice)) {
@@ -776,9 +822,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
         // Delete Criteria from table Decision_Criteria
         for (Criteria criteria : decision.getCriteria()) {
-            if (!deleteCriteriaUsages(criteria, decision)) {
-                return false;
-            }
+            deleteCriteriaUsages(criteria, decision);
 
             if (!criteriaIsUsed(criteria)) {
                 if (!deleteCriteria(criteria)) {
@@ -791,7 +835,6 @@ public class DBHandler extends SQLiteOpenHelper {
         String deletion = "DELETE FROM " + TABLE_DECISION +
                 " WHERE " + TABLE_DECISION + "ID =" + decision.getId();
 
-        db = this.getWritableDatabase();
         db.execSQL(deletion);
         db.close();
 
@@ -934,11 +977,7 @@ public class DBHandler extends SQLiteOpenHelper {
         return true;
     }
 
-    private boolean deleteChoiceUsages(Choice choice, Decision decision) {
-        if (!choiceIsUsed(choice)) {
-            return false;
-        }
-
+    private void deleteChoiceUsages(Choice choice, Decision decision) {
         String deletion = "DELETE FROM " + TABLE_DECISION + "_" + TABLE_CHOICE +
                 " WHERE " + TABLE_CHOICE + "ID =" + choice.getId() +
                 " AND " + TABLE_DECISION + "ID =" + decision.getId();
@@ -946,15 +985,9 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(deletion);
         db.close();
-
-        return true;
     }
 
-    private boolean deleteCriteriaUsages(Criteria criteria, Decision decision) {
-        if (!criteriaIsUsed(criteria)) {
-            return false;
-        }
-
+    private void deleteCriteriaUsages(Criteria criteria, Decision decision) {
         String deletion = "DELETE FROM " + TABLE_DECISION + "_" + TABLE_CRITERIA +
                 " WHERE " + TABLE_CRITERIA + "ID =" + criteria.getId() +
                 " AND " + TABLE_DECISION + "ID =" + decision.getId();
@@ -962,8 +995,6 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL(deletion);
         db.close();
-
-        return true;
     }
 
     private boolean deleteChoice(Choice choice) {
