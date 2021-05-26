@@ -105,7 +105,6 @@ public class DBHandler extends SQLiteOpenHelper {
 
         String SETTINGS_TABLE = "CREATE TABLE " + TABLE_SETTINGS + "(" +
                 TABLE_SETTINGS + "ID INTEGER PRIMARY KEY AUTOINCREMENT," +
-                " DarkMode INT(1) NOT NULL," +
                 " DecisionViewType VARCHAR(30) NOT NULL" +
                 ");";
 
@@ -137,8 +136,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 "(4, 4)," +
                 "(4, 5);";
 
-        String INSERT_SETTINGS = "INSERT INTO " + TABLE_SETTINGS + " (DarkMode, DecisionViewType) VALUES" +
-                "(0, 'Pie')";
+        String INSERT_SETTINGS = "INSERT INTO " + TABLE_SETTINGS + " (DecisionViewType) VALUES" +
+                "('Pie')";
 
         db.execSQL(CREATE_DECISION_TABLE);
         db.execSQL(CREATE_SUBCATEGORY_TABLE);
@@ -462,26 +461,6 @@ public class DBHandler extends SQLiteOpenHelper {
         return response;
     }
 
-    public boolean getDarkMode() {
-        String query = "SELECT DarkMode" +
-                " FROM " + TABLE_SETTINGS;
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-
-        int darkMode = 0;
-
-        if (cursor.getCount() != 0) {
-            cursor.moveToFirst();
-            darkMode = cursor.getInt(0);
-        }
-
-        cursor.close();
-        db.close();
-
-        return darkMode != 0;
-    }
-
     public String getViewType() {
         String query = "SELECT DecisionViewType" +
                 " FROM " + TABLE_SETTINGS;
@@ -712,20 +691,6 @@ public class DBHandler extends SQLiteOpenHelper {
         db.close();
 
         return true;
-    }
-
-    public void updateDarkMode(boolean darkMode) {
-        int dMode = 0;
-
-        if (darkMode)
-            dMode = 1;
-
-        String update = "UPDATE " + TABLE_SETTINGS +
-                " SET DarkMode = " + dMode;
-
-        SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL(update);
-        db.close();
     }
 
     public boolean updateDecision(Decision decision) {

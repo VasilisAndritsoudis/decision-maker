@@ -54,14 +54,6 @@ public class Settings extends AppCompatActivity {
 
         radioGroup = findViewById(R.id.settingsRadioGroup);
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            DBHandler dbHandler = DBHandler.getDBHandler(Settings.this);
-            dbHandler.updateDarkMode(checkedId == R.id.darkMode);
         });
-
-        if (DBHandler.getDBHandler(this).getDarkMode()) {
-            radioGroup.check(R.id.darkMode);
-        } else {
-            radioGroup.check(R.id.lightMode);
-        }
     }
 }

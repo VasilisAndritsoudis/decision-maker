@@ -1,6 +1,7 @@
 package com.android.decisionmaker.UI.activities;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -171,6 +172,8 @@ public class ChartView extends Fragment {
                 .position("center-bottom")
                 .itemsLayout(LegendLayout.HORIZONTAL)
                 .align(Align.CENTER);
+
+        pie.background().fill("#726E60 1");
 
         return pie;
     }

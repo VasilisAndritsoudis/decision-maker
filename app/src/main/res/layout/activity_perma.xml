@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    android:background="@color/applicationBackground"
     android:focusable="true"
     android:focusableInTouchMode="true"
     tools:context=".UI.activities.Perma">
@@ -99,8 +99,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        android:background="#8B434240"
-        android:foregroundTint="#03A9F4"
+        android:background="@color/applicationBackground"
         app:layout_constraintBottom_toTopOf="@+id/permaCategoryEditext"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
