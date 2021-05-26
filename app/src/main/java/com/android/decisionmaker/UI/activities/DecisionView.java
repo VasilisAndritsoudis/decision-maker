@@ -37,7 +37,9 @@ public class DecisionView extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setText("Results"));
         tabLayout.addTab(tabLayout.newTab().setText("Data"));
 
-        tabLayout.selectTab(tabLayout.getTabAt(viewPager.getCurrentItem()));
+        if(savedInstanceState != null) {
+            tabLayout.selectTab(tabLayout.getTabAt(savedInstanceState.getInt("Position")));
+        }
 
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
@@ -101,7 +103,7 @@ public class DecisionView extends AppCompatActivity {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-       // outState.putInt("Position", viewPager.getCurrentItem());
+        outState.putInt("Position", tabLayout.getSelectedTabPosition());
         super.onSaveInstanceState(outState);
     }
 }
