@@ -1,6 +1,7 @@
 package com.android.decisionmaker.UI.adapters;
 
 import android.graphics.Color;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,9 +46,11 @@ public class PermaAdapter extends RecyclerView.Adapter<PermaAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull PermaAdapter.ViewHolder holder, int position) {
         holder.name.setText(arrayList.get(position).first.getName());
         if (arrayList.get(position).second) {
-            holder.itemView.setBackgroundColor(Color.BLUE);
+            Log.d("ASD", "True");
+            holder.itemView.setBackgroundColor(Color.parseColor("#93B853"));
         } else {
-            holder.itemView.setBackgroundColor(Color.WHITE);
+            Log.d("ASD", "False");
+            holder.itemView.setBackgroundColor(Color.parseColor("#4F6727"));
         }
     }
 
