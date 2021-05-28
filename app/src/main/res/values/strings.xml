@@ -63,4 +63,8 @@ Though it remains to be seen how each EU nation will welcome foreign travelers, 
 “It is of course important that this is implemented in a simple way to ensure it is easy for passengers,” the same spokesperson said.
 The EU decision could be particularly important for British tourists, who are now outside of the EU and represent one of the most important markets for tourism-reliant EU nations. In addition, people in the United States, Israel and other highly vaccinated parts of the world are also likely to benefit from the EU’s stance.</string>
     <string name="copy_right">Ultimately, each member state will decide when to reopen its borders and to whom. Therefore, each government from the 27 nations will decide whether to completely lift quarantine measures and/or testing for international visitors..</string>
+    <string name="chart">Chart Type</string>
+    <string name="pie_chart_graph">Pie Chart</string>
+    <string name="histogram_graph">Histogram</string>
+    <string name="histogram3d_graph">Histogram 3D</string>
 </resources>

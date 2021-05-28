@@ -1,12 +1,19 @@
 package com.android.decisionmaker.UI.activities;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.RadioButton;
 
 import com.android.decisionmaker.R;
 import com.android.decisionmaker.database.handlers.DBHandler;
@@ -23,6 +30,7 @@ import java.util.Objects;
 public class StartingActivity extends AppCompatActivity {
 
     ImageButton imageButton;
+    DBHandler dbHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +40,57 @@ public class StartingActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_starting_activity);
+
+        dbHandler = DBHandler.getDBHandler(this);
+    }
+
+    //Inflate the menu to the layout
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.settings, menu);
+        String viewType = dbHandler.getViewType();
+
+        switch (viewType) {
+            //Chart Type (group): check the chart from db
+
+            case "Histogram":
+                menu.findItem(R.id.histogram_choice).setChecked(true);
+                break;
+            case "Histogram3D":
+                menu.findItem(R.id.histogram3d_choice).setChecked(true);
+                break;
+            default:
+                menu.findItem(R.id.pie_chart_choice).setChecked(true);
+                break;
+
+        }
+        return true;
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        ConstraintLayout startingActivityLayout = findViewById(R.id.starting_activity_layout);
+
+        switch (item.getItemId()) {
+            //Chart Type (group): we need to update the type of the chart
+
+            case R.id.pie_chart_choice:
+                item.setChecked(!item.isChecked());
+                dbHandler.updateViewType("Pie");
+                return true;
+            case R.id.histogram_choice:
+                item.setChecked(!item.isChecked());
+                dbHandler.updateViewType("Histogram");
+                return true;
+            case R.id.histogram3d_choice:
+                item.setChecked(!item.isChecked());
+                dbHandler.updateViewType("Histogram3D");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     public void createDecision(View view){
@@ -76,67 +135,6 @@ public class StartingActivity extends AppCompatActivity {
 //
 //        Log.d("Save Decision", Boolean.toString(dbHandler.saveDecision(decision)));
     }
-
-    public void goToSettings(View view) {
-        Intent intent = new Intent(this, Settings.class);
-        startActivity(intent);
-
-//        DBHandler dbHandler = DBHandler.getDBHandler(this);
-//
-//        Log.d("Settings Dark Mode", String.valueOf(dbHandler.getDarkMode()));
-//        Log.d("Settings View Type", dbHandler.getViewType());
-//
-//        dbHandler.updateDarkMode(true);
-//        dbHandler.updateViewType("Histogram");
-//
-//        Log.d("Settings Dark Mode", String.valueOf(dbHandler.getDarkMode()))
-//        Log.d("Settings View Type", dbHandler.getViewType());
-
-        // Testing the database
-        // Please ignore
-
-//        Decision decision = new Decision();
-//
-//        decision.setName(String.valueOf(new Date().getTime()));
-//        decision.setDate(new Date());
-//        decision.setSubCategory("Phones");
-//
-//        ArrayList<Criteria> criteria = new ArrayList<>();
-//
-//        Criteria criteria1 = new Criteria();
-//        criteria1.setName("Price");
-//        criteria1.setWeight(8);
-//
-//        Criteria criteria2 = new Criteria();
-//        criteria2.setName("RAM");
-//        criteria2.setWeight(6);
-//
-//        ArrayList<Choice> choices = new ArrayList<>();
-//
-//        Choice choice = new Choice();
-//        choice.setName("Samsung");
-//        choice.setValue(7);
-//
-//        Choice choice1 = new Choice();
-//        choice1.setName("Iphone");
-//        choice1.setValue(8);
-//
-//        choices.add(choice);
-//        choices.add(choice1);
-//
-//        criteria1.setChoices(choices);
-//        criteria2.setChoices(choices);
-//
-//        criteria.add(criteria1);
-//        criteria.add(criteria2);
-//
-//        decision.setCriteria(criteria);
-//
-//        DBHandler dbHandler = DBHandler.getDBHandler(this);
-//
-//        Log.d("Save Decision", Boolean.toString(dbHandler.saveDecision(decision)));
-    }
-
 
 
     public void goToHistory(View view) {

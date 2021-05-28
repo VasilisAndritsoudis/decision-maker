@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/starting_activity_layout"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -21,20 +22,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/startSettingsButton"
-        android:layout_width="243dp"
-        android:layout_height="80dp"
-        android:layout_marginBottom="32dp"
-        android:onClick="goToSettings"
-        android:text="@string/settings"
-        android:textAllCaps="false"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/startHistoryButton"
-        app:layout_constraintStart_toStartOf="@+id/startHistoryButton"
-        app:layout_constraintTop_toBottomOf="@+id/startHistoryButton" />
-
-    <Button
         android:id="@+id/startNewDecisionButton"
         android:layout_width="0dp"
         android:layout_height="80dp"
@@ -51,11 +38,12 @@
         android:id="@+id/startHistoryButton"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
+        android:layout_marginBottom="32dp"
         android:onClick="goToHistory"
         android:text="@string/decision_history"
         android:textAllCaps="false"
         android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/startSettingsButton"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/startNewDecisionButton" />

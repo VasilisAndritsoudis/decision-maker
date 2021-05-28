@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/chart"
+        android:title="@string/chart">
+        <menu>
+            <group android:checkableBehavior="single">
+                <item
+                    android:id="@+id/pie_chart_choice"
+                    android:title="@string/pie_chart_graph"/>
+                <item
+                    android:id="@+id/histogram_choice"
+                    android:title="@string/histogram_graph" />
+                <item
+                    android:id="@+id/histogram3d_choice"
+                    android:title="@string/histogram3d_graph" />
+            </group>
+        </menu>
+    </item>
+</menu>

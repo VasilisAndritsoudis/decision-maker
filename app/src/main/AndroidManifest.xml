@@ -37,9 +37,6 @@
         <activity
             android:name=".UI.activities.History"
             android:parentActivityName=".UI.activities.StartingActivity" />
-        <activity
-            android:name=".UI.activities.Settings"
-            android:parentActivityName=".UI.activities.StartingActivity" />
         <activity android:name=".UI.activities.StartingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
