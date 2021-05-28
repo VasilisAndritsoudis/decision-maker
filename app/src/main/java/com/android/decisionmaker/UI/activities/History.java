@@ -1,21 +1,17 @@
 package com.android.decisionmaker.UI.activities;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.decisionmaker.R;
 import com.android.decisionmaker.UI.adapters.HistoryAdapter;
 import com.android.decisionmaker.UI.adapters.HistoryAdapterInterface;
 import com.android.decisionmaker.database.handlers.DBHandler;
-import com.android.decisionmaker.database.models.Choice;
-import com.android.decisionmaker.database.models.Criteria;
 import com.android.decisionmaker.database.models.Decision;
 
 import java.text.SimpleDateFormat;
@@ -38,12 +34,14 @@ public class History extends AppCompatActivity implements HistoryAdapterInterfac
 
         DBHandler dbHandler = DBHandler.getDBHandler(this);
 
+        //Adds Home Button
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
 
         decisions = dbHandler.getDecisions();
         pairs = new ArrayList<>();
 
+        //Gets all the past user's decision from the database and prints them
         for (Decision decision : decisions) {
             String pattern = "HH:mm - EEE dd/MM/yy";
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern, Locale.getDefault());

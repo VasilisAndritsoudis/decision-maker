@@ -22,20 +22,33 @@ public class CriteriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final Decision decision;
     private final int count;
 
-
-    public CriteriaAdapter(ArrayList<String> list, Decision decision, int count, CriteriaAdapterInterface listenerInterface) {
+    /**
+     * Adapter's Constructor
+     * @param list is the Arraylist of Strings that have to been printed
+     * @param decision is the decision we want to change values and weights of correspondent
+     *                 choices and criteria through seekbars
+     * @param count is an int to know in which we criterion we are
+     * @param listenerInterface an interface to override a listener
+     */
+    public CriteriaAdapter(ArrayList<String> list, Decision decision, int count,
+                           CriteriaAdapterInterface listenerInterface) {
         arrayList = list;
         this.listenerInterface = listenerInterface;
         this.decision = decision;
         this.count = count;
     }
 
+    /**
+     * A getter to get the decision at its current state
+     * @return the Decision Object
+     */
     public Decision getDecision() {
         return decision;
     }
 
     @NonNull
     @Override
+    //uses three different view holders for three different layouts
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if(viewType == 0) {
             View v = LayoutInflater.from(parent.getContext())
@@ -53,6 +66,7 @@ public class CriteriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
+    //Binds the items to the respective place
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if(position == 0) {
             ViewHolder1 viewHolder1 = (ViewHolder1) holder;
@@ -93,7 +107,8 @@ public class CriteriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    listenerInterface.onSeekBarChange(getAbsoluteAdapterPosition(), seekBar.getProgress(), arrayList.get(0));
+                    listenerInterface.onSeekBarChange(getAbsoluteAdapterPosition(),
+                            seekBar.getProgress(), arrayList.get(0));
                 }
 
                 @Override
@@ -125,7 +140,8 @@ public class CriteriaAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                    listenerInterface.onSeekBarChange(getAbsoluteAdapterPosition(), seekBar.getProgress(), arrayList.get(0));
+                    listenerInterface.onSeekBarChange(getAbsoluteAdapterPosition(),
+                            seekBar.getProgress(), arrayList.get(0));
                 }
 
                 @Override

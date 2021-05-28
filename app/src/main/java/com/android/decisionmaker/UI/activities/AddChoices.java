@@ -1,5 +1,6 @@
 package com.android.decisionmaker.UI.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -19,6 +20,7 @@ import com.android.decisionmaker.database.models.Decision;
 
 import java.util.ArrayList;
 import java.util.Date;
+
 
 public class AddChoices extends AppCompatActivity {
 
@@ -40,7 +42,7 @@ public class AddChoices extends AppCompatActivity {
         name = findViewById(R.id.addChoicesNameEdit);
         warning = findViewById(R.id.addChoicesWarning);
 
-
+        //gets Subcategory if it exists
         extras = getIntent().getExtras();
         if (extras != null) {
             if (extras.containsKey("SubCategory") && extras.getString("SubCategory") != null) {
@@ -50,6 +52,8 @@ public class AddChoices extends AppCompatActivity {
             }
         }
 
+
+        //checks for rotation in order not to lose any data given from the user
         if(savedInstanceState != null) {
             choices = (ArrayList<Choice>) savedInstanceState.get("AddedChoices");
             name.setText(savedInstanceState.getString("Decision Name"));
@@ -62,7 +66,7 @@ public class AddChoices extends AppCompatActivity {
             choices = new ArrayList<>();
         }
 
-
+        //Listener for Keystroke in the enter button
         choice.setOnKeyListener((v, keyCode, event) -> {
             if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 addChoice(v);
@@ -79,7 +83,13 @@ public class AddChoices extends AppCompatActivity {
         recyclerAddedChoices.setLayoutManager(new LinearLayoutManager(this));
     }
 
+    /**
+     * OnClick method to go to the next activity
+     * @param view is the View Object we are currently on
+     */
+    @SuppressLint("SetTextI18n")
     public void goToPrepare(View view) {
+        //Checks if there is any problem with user's input before sending him in the next activity
         if(name.getText().toString().isEmpty()){
             warning.setVisibility(View.VISIBLE);
             warning.setText("You have to set a name before you continue!");
@@ -89,6 +99,7 @@ public class AddChoices extends AppCompatActivity {
             warning.setText("You have to add at least two choices!");
             return;
         }
+        //Creates next activity and saving everything that will be needed there. Then starts the activity
         Intent intent = new Intent(this, Prepare.class);
         Decision decision = new Decision();
         decision.setName(name.getText().toString());
@@ -104,8 +115,13 @@ public class AddChoices extends AppCompatActivity {
         }
         startActivity(intent);
     }
-    
+
+    /**
+     * OnClick method to add a Choice Object for your Decision
+     * @param view is the View Object we are currently on
+     */
     public void addChoice (View view) {
+        //Checks if there is any problem with user's input
         if(choice.getText().toString().isEmpty())
             return;
         for(Choice item : choices)
@@ -113,6 +129,7 @@ public class AddChoices extends AppCompatActivity {
                 choice.setText("");
                 return;
             }
+        //Notifies the adapter of the recycler view after user adds a choice
         Choice temp = new Choice();
         temp.setName(choice.getText().toString().trim());
         choices.add(temp);
@@ -122,6 +139,8 @@ public class AddChoices extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
+        //Saving everything that will be needed in case user rotates the phone in order to
+        //keep his input
         if(extras != null) {
             outState.putAll(extras);
         }

@@ -17,10 +17,19 @@ import java.util.ArrayList;
 public class DataButtonsAdapter extends RecyclerView.Adapter<DataButtonsAdapter.ViewHolder> {
 
     private final ArrayList<Criteria> arrayList;
-    private ArrayList<String> namesAndValues;
-    private DataTextsAdapter textsAdapter;
+    private final ArrayList<String> namesAndValues;
+    private final DataTextsAdapter textsAdapter;
 
-    public DataButtonsAdapter(ArrayList<Criteria> list, ArrayList<String> namesAndValues, DataTextsAdapter textsAdapter) {
+    /**
+     * Adapter's Constructor
+     * @param list is the Arraylist of Criteria that have to been printed
+     * @param namesAndValues is the list of Strings that have the Choices and the values that belongs
+     *                       to the selected criterion
+     * @param textsAdapter is another adapter that has to been notified everytime @param namesAndValues
+     *                     is being changed
+     */
+    public DataButtonsAdapter(ArrayList<Criteria> list, ArrayList<String> namesAndValues,
+                              DataTextsAdapter textsAdapter) {
         arrayList = list;
         this.namesAndValues = namesAndValues;
         this.textsAdapter = textsAdapter;
@@ -31,13 +40,15 @@ public class DataButtonsAdapter extends RecyclerView.Adapter<DataButtonsAdapter.
     public DataButtonsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.data_buttons_recycler, parent, false);
-        return new DataButtonsAdapter.ViewHolder(v);
+        return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull DataButtonsAdapter.ViewHolder holder, int position) {
         holder.button.setText(arrayList.get(position).getName());
 
+        //when a criterion is selected create the appropriate strings in pairs of names and their
+        //correspondent values
         holder.button.setOnClickListener(v -> {
             Criteria criterion = arrayList.get(position);
             namesAndValues.clear();
@@ -57,7 +68,7 @@ public class DataButtonsAdapter extends RecyclerView.Adapter<DataButtonsAdapter.
         return arrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         Button button;
 

@@ -1,4 +1,4 @@
-    package com.android.decisionmaker.UI.activities;
+package com.android.decisionmaker.UI.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -56,6 +56,9 @@ public class Prepare extends AppCompatActivity {
         DBHandler dbHandler = DBHandler.getDBHandler(this);
         ArrayList<Criteria> temp = null;
         extras = getIntent().getExtras();
+
+        //checks which path the user followed to reach in this current activity and adapts based on the
+        //things that have been pasted until here through the extras since the start
         if (extras != null) {
             decision = (Decision) extras.get("Decision");
             if(decision.getSubCategory() != null){
@@ -63,6 +66,7 @@ public class Prepare extends AppCompatActivity {
                 if(temp == null) {
                     if(extras.containsKey("Category") && extras.getString("Category") != null){
                         temp = dbHandler.getCategoryCriteria(extras.getString("Category"));
+                        if (temp == null) select.setVisibility(View.INVISIBLE);
                     } else {
                         select.setVisibility(View.INVISIBLE);
                     }
@@ -73,7 +77,8 @@ public class Prepare extends AppCompatActivity {
             }
         }
 
-
+        //checks for rotation in order to recreate the activity exactly the same way it was and the
+        //user can continue his experience without losing any input or progress
         if(savedInstanceState != null) {
             criteria = (ArrayList<Criteria>) savedInstanceState.get("AddedCriteria");
             criterion.setText(savedInstanceState.getString("Criterion"));
@@ -113,6 +118,7 @@ public class Prepare extends AppCompatActivity {
         checkBoxes.setAdapter(checkBoxAdapter);
         checkBoxes.setLayoutManager(new LinearLayoutManager(this));
 
+        //Key listener for key stroke enter
         criterion.setOnKeyListener((v, keyCode, event) -> {
             if (event.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
                 addCriterion(v);
@@ -123,7 +129,13 @@ public class Prepare extends AppCompatActivity {
 
     }
 
+    /**
+     * Adds a criterion to the respective ArrayList and notifies the adapter of the recycler view
+     * that is responsible for the current ArrayList
+     * @param view is the View Object we are currently on
+     */
     public void addCriterion(View view) {
+        //checks for any violation
         if(criterion.getText().toString().isEmpty())
             return;
         for(Criteria item : criteria)
@@ -138,7 +150,12 @@ public class Prepare extends AppCompatActivity {
         criteriaAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * An OnClick method to go to the next activity
+     * @param view is the View Object we are currently on
+     */
     public void goToCriteriaScoring(View view) {
+        //checks for violations
         if(criteria.size()<=0) {
             warning.setVisibility(View.VISIBLE);
             warning.setText("You have to select or add at least\none criterion to proceed!");
@@ -149,6 +166,7 @@ public class Prepare extends AppCompatActivity {
         ArrayList<Choice> choices;
         choices = (ArrayList<Choice>) extras.get("Choices");
 
+        //adds each choice to the correspondent criteria of decision
         for (Criteria criterion : criteria) {
             ArrayList<Choice> newChoices = new ArrayList<>();
             for (Choice choice : choices) {
@@ -164,11 +182,12 @@ public class Prepare extends AppCompatActivity {
         decision.setCriteria(criteria);
         Intent intent = new Intent(this, CriteriaScore.class);
 
+        //Sets a dummy value for each value and weight
         for (Criteria criteria : decision.getCriteria()) {
             for (Choice choice : criteria.getChoices()) {
-                choice.setValue(50);
+                choice.setValue(49);
             }
-            criteria.setWeight(50);
+            criteria.setWeight(49);
         }
 
         intent.putExtra("Times",decision.getCriteria().size());
@@ -178,6 +197,7 @@ public class Prepare extends AppCompatActivity {
             intent.putExtra("Category", extras.getString("Category"));
         }
 
+        //starts next activity
         startActivity(intent);
     }
 

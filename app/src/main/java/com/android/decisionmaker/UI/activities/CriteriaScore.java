@@ -37,17 +37,20 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_criteria_score);
 
+        //Adds home button
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
 
         extras = getIntent().getExtras();
 
+        //Checks for rotation and saved data
         if(savedInstanceState != null) {
             decision = (Decision) savedInstanceState.get("Decision");
         } else {
             decision = (Decision) extras.get("Decision");
         }
 
+        //creates the appropriate ArrayList for the recycler view adapter based on which iteration is
         if(extras != null) {
 
             int num = (int) extras.get("Times");
@@ -73,6 +76,10 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
         }
     }
 
+    /**
+     * Decides which function to call to create the next activity
+     * @param view is the View Object we are current on
+     */
     public void nextActivity (View view) {
         int num;
 
@@ -86,6 +93,11 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
         }
     }
 
+    /**
+     * Calls itself until every criterion has been graded
+     * @param num is the number of iterations that have left to be done
+     * @param decision is the current Decision Object
+     */
     public void recurse(int num, Decision decision) {
         Intent intent = new Intent(this, CriteriaScore.class);
         intent.putExtra("Times" , num);
@@ -103,6 +115,11 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
         startActivity(intent);
     }
 
+    /**
+     * Saves the Decision Object in the DbHandler and then sends us to the next activity to see
+     * the results
+     * @param decision is the current Decision Object
+     */
     public void goToDecisionView (Decision decision){
         Intent intent = new Intent(this, DecisionView.class);
         intent.putExtra("Decision", decision);
@@ -136,6 +153,7 @@ public class CriteriaScore extends AppCompatActivity implements CriteriaAdapterI
 
     @Override
     public void onSeekBarChange(int position, int seekBarValue, String criterionName) {
+        //Listener to change the value of each Criterion's weight and Choice
         for (Criteria criterion : decision.getCriteria()) {
             if (criterion.getName().equals(criterionName)) {
                 if (position == 0) {

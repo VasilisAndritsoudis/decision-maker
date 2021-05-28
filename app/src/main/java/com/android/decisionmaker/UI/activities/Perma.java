@@ -1,5 +1,6 @@
 package com.android.decisionmaker.UI.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Pair;
@@ -39,6 +40,7 @@ public class Perma extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perma);
 
+        //adds home button
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
 
@@ -55,6 +57,7 @@ public class Perma extends AppCompatActivity {
 
         categories = new ArrayList<>();
 
+        //checks for rotation and recreates all the given input from the user
         if (savedInstanceState != null) {
             enable = savedInstanceState.getBoolean("Enable");
             categoryName.setText(savedInstanceState.getString("CategoryName"));
@@ -89,7 +92,7 @@ public class Perma extends AppCompatActivity {
             }
         }
 
-
+        //checks if the user wants to create a completely new category or expand an existing one
         if (extras != null && savedInstanceState == null) {
             String string = extras.getString("Perma");
             if (!string.equals("None")) {
@@ -125,10 +128,15 @@ public class Perma extends AppCompatActivity {
     }
 
 
-
-
+    /**
+     * An OnClick method that passes the user to the next activity
+     * @param view is the View Object we are currently on
+     */
+    @SuppressLint("SetTextI18n")
     public void goToAddChoices(View view) {
         Intent intent = new Intent(this, AddChoices.class);
+
+        //checks for violation before continuing to the next activity
         if(categoryName.getText().toString().isEmpty()) {
             warning.setText("You have to select a category or create one!");
             warning.setVisibility(View.VISIBLE);
@@ -152,6 +160,7 @@ public class Perma extends AppCompatActivity {
                     warning.setVisibility(View.VISIBLE);
                     return;
                 }
+        //everything is fine, starts the next activity
         intent.putExtra("SubCategory",subCategoryName.getText().toString());
         intent.putExtra("Category", categoryName.getText().toString());
         startActivity(intent);
@@ -159,6 +168,8 @@ public class Perma extends AppCompatActivity {
 
     @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
+        //saves everything needed in case we have to recreate the activity without the user
+        //losing any of his inputs
         outState.putAll(extras);
         outState.putInt("CategoryVisibility", categoryName.getVisibility());
         outState.putString("CategoryName", categoryName.getText().toString());

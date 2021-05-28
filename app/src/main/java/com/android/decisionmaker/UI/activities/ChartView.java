@@ -1,7 +1,6 @@
 package com.android.decisionmaker.UI.activities;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,19 +36,8 @@ import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link ChartView#newInstance} factory method to
- * create an instance of this fragment.
  */
 public class ChartView extends Fragment {
-
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private Decision decision;
     Bundle extras;
@@ -60,48 +48,13 @@ public class ChartView extends Fragment {
 
     public ChartView(Decision decision) {
         this.decision = decision;
-
-//        Log.d("Dec Name", decision.getName());
-//        Log.d("Dec Date", decision.getDate().toString());
-//        Log.d("Dec SubCat", decision.getSubCategory());
-//
-//        for (Criteria criteria : decision.getCriteria()) {
-//            Log.d("Dec Crit Name", criteria.getName());
-//            Log.d("Dec Crit Weight", String.valueOf(criteria.getWeight()));
-//
-//            for (Choice choice : criteria.getChoices()) {
-//                Log.d("Dec Crit Choice Name", choice.getName());
-//                Log.d("Dec Crit Choice Val", String.valueOf(choice.getValue()));
-//            }
-//        }
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ChartView.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ChartView newInstance(String param1, String param2) {
-        ChartView fragment = new ChartView();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -110,6 +63,7 @@ public class ChartView extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_chart_view, container, false);
 
+        //Checks if the phone has been rotated to acknowledge where to take the Decision Object from.
         if (savedInstanceState != null) {
             decision = (Decision) savedInstanceState.get("Decision");
         } else {
@@ -121,6 +75,7 @@ public class ChartView extends Fragment {
 
         AnyChartView anyChartView = view.findViewById(R.id.any_chart_view);
 
+        //Creates ChartView
         String viewType = DBHandler.getDBHandler(this.getContext()).getViewType();
         switch (viewType) {
             case "Pie":
@@ -143,6 +98,11 @@ public class ChartView extends Fragment {
         super.onSaveInstanceState(outState);
     }
 
+    /**
+     * Creates a SeparateChart of a Pie to project the results
+     * @param decision is the current Decision Object that we want to project the results for
+     * @return A pie chart
+     */
     private SeparateChart prepareChart(Decision decision) {
         ArrayList<Integer> percentages = WAS.logic(createScoresMatrix(decision), createWeightsMatrix(decision));
 
@@ -178,6 +138,11 @@ public class ChartView extends Fragment {
         return pie;
     }
 
+    /**
+     * Creates a SeparateChart of a Histogram to project the results
+     * @param decision is the current Decision Object that we want to project the results for
+     * @return A Histogram chart
+     */
     private SeparateChart prepareHistogram(Decision decision) {
         ArrayList<Integer> percentages = WAS.logic(createScoresMatrix(decision), createWeightsMatrix(decision));
 
@@ -218,6 +183,11 @@ public class ChartView extends Fragment {
         return cartesian;
     }
 
+    /**
+     * Creates a SeparateChart of a 3D Histogram to project the results
+     * @param decision is the current Decision Object that we want to project the results for
+     * @return A 3D Histogram chart
+     */
     private SeparateChart prepareHistogram3D(Decision decision) {
         ArrayList<Integer> percentages = WAS.logic(createScoresMatrix(decision), createWeightsMatrix(decision));
 

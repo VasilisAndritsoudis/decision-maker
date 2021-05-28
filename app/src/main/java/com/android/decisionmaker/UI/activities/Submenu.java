@@ -1,10 +1,10 @@
 package com.android.decisionmaker.UI.activities;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.os.Bundle;
 
 import com.android.decisionmaker.R;
 import com.android.decisionmaker.UI.adapters.SubMenuAdapter;
@@ -27,9 +27,11 @@ public class Submenu extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         String name;
 
+        //adds home button
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
 
+        //creates the appropriate arrayList for the adapter of the recycler view
         if (extras != null) {
             name = extras.getString("Category");
             DBHandler dbHandler = DBHandler.getDBHandler(this);

@@ -1,5 +1,6 @@
 package com.android.decisionmaker.UI.adapters;
 
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +15,20 @@ import java.util.ArrayList;
 
 public class DataTextsAdapter extends RecyclerView.Adapter<DataTextsAdapter.ViewHolder>{
 
-    private ArrayList<String> arrayList;
+    private final ArrayList<String> arrayList;
 
+    /**
+     * A getter
+     * @return the arraylist in each current state
+     */
     public ArrayList<String> getArrayList() {
         return arrayList;
     }
 
+    /**
+     * Adapter's constructor
+     * @param list is the Arraylist of Strings that have to been printed
+     */
     public DataTextsAdapter (ArrayList<String> list) {
         arrayList = list;
     }
@@ -29,9 +38,10 @@ public class DataTextsAdapter extends RecyclerView.Adapter<DataTextsAdapter.View
     public DataTextsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.data_text_recycler, parent, false);
-        return new DataTextsAdapter.ViewHolder(v);
+        return new ViewHolder(v);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull DataTextsAdapter.ViewHolder holder, int position) {
         String [] strings = arrayList.get(position).split("~");
@@ -46,7 +56,7 @@ public class DataTextsAdapter extends RecyclerView.Adapter<DataTextsAdapter.View
         return arrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder {
 
         TextView name;
         TextView value;

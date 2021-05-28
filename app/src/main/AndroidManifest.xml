@@ -9,7 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DecisionMaker">
-        <activity android:name=".UI.activities.WheelActivity"></activity>
         <activity
             android:name=".UI.activities.Information"
             android:parentActivityName=".UI.activities.StartingActivity" />

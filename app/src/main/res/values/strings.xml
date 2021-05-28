@@ -1,4 +1,5 @@
 <resources>
+    <string name="add_choices_warning1">You have to set a name before you continue!</string>
     <string name="app_name">Decision Maker</string>
     <string name="decision_maker">Decision Maker</string>
     <string name="people">People</string>

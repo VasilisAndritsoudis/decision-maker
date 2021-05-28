@@ -1,9 +1,10 @@
 package com.android.decisionmaker.UI.activities;
 
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.os.Bundle;
 
 import com.android.decisionmaker.R;
 import com.android.decisionmaker.UI.adapters.MenuAdapter;
@@ -23,6 +24,7 @@ public class DecisionMenu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_decision_menu);
 
+        //Gets the Categories from the DbHandler and then it appears it on the screen
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
 

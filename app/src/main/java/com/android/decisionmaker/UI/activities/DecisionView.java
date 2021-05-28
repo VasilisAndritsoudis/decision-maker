@@ -31,6 +31,7 @@ public class DecisionView extends AppCompatActivity {
             decision = (Decision) extras.get("Decision");
         }
 
+        //Creates two tabs, one for results and one for the data
         tabLayout = findViewById(R.id.tabLayout);
         viewPager = findViewById(R.id.viewPager);
 
@@ -41,10 +42,13 @@ public class DecisionView extends AppCompatActivity {
             tabLayout.selectTab(tabLayout.getTabAt(savedInstanceState.getInt("Position")));
         }
 
+        //Adds Home Button on Header
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_home);
 
-        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
+        //Based on Tab it creates the respectively fragment
+        viewPager.setAdapter(new FragmentPagerAdapter(getSupportFragmentManager(),
+                FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
             @NonNull
             @Override
             public Fragment getItem(int position) {
@@ -64,6 +68,7 @@ public class DecisionView extends AppCompatActivity {
             }
         });
 
+        //Changes Tab when the user swipe's left or right
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -81,6 +86,7 @@ public class DecisionView extends AppCompatActivity {
             }
         });
 
+        //Sets Tab in case of rotation
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             @Override

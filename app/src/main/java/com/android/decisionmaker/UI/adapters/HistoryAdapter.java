@@ -1,7 +1,6 @@
 package com.android.decisionmaker.UI.adapters;
 
 import android.content.Intent;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,17 +10,12 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.decisionmaker.UI.activities.DecisionView;
 import com.android.decisionmaker.R;
-import com.android.decisionmaker.UI.activities.History;
-import com.android.decisionmaker.database.handlers.DBHandler;
+import com.android.decisionmaker.UI.activities.DecisionView;
 import com.android.decisionmaker.database.models.Decision;
 
-import java.io.Serializable;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+
 
 public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHolder> {
 
@@ -40,7 +34,7 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
     }
 
     private static ArrayList<Pair> pairArrayList;
-    private HistoryAdapterInterface listenerInterface;
+    private final HistoryAdapterInterface listenerInterface;
 
     public HistoryAdapter (ArrayList<Pair> list, HistoryAdapterInterface listenerInterface) {
         pairArrayList = list;
@@ -102,13 +96,9 @@ public class HistoryAdapter extends RecyclerView.Adapter<HistoryAdapter.ViewHold
                 }
             });
 
-            edit.setOnClickListener(v -> {
-                listenerInterface.onClickEdit(getAbsoluteAdapterPosition());
-            });
+            edit.setOnClickListener(v -> listenerInterface.onClickEdit(getAbsoluteAdapterPosition()));
 
-            delete.setOnClickListener(v -> {
-                listenerInterface.onClickDelete(getAbsoluteAdapterPosition());
-            });
+            delete.setOnClickListener(v -> listenerInterface.onClickDelete(getAbsoluteAdapterPosition()));
         }
     }
 }
