@@ -63,6 +63,8 @@ public class PrepareAdapterCheckBoxes extends RecyclerView.Adapter<PrepareAdapte
             super(itemView);
             checkBox = itemView.findViewById(R.id.prepareCheckBox);
 
+            //a listener for whenever the user checks or unchecks a check box in order to added/remove
+            //it from an arraylist and notify the correspondent adapter that uses this arraylist
             checkBox.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if(isChecked) {
                     boolean add = true;

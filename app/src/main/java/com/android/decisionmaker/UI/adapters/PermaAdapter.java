@@ -68,6 +68,10 @@ public class PermaAdapter extends RecyclerView.Adapter<PermaAdapter.ViewHolder>{
 
             name = itemView.findViewById(R.id.permaCategoryName);
 
+            //if the user wants to create a new subcategory we don't need the listener if he chose to do
+            //it inside of the main category.
+            //Otherwise, this listener creates pair to know which one is selected and are also used
+            //to manipulate their colours in order to know inform the user what was his last selection
             if (enabled) {
                 itemView.setOnClickListener(v -> {
                     if (name.getText().toString().equals("New Category")) {
