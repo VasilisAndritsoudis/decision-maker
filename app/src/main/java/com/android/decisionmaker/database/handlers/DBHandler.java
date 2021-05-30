@@ -922,6 +922,7 @@ public class DBHandler extends SQLiteOpenHelper {
 
             if (!criteriaIsUsed(criteria)) {
                 if (!deleteCriteria(criteria)) {
+                    Log.d("Delete", "Delete Criteria fail");
                     return false;
                 }
             }
@@ -968,7 +969,7 @@ public class DBHandler extends SQLiteOpenHelper {
      */
     private boolean criteriaIsUsed(Criteria criteria) {
         String query = "SELECT *" +
-                " FROM " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA +
+                " FROM " + TABLE_DECISION + "_" + TABLE_CRITERIA +
                 " WHERE " + TABLE_CRITERIA + "ID =" + criteria.getId();
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -978,11 +979,26 @@ public class DBHandler extends SQLiteOpenHelper {
             cursor.close();
             db.close();
             return true;
-        } else {
+        }
+
+        cursor.close();
+
+        query = "SELECT *" +
+                " FROM " + TABLE_SUBCATEGORY + "_" + TABLE_CRITERIA +
+                " WHERE " + TABLE_CRITERIA + "ID =" + criteria.getId();
+
+        cursor = db.rawQuery(query, null);
+
+        if (cursor.getCount() != 0) {
             cursor.close();
             db.close();
-            return false;
+            return true;
         }
+
+        cursor.close();
+        db.close();
+
+        return false;
     }
 
     /**
