@@ -65,4 +65,6 @@
     <string name="pie_chart_graph">Pie Chart</string>
     <string name="histogram_graph">Histogram</string>
     <string name="histogram3d_graph">Histogram 3D</string>
+    <string name="image">image</string>
+    <string name="auth_logo">auth logo</string>
 </resources>
