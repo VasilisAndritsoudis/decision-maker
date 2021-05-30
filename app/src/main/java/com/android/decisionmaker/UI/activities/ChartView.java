@@ -178,8 +178,6 @@ public class ChartView extends Fragment {
 
         cartesian.xAxis(0).title("Choice");
 
-        cartesian.background().fill("#726E60 1");
-
         return cartesian;
     }
 
@@ -224,8 +222,6 @@ public class ChartView extends Fragment {
         cartesian.interactivity().hoverMode(HoverMode.BY_X);
 
         cartesian.xAxis(0).title("Choice");
-
-        cartesian.background().fill("#726E60 1");
 
         return cartesian;
     }

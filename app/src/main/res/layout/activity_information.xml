@@ -42,9 +42,11 @@
         <TextView
             android:id="@+id/app_name"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginTop="8dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="16dp"
+            android:fontFamily="sans-serif-black"
             android:text="@string/app_name"
+            android:textSize="24sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
             app:layout_constraintTop_toTopOf="parent" />
@@ -55,6 +57,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
             android:text="@string/copy_right"
+            android:textAlignment="center"
             app:layout_constraintBottom_toTopOf="@+id/guideline4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@+id/guideline3"
@@ -67,11 +70,14 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:gravity="fill_horizontal"
             android:text="@string/app_information"
+            android:textAlignment="gravity"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline4" />
+            app:layout_constraintTop_toTopOf="@+id/guideline4"
+            android:justificationMode="inter_word"
+            tools:targetApi="o" />
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </ScrollView>
