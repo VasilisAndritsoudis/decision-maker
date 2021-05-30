@@ -74,6 +74,8 @@ public class History extends AppCompatActivity implements HistoryAdapterInterfac
     public void onClickDelete(int position) {
         DBHandler dbHandler = DBHandler.getDBHandler(this);
 
+        Log.d("Delete", "Button Pressed");
+
         Log.d("Dec Delete", String.valueOf(dbHandler.deleteDecision(pairs.get(position).getDecision())));
 
         pairs.remove(position);

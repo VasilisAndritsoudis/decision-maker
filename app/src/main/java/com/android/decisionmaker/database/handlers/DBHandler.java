@@ -888,6 +888,7 @@ public class DBHandler extends SQLiteOpenHelper {
      * @return true if success / false otherwise
      */
     public boolean deleteDecision(Decision decision) {
+        Log.d("Delete", "In delete decision");
         // Check if Decision exists
         String query = "SELECT " + TABLE_DECISION + "ID" +
                 " FROM " + TABLE_DECISION +
@@ -902,8 +903,6 @@ public class DBHandler extends SQLiteOpenHelper {
             return false;
         }
 
-        cursor.close();
-
         // Delete Choices and Criteria from table Decision_Choice
         // By deleting Choices from table Decision_Choice, Criteria are deleted from there as well
         for (Choice choice : decision.getCriteria().get(0).getChoices()) {
@@ -911,10 +910,14 @@ public class DBHandler extends SQLiteOpenHelper {
 
             if (!choiceIsUsed(choice)) {
                 if (!deleteChoice(choice)) {
+                    cursor.close();
+                    db.close();
                     return false;
                 }
             }
         }
+
+        Log.d("Delete", "Delete Choice success");
 
         // Delete Criteria from table Decision_Criteria
         for (Criteria criteria : decision.getCriteria()) {
@@ -923,6 +926,8 @@ public class DBHandler extends SQLiteOpenHelper {
             if (!criteriaIsUsed(criteria)) {
                 if (!deleteCriteria(criteria)) {
                     Log.d("Delete", "Delete Criteria fail");
+                    cursor.close();
+                    db.close();
                     return false;
                 }
             }
@@ -932,7 +937,11 @@ public class DBHandler extends SQLiteOpenHelper {
         String deletion = "DELETE FROM " + TABLE_DECISION +
                 " WHERE " + TABLE_DECISION + "ID =" + decision.getId();
 
+        Log.d("Delete", "Delete Decision fail");
+
+        db = this.getWritableDatabase();
         db.execSQL(deletion);
+        cursor.close();
         db.close();
 
         return true;
