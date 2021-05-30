@@ -133,8 +133,6 @@ public class ChartView extends Fragment {
                 .itemsLayout(LegendLayout.HORIZONTAL)
                 .align(Align.CENTER);
 
-        pie.background().fill("#726E60 1");
-
         return pie;
     }
 

@@ -8,7 +8,7 @@
     <color name="colorSecondaryVariant">#343A3A</color>
     <color name="colorOnSecondary">@color/black</color>
 
-    <color name="applicationBackground">#726E60</color>
+    <color name="applicationBackground">#AEA998</color>
     <color name="secondaryBackground">#98B06F</color>
     
     <color name="purple_200">#FFBB86FC</color>
