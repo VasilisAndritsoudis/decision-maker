@@ -46,10 +46,8 @@ public class PermaAdapter extends RecyclerView.Adapter<PermaAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull PermaAdapter.ViewHolder holder, int position) {
         holder.name.setText(arrayList.get(position).first.getName());
         if (arrayList.get(position).second) {
-            Log.d("ASD", "True");
             holder.itemView.setBackgroundColor(Color.parseColor("#93B853"));
         } else {
-            Log.d("ASD", "False");
             holder.itemView.setBackgroundColor(Color.parseColor("#4F6727"));
         }
     }
